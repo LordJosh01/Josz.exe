@@ -1,0 +1,169 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply font-sans bg-purple-950 text-purple-100;
+    line-height: 1.6;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-serif;
+    line-height: 1.15;
+  }
+
+  ::selection {
+    background: rgba(212, 160, 23, 0.3);
+    color: #f2cc5a;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #0a0118;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #3f1878;
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #5521a0;
+  }
+}
+
+@layer components {
+  /* ---- Gold shimmer text ---- */
+  .gold-text {
+    @apply bg-gold-shimmer bg-clip-text text-transparent;
+    background-size: 200% auto;
+    animation: shimmer 3s linear infinite;
+  }
+
+  /* ---- Glassmorphism card ---- */
+  .glass-card {
+    background: rgba(21, 8, 41, 0.7);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(212, 160, 23, 0.15);
+  }
+
+  .gold-border {
+    border: 1px solid rgba(212, 160, 23, 0.3);
+    transition: border-color 0.3s ease;
+  }
+
+  .gold-border:hover {
+    border-color: rgba(212, 160, 23, 0.7);
+  }
+
+  .section-divider {
+    @apply w-16 h-px bg-gold-500 mx-auto my-6;
+  }
+
+  /* ---- Nav ---- */
+  .nav-link {
+    @apply text-purple-200 hover:text-gold-300 transition-colors duration-300 text-sm font-medium tracking-wide;
+  }
+
+  .nav-link.active {
+    @apply text-gold-400;
+  }
+
+  /* ---- Buttons ---- */
+  .btn-gold {
+    @apply inline-flex items-center gap-2 px-7 py-3.5 font-medium text-sm tracking-wider uppercase;
+    background: linear-gradient(135deg, #c48b00, #f2cc5a, #d4a017);
+    color: #0a0118;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+
+  .btn-gold:hover {
+    background: linear-gradient(135deg, #d4a017, #f8dc8a, #e6b930);
+    box-shadow: 0 0 30px rgba(212, 160, 23, 0.4);
+    transform: translateY(-1px);
+  }
+
+  .btn-outline-gold {
+    @apply inline-flex items-center gap-2 px-7 py-3.5 font-medium text-sm tracking-wider uppercase text-gold-400;
+    border: 1px solid rgba(212, 160, 23, 0.5);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+
+  .btn-outline-gold:hover {
+    @apply text-gold-300;
+    border-color: rgba(212, 160, 23, 0.9);
+    background: rgba(212, 160, 23, 0.08);
+    box-shadow: 0 0 20px rgba(212, 160, 23, 0.15);
+  }
+
+  /* ---- Page hero ---- */
+  .page-hero {
+    @apply relative py-32 md:py-40 overflow-hidden;
+    background: radial-gradient(ellipse at top, #2d1060 0%, #0a0118 70%);
+  }
+
+  /* ---- Scroll-reveal animations ---- */
+  .scroll-reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .scroll-reveal.delay-1 { transition-delay: 0.1s; }
+  .scroll-reveal.delay-2 { transition-delay: 0.2s; }
+  .scroll-reveal.delay-3 { transition-delay: 0.3s; }
+  .scroll-reveal.delay-4 { transition-delay: 0.4s; }
+  .scroll-reveal.delay-5 { transition-delay: 0.5s; }
+
+  .scroll-reveal.in-view {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .scroll-reveal-left {
+    opacity: 0;
+    transform: translateX(-32px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .scroll-reveal-left.in-view {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .scroll-reveal-right {
+    opacity: 0;
+    transform: translateX(32px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .scroll-reveal-right.in-view {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .scroll-reveal-scale {
+    opacity: 0;
+    transform: scale(0.92);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .scroll-reveal-scale.in-view {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
