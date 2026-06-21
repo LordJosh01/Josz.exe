@@ -1,11 +1,52 @@
 import { useState, useEffect, useRef } from 'react';
-import { Mail, Phone, MapPin, Send, CheckCircle, Instagram } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, CheckCircle, Instagram, Clock, MessageCircle, Sparkles, Heart, Calendar } from 'lucide-react';
 
-const emptyForm = { name: '', email: '', phone: '', eventType: '', date: '', message: '' };
+const emptyForm = { name: '', email: '', phone: '', eventType: '', date: '', guestCount: '', budget: '', message: '' };
 
 const GMAIL_URL = 'https://mail.google.com/mail/?view=cm&fs=1&to=aolagbaye@gmail.com&su=Event%20Enquiry%20-%20Events%20By%20BELSH';
 const WHATSAPP_URL = 'https://wa.me/2348035672491?text=Hi%20BELSH!%20I%27d%20like%20to%20inquire%20about%20planning%20my%20event.';
 const INSTAGRAM_URL = 'https://www.instagram.com/events_by_belsh';
+
+const eventTypes = [
+  { value: 'Wedding', label: 'Wedding' },
+  { value: 'Traditional Engagement', label: 'Traditional Engagement' },
+  { value: 'Birthday Celebration', label: 'Birthday Celebration' },
+  { value: 'Private Dinner', label: 'Private Dinner' },
+  { value: 'Corporate Event', label: 'Corporate Event' },
+  { value: 'Anniversary', label: 'Anniversary' },
+  { value: 'Bridal Shower', label: 'Bridal Shower' },
+  { value: 'Baby Shower', label: 'Baby Shower' },
+  { value: 'Naming Ceremony', label: 'Naming Ceremony' },
+  { value: 'Graduation Party', label: 'Graduation Party' },
+  { value: 'Other', label: 'Other' },
+];
+
+const budgetRanges = [
+  { value: 'under-200k', label: 'Under N200,000' },
+  { value: '200k-500k', label: 'N200,000 - N500,000' },
+  { value: '500k-1m', label: 'N500,000 - N1,000,000' },
+  { value: '1m-3m', label: 'N1,000,000 - N3,000,000' },
+  { value: '3m-plus', label: 'N3,000,000+' },
+  { value: 'flexible', label: 'Flexible / Not Sure Yet' },
+];
+
+const reasons = [
+  {
+    icon: Heart,
+    title: 'Personalized Approach',
+    desc: 'We listen to your unique vision and craft celebrations that authentically reflect your style and story.',
+  },
+  {
+    icon: Sparkles,
+    title: 'Attention to Detail',
+    desc: 'From the grand vision to the smallest detail, we ensure nothing is overlooked in creating your perfect event.',
+  },
+  {
+    icon: Calendar,
+    title: 'Seamless Experience',
+    desc: 'We handle every logistics so you can be fully present and enjoy your celebration stress-free.',
+  },
+];
 
 function useReveal() {
   const ref = useRef<HTMLDivElement>(null);
@@ -57,8 +98,25 @@ export default function Contact() {
           <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-purple-50 mb-4 opacity-0 animate-fade-in-up-2">Contact Us</h1>
           <div className="section-divider" />
           <p className="text-purple-300/80 text-lg max-w-xl mx-auto mt-4 opacity-0 animate-fade-in-up-3">
-            Tell us about your celebration — we will reply within 24 hours.
+            Ready to bring your celebration to life? Tell us about your vision — we will reply within 24 hours.
           </p>
+        </div>
+      </section>
+
+      {/* Reasons */}
+      <section className="py-16 bg-purple-900/30 border-y border-dark-border">
+        <div className="max-w-5xl mx-auto px-6">
+          <div className="grid md:grid-cols-3 gap-6">
+            {reasons.map(({ icon: Icon, title, desc }, i) => (
+              <div key={title} className={`text-center scroll-reveal delay-${i + 1}`}>
+                <div className="w-12 h-12 rounded-full bg-gold-900/30 border border-gold-600/30 flex items-center justify-center mx-auto mb-4">
+                  <Icon size={20} className="text-gold-400" />
+                </div>
+                <h3 className="text-purple-100 font-medium mb-2">{title}</h3>
+                <p className="text-purple-400 text-sm">{desc}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -68,9 +126,10 @@ export default function Contact() {
           {/* Info column */}
           <div className="lg:col-span-2 space-y-8 scroll-reveal-left">
             <div>
-              <h2 className="font-serif text-2xl md:text-3xl text-purple-50 mb-2">Ready to celebrate?</h2>
+              <h2 className="font-serif text-2xl md:text-3xl text-purple-50 mb-3">Ready to celebrate?</h2>
               <p className="text-purple-300/80 text-sm leading-relaxed">
                 Whether you have a full vision or just a feeling you want to create, we would love to hear from you.
+                Every great event begins with a conversation — let's start yours.
               </p>
             </div>
 
@@ -88,6 +147,7 @@ export default function Contact() {
                 <div>
                   <p className="text-purple-400 text-xs uppercase tracking-widest mb-1">Email (Gmail)</p>
                   <p className="text-purple-100 text-sm">aolagbaye@gmail.com</p>
+                  <p className="text-purple-500 text-xs mt-1">Click to compose</p>
                 </div>
               </a>
 
@@ -104,6 +164,7 @@ export default function Contact() {
                 <div>
                   <p className="text-purple-400 text-xs uppercase tracking-widest mb-1">WhatsApp</p>
                   <p className="text-purple-100 text-sm">+234 803 567 2491</p>
+                  <p className="text-purple-500 text-xs mt-1">Click to chat</p>
                 </div>
               </a>
 
@@ -120,6 +181,7 @@ export default function Contact() {
                 <div>
                   <p className="text-purple-400 text-xs uppercase tracking-widest mb-1">Instagram</p>
                   <p className="text-purple-100 text-sm">@events_by_belsh</p>
+                  <p className="text-purple-500 text-xs mt-1">See our recent work</p>
                 </div>
               </a>
 
@@ -131,6 +193,19 @@ export default function Contact() {
                 <div>
                   <p className="text-purple-400 text-xs uppercase tracking-widest mb-1">Based In</p>
                   <p className="text-purple-100 text-sm">Ilorin, Kwara State, Nigeria</p>
+                  <p className="text-purple-500 text-xs mt-1">Available for destination events</p>
+                </div>
+              </div>
+
+              {/* Response Time */}
+              <div className="flex items-start gap-4 glass-card gold-border rounded-xl p-5">
+                <div className="w-10 h-10 rounded-lg bg-gold-900/40 border border-gold-600/30 flex items-center justify-center shrink-0">
+                  <Clock size={18} className="text-gold-400" />
+                </div>
+                <div>
+                  <p className="text-purple-400 text-xs uppercase tracking-widest mb-1">Response Time</p>
+                  <p className="text-purple-100 text-sm">Within 24 hours</p>
+                  <p className="text-purple-500 text-xs mt-1">Usually faster on WhatsApp</p>
                 </div>
               </div>
             </div>
@@ -142,11 +217,32 @@ export default function Contact() {
               rel="noopener noreferrer"
               className="flex items-center gap-3 px-6 py-3.5 rounded-sm bg-green-700 hover:bg-green-600 text-white text-sm font-medium tracking-wider uppercase transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 w-full justify-center"
             >
-              <svg className="w-5 h-5 shrink-0" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-              </svg>
+              <MessageCircle size={18} className="shrink-0" />
               Chat on WhatsApp
             </a>
+
+            {/* Quick Info */}
+            <div className="pt-6 border-t border-dark-border">
+              <p className="text-purple-400 text-xs uppercase tracking-widest mb-4">What to Expect</p>
+              <ul className="space-y-2 text-sm text-purple-300/80">
+                <li className="flex items-start gap-2">
+                  <span className="w-1 h-1 rounded-full bg-gold-400 shrink-0 mt-2" />
+                  Free 30-minute discovery call
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="w-1 h-1 rounded-full bg-gold-400 shrink-0 mt-2" />
+                  No-obligation consultation
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="w-1 h-1 rounded-full bg-gold-400 shrink-0 mt-2" />
+                  Transparent pricing and packages
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="w-1 h-1 rounded-full bg-gold-400 shrink-0 mt-2" />
+                  Personalized proposal within 48 hours
+                </li>
+              </ul>
+            </div>
           </div>
 
           {/* Form */}
@@ -172,8 +268,10 @@ export default function Contact() {
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-6">
-                  <h3 className="font-serif text-2xl text-purple-50 mb-2">Send Us a Message</h3>
-                  <p className="text-purple-400 text-sm mb-6">Fill in the details below and we will get back to you shortly.</p>
+                  <div>
+                    <h3 className="font-serif text-2xl text-purple-50 mb-2">Tell Us About Your Event</h3>
+                    <p className="text-purple-400 text-sm">Fill in the details below and we will get back to you shortly.</p>
+                  </div>
 
                   <div className="grid md:grid-cols-2 gap-4">
                     <div>
@@ -204,34 +302,54 @@ export default function Contact() {
                       />
                     </div>
                     <div>
-                      <label className="block text-xs text-purple-400 uppercase tracking-widest mb-2">Event Type</label>
+                      <label className="block text-xs text-purple-400 uppercase tracking-widest mb-2">Event Type *</label>
                       <select
-                        name="eventType" value={form.eventType} onChange={handleChange}
+                        name="eventType" required value={form.eventType} onChange={handleChange}
                         className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-purple-100 text-sm focus:outline-none focus:border-gold-500/50 transition-colors duration-300"
                       >
-                        <option value="" className="bg-dark-card">Select type...</option>
-                        <option value="Wedding" className="bg-dark-card">Wedding</option>
-                        <option value="Birthday" className="bg-dark-card">Birthday</option>
-                        <option value="Private Dinner" className="bg-dark-card">Private Dinner</option>
-                        <option value="Corporate" className="bg-dark-card">Corporate Event</option>
-                        <option value="Other" className="bg-dark-card">Other</option>
+                        <option value="" className="bg-dark-card">Select event type...</option>
+                        {eventTypes.map(({ value, label }) => (
+                          <option key={value} value={value} className="bg-dark-card">{label}</option>
+                        ))}
                       </select>
                     </div>
                   </div>
 
-                  <div>
-                    <label className="block text-xs text-purple-400 uppercase tracking-widest mb-2">Event Date (if known)</label>
-                    <input
-                      type="date" name="date" value={form.date} onChange={handleChange}
-                      className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-purple-100 text-sm focus:outline-none focus:border-gold-500/50 transition-colors duration-300"
-                    />
+                  <div className="grid md:grid-cols-3 gap-4">
+                    <div>
+                      <label className="block text-xs text-purple-400 uppercase tracking-widest mb-2">Event Date</label>
+                      <input
+                        type="date" name="date" value={form.date} onChange={handleChange}
+                        className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-purple-100 text-sm focus:outline-none focus:border-gold-500/50 transition-colors duration-300"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs text-purple-400 uppercase tracking-widest mb-2">Guest Count</label>
+                      <input
+                        type="text" name="guestCount" value={form.guestCount} onChange={handleChange}
+                        placeholder="e.g. 50-100"
+                        className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-purple-100 placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-colors duration-300"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs text-purple-400 uppercase tracking-widest mb-2">Budget Range</label>
+                      <select
+                        name="budget" value={form.budget} onChange={handleChange}
+                        className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-purple-100 text-sm focus:outline-none focus:border-gold-500/50 transition-colors duration-300"
+                      >
+                        <option value="" className="bg-dark-card">Select budget...</option>
+                        {budgetRanges.map(({ value, label }) => (
+                          <option key={value} value={value} className="bg-dark-card">{label}</option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
 
                   <div>
                     <label className="block text-xs text-purple-400 uppercase tracking-widest mb-2">Tell Us About Your Vision *</label>
                     <textarea
                       name="message" required value={form.message} onChange={handleChange} rows={5}
-                      placeholder="Describe your event, guest count, style preferences, and anything else you would like us to know..."
+                      placeholder="Describe your event, style preferences, venue ideas, and anything else you would like us to know..."
                       className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-purple-100 placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-colors duration-300 resize-none"
                     />
                   </div>
@@ -246,9 +364,30 @@ export default function Contact() {
                       <>Send Message <Send size={16} /></>
                     )}
                   </button>
+
+                  <p className="text-purple-500 text-xs text-center">
+                    By submitting, you agree to our team reaching out via email or WhatsApp.
+                  </p>
                 </form>
               )}
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Map / Location Section */}
+      <section className="py-16 bg-purple-900/30 border-t border-dark-border">
+        <div className="max-w-5xl mx-auto px-6 text-center">
+          <p className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-4">Our Location</p>
+          <h2 className="font-serif text-2xl md:text-3xl text-purple-50 mb-4">Based in Kwara, Serving Beyond</h2>
+          <p className="text-purple-300/70 max-w-xl mx-auto mb-8">
+            While we are proudly based in Ilorin, Kwara State, we plan events across Nigeria and are open to destination celebrations.
+            Wherever your vision takes you, we are ready to follow.
+          </p>
+          <div className="glass-card gold-border rounded-xl p-8 max-w-md mx-auto">
+            <MapPin size={32} className="text-gold-400 mx-auto mb-4" />
+            <p className="text-purple-100 font-medium mb-1">Ilorin, Kwara State</p>
+            <p className="text-purple-400 text-sm">Nigeria</p>
           </div>
         </div>
       </section>

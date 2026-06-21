@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { CheckCircle, ChevronRight } from 'lucide-react';
+import { CheckCircle, ChevronRight, Heart, Sparkles, Users, Calendar, MapPin, Award, Star, Clock, Eye, Gift, Shield } from 'lucide-react';
 
 type Page = 'home' | 'services' | 'portfolio' | 'about' | 'faq' | 'contact';
 
@@ -10,23 +10,72 @@ interface AboutProps {
 const values = [
   {
     title: 'Intentionality',
-    desc: 'Every element we choose serves a purpose. Nothing is accidental — from the scent in the room to the order of the evening.',
+    desc: 'Every element we choose serves a purpose. Nothing is accidental — from the scent in the room to the order of the evening, each detail is thoughtfully considered.',
+    icon: Sparkles,
   },
   {
     title: 'Discretion',
-    desc: 'Your celebration is personal. We handle your plans, your vendors and your guests with the utmost care and confidentiality.',
+    desc: 'Your celebration is personal. We handle your plans, your vendors and your guests with the utmost care and confidentiality. Your privacy is paramount to us.',
+    icon: Shield,
   },
   {
     title: 'Excellence',
-    desc: 'We hold ourselves to a standard of excellence that shows up in every vendor call, site visit and timeline review.',
+    desc: 'We hold ourselves to a standard of excellence that shows up in every vendor call, site visit and timeline review. Good enough is never our destination.',
+    icon: Award,
   },
   {
     title: 'Warmth',
-    desc: 'Behind every beautiful event is a team that genuinely cares. We invest in your joy because your memories matter to us.',
+    desc: 'Behind every beautiful event is a team that genuinely cares. We invest in your joy because your memories matter to us. Relationships come first.',
+    icon: Heart,
   },
 ];
 
-const highlights = ['Trusted by 200+ clients', 'Based in Kwara State', 'Full-service planning & design'];
+const milestones = [
+  { year: '2019', title: 'Founded', desc: 'Events By BELSH was born from a passion for creating memorable celebrations' },
+  { year: '2020', title: 'First Wedding', desc: 'Delivered our first full-service wedding, setting the standard for our approach' },
+  { year: '2021', title: '50 Events', desc: 'Celebrated our 50th event and expanded our vendor network significantly' },
+  { year: '2022', title: 'Team Growth', desc: 'Built a dedicated team of coordinators and design specialists' },
+  { year: '2023', title: '100+ Weddings', desc: 'Milestone achieved with over 100 weddings successfully executed' },
+  { year: '2024', title: '200+ Events', desc: 'Reached our 200th event milestone with gratitude and joy' },
+];
+
+const stats = [
+  { number: '200+', label: 'Events Executed', desc: 'Weddings, birthdays, and celebrations' },
+  { number: '5+', label: 'Years Experience', desc: 'In the event planning industry' },
+  { number: '50+', label: 'Trusted Vendors', desc: 'In our curated network' },
+  { number: '100%', label: 'Client Satisfaction', desc: 'Is our unwavering commitment' },
+];
+
+const highlights = [
+  'Trusted by 200+ clients across Nigeria',
+  'Based in Kwara State, serving beyond',
+  'Full-service planning & design studio',
+  'Award-winning event experiences',
+  'Personalized approach to every event',
+];
+
+const differentiators = [
+  {
+    icon: Users,
+    title: 'Client-First Philosophy',
+    desc: 'Your vision drives everything we do. We listen deeply, understand fully, and execute faithfully to your dreams, not a template.',
+  },
+  {
+    icon: Eye,
+    title: 'Design Excellence',
+    desc: 'Our aesthetic sensibility sets us apart. We create visually stunning environments that photograph beautifully and feel magical.',
+  },
+  {
+    icon: MapPin,
+    title: 'Local Expertise',
+    desc: 'Deep knowledge of Kwara venues, vendors, and logistics means smoother execution and better outcomes for your event.',
+  },
+  {
+    icon: Gift,
+    title: 'Thoughtful Details',
+    desc: 'It is the little things that make events memorable. We obsess over details others miss, creating moments of surprise and delight.',
+  },
+];
 
 function useReveal() {
   const ref = useRef<HTMLDivElement>(null);
@@ -58,7 +107,10 @@ export default function About({ onNavigate }: AboutProps) {
   };
 
   const storyRef = useReveal();
+  const statsRef = useReveal();
   const valuesRef = useReveal();
+  const timelineRef = useReveal();
+  const differentiatorsRef = useReveal();
   const ctaRef = useReveal();
 
   return (
@@ -75,7 +127,7 @@ export default function About({ onNavigate }: AboutProps) {
         </div>
       </section>
 
-      {/* Story */}
+      {/* Story Section */}
       <section className="py-24 md:py-32" ref={storyRef}>
         <div className="max-w-7xl mx-auto px-6 lg:px-10 grid lg:grid-cols-2 gap-16 items-center">
           <div className="relative group scroll-reveal-left">
@@ -87,6 +139,7 @@ export default function About({ onNavigate }: AboutProps) {
                 className="w-full h-full object-cover opacity-70 hover:opacity-90 hover:scale-105 transition-all duration-700"
                 loading="lazy"
               />
+              <div className="absolute inset-0 bg-gradient-to-t from-purple-950/80 via-transparent to-transparent" />
             </div>
           </div>
 
@@ -96,47 +149,147 @@ export default function About({ onNavigate }: AboutProps) {
               Celebrations that feel{' '}
               <span className="italic text-gold-300">like coming home.</span>
             </h2>
-            <p className="text-purple-300/80 leading-relaxed mb-5">
-              Events By BELSH began with a simple belief: that every celebration, no matter its size,
-              deserves to be extraordinary. Founded in Kwara State, we started by planning intimate
-              family gatherings — and quickly grew through word of mouth.
-            </p>
-            <p className="text-purple-300/80 leading-relaxed mb-5">
-              We do not do cookie-cutter events. Every client engagement starts with a conversation
-              about you, your guests, and what you want them to feel when they walk into the room.
-            </p>
-            <p className="text-purple-300/80 leading-relaxed mb-8">
-              Today, we serve clients across Kwara State and beyond, managing everything from
-              intimate 20-person dinners to 500-guest wedding receptions.
-            </p>
-            <div className="space-y-3">
-              {highlights.map((item) => (
-                <div key={item} className="flex items-center gap-3">
-                  <CheckCircle size={16} className="text-gold-400 shrink-0" />
-                  <span className="text-purple-200 text-sm">{item}</span>
-                </div>
-              ))}
+            <div className="space-y-5 text-purple-300/80 leading-relaxed">
+              <p>
+                Events By BELSH began with a simple belief: that every celebration, no matter its size,
+                deserves to be extraordinary. Founded in Kwara State by a team passionate about bringing
+                joy through beautifully crafted experiences, we started by planning intimate
+                family gatherings — and quickly grew through word of mouth.
+              </p>
+              <p>
+                Our founder noticed that many event companies focused on volume over quality, delivering
+                cookie-cutter solutions that left hosts feeling like their special day was just another
+                booking. We set out to change that narrative — to create an event planning studio where
+                each client feels heard, each event feels unique, and every detail matters.
+              </p>
+              <p>
+                We do not do cookie-cutter events. Every client engagement starts with a conversation
+                about you — your guests, your preferences, your story, and what you want people to feel
+                when they walk into the room. From there, we craft experiences that are authentically yours.
+              </p>
+              <p>
+                Today, we serve clients across Kwara State and beyond, managing everything from
+                intimate 20-person dinners to 500-guest wedding receptions. But regardless of scale,
+                our commitment remains the same: exceptional service, thoughtful design, and celebrations
+                that create lasting memories.
+              </p>
+            </div>
+
+            <div className="mt-8 pt-6 border-t border-dark-border/50">
+              <div className="space-y-3">
+                {highlights.map((item) => (
+                  <div key={item} className="flex items-center gap-3">
+                    <CheckCircle size={16} className="text-gold-400 shrink-0" />
+                    <span className="text-purple-200 text-sm">{item}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
       </section>
 
+      {/* Stats Section */}
+      <section className="py-20 bg-purple-900/50 border-y border-dark-border" ref={statsRef}>
+        <div className="max-w-6xl mx-auto px-6 lg:px-10">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {stats.map(({ number, label, desc }, i) => (
+              <div key={label} className={`text-center scroll-reveal delay-${i + 1}`}>
+                <p className="font-serif text-4xl md:text-5xl text-gold-400 mb-2">{number}</p>
+                <p className="text-purple-100 font-medium mb-1">{label}</p>
+                <p className="text-purple-400 text-sm">{desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Values */}
-      <section className="py-24 bg-purple-900/50 border-y border-dark-border" ref={valuesRef}>
+      <section className="py-24 md:py-32" ref={valuesRef}>
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
           <div className="text-center mb-16 scroll-reveal">
             <p className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-4">What Drives Us</p>
             <h2 className="font-serif text-3xl md:text-4xl text-purple-50">Our Values</h2>
+            <p className="text-purple-300/70 mt-4 max-w-xl mx-auto">
+              These principles guide every decision we make, every event we plan, and every relationship we build.
+            </p>
             <div className="section-divider" />
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {values.map(({ title, desc }, i) => (
+            {values.map(({ title, desc, icon: Icon }, i) => (
               <div key={title} className={`glass-card gold-border rounded-xl p-7 hover:-translate-y-2 transition-all duration-500 scroll-reveal delay-${i + 1}`}>
+                <div className="w-10 h-10 rounded-lg bg-gold-900/40 border border-gold-600/30 flex items-center justify-center mb-4">
+                  <Icon size={18} className="text-gold-400" />
+                </div>
                 <h3 className="font-serif text-xl text-gold-300 mb-3">{title}</h3>
                 <p className="text-purple-300/80 text-sm leading-relaxed">{desc}</p>
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Timeline */}
+      <section className="py-24 bg-purple-900/30 border-y border-dark-border" ref={timelineRef}>
+        <div className="max-w-5xl mx-auto px-6 lg:px-10">
+          <div className="text-center mb-16 scroll-reveal">
+            <p className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-4">Our Journey</p>
+            <h2 className="font-serif text-3xl md:text-4xl text-purple-50">Milestones</h2>
+            <div className="section-divider" />
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {milestones.map(({ year, title, desc }, i) => (
+              <div key={year} className={`glass-card rounded-xl p-6 scroll-reveal delay-${i + 1}`}>
+                <p className="text-gold-400 text-2xl font-serif mb-2">{year}</p>
+                <h3 className="text-purple-100 font-medium mb-2">{title}</h3>
+                <p className="text-purple-400 text-sm">{desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Differentiators */}
+      <section className="py-24 md:py-32" ref={differentiatorsRef}>
+        <div className="max-w-7xl mx-auto px-6 lg:px-10">
+          <div className="text-center mb-16 scroll-reveal">
+            <p className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-4">The BELSH Difference</p>
+            <h2 className="font-serif text-3xl md:text-4xl text-purple-50">What Sets Us Apart</h2>
+            <p className="text-purple-300/70 mt-4 max-w-xl mx-auto">
+              In a world of event planners, we stand out by putting you first.
+            </p>
+            <div className="section-divider" />
+          </div>
+          <div className="grid md:grid-cols-2 gap-8">
+            {differentiators.map(({ icon: Icon, title, desc }, i) => (
+              <div key={title} className={`scroll-reveal delay-${i + 1}`}>
+                <div className="glass-card gold-border rounded-xl p-8 flex gap-5 hover:-translate-y-1 transition-all duration-500">
+                  <div className="w-12 h-12 rounded-lg bg-gold-900/40 border border-gold-600/30 flex items-center justify-center shrink-0">
+                    <Icon size={22} className="text-gold-400" />
+                  </div>
+                  <div>
+                    <h3 className="font-serif text-xl text-purple-50 mb-2">{title}</h3>
+                    <p className="text-purple-300/80 leading-relaxed">{desc}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Philosophy Quote */}
+      <section className="py-24 bg-purple-900/50 border-y border-dark-border">
+        <div className="max-w-3xl mx-auto px-6 text-center">
+          <blockquote className="relative">
+            <span className="absolute -top-8 -left-4 text-8xl text-gold-400/10 font-serif">"</span>
+            <p className="font-serif text-2xl md:text-3xl text-purple-100 leading-relaxed italic">
+              Every celebration tells a story. Our job is to make sure yours is unforgettable.
+            </p>
+            <footer className="mt-8">
+              <p className="text-gold-400 text-sm tracking-widest uppercase">The BELSH Philosophy</p>
+            </footer>
+          </blockquote>
         </div>
       </section>
 
@@ -146,11 +299,18 @@ export default function About({ onNavigate }: AboutProps) {
           <h2 className="font-serif text-3xl md:text-4xl text-purple-50 mb-4">
             Let us create something beautiful together.
           </h2>
-          <p className="text-purple-300/80 mb-10">We would love to be part of your next celebration.</p>
-          <button onClick={() => navigate('contact')} className="btn-gold">
-            Get in Touch
-            <ChevronRight size={16} />
-          </button>
+          <p className="text-purple-300/80 mb-10">
+            We would love to be part of your next celebration. Reach out today and let's start planning something extraordinary.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button onClick={() => navigate('contact')} className="btn-gold">
+              Get in Touch
+              <ChevronRight size={16} />
+            </button>
+            <button onClick={() => navigate('portfolio')} className="btn-outline-gold">
+              See Our Work
+            </button>
+          </div>
         </div>
       </section>
     </div>

@@ -14,6 +14,7 @@
   body {
     @apply font-sans bg-purple-950 text-purple-100;
     line-height: 1.6;
+    overflow-x: hidden;
   }
 
   h1, h2, h3, h4 {
@@ -21,27 +22,19 @@
     line-height: 1.15;
   }
 
+  * {
+    box-sizing: border-box;
+  }
+
   ::selection {
     background: rgba(212, 160, 23, 0.3);
     color: #f2cc5a;
   }
 
-  ::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  ::-webkit-scrollbar-track {
-    background: #0a0118;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: #3f1878;
-    border-radius: 3px;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background: #5521a0;
-  }
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: #0a0118; }
+  ::-webkit-scrollbar-thumb { background: #3f1878; border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #5521a0; }
 }
 
 @layer components {
@@ -52,20 +45,29 @@
     animation: shimmer 3s linear infinite;
   }
 
-  /* ---- Glassmorphism card ---- */
+  /* ---- Glassmorphism ---- */
   .glass-card {
-    background: rgba(21, 8, 41, 0.7);
+    background: rgba(21, 8, 41, 0.75);
     backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     border: 1px solid rgba(212, 160, 23, 0.15);
+  }
+
+  .glass-dark {
+    background: rgba(10, 1, 24, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(212, 160, 23, 0.1);
   }
 
   .gold-border {
     border: 1px solid rgba(212, 160, 23, 0.3);
-    transition: border-color 0.3s ease;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
   }
 
   .gold-border:hover {
     border-color: rgba(212, 160, 23, 0.7);
+    box-shadow: 0 0 16px rgba(212, 160, 23, 0.08);
   }
 
   .section-divider {
@@ -74,53 +76,83 @@
 
   /* ---- Nav ---- */
   .nav-link {
-    @apply text-purple-200 hover:text-gold-300 transition-colors duration-300 text-sm font-medium tracking-wide;
+    @apply relative text-purple-200 text-sm font-medium tracking-wide overflow-hidden;
+    transition: color 0.3s ease;
   }
+
+  .nav-link::after {
+    content: '';
+    @apply absolute bottom-0 left-0 h-px bg-gold-400;
+    width: 0;
+    transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: left;
+  }
+
+  .nav-link:hover { color: #f2cc5a; }
+  .nav-link:hover::after { width: 100%; }
 
   .nav-link.active {
     @apply text-gold-400;
   }
 
+  .nav-link.active::after { width: 100%; }
+
   /* ---- Buttons ---- */
   .btn-gold {
-    @apply inline-flex items-center gap-2 px-7 py-3.5 font-medium text-sm tracking-wider uppercase;
+    @apply inline-flex items-center justify-center gap-2 px-7 py-3.5 font-medium text-sm tracking-wider uppercase;
     background: linear-gradient(135deg, #c48b00, #f2cc5a, #d4a017);
+    background-size: 200% auto;
     color: #0a0118;
     border-radius: 2px;
-    transition: all 0.3s ease;
+    transition: background-position 0.4s ease, box-shadow 0.3s ease, transform 0.2s ease;
   }
 
   .btn-gold:hover {
-    background: linear-gradient(135deg, #d4a017, #f8dc8a, #e6b930);
-    box-shadow: 0 0 30px rgba(212, 160, 23, 0.4);
-    transform: translateY(-1px);
+    background-position: right center;
+    box-shadow: 0 0 30px rgba(212, 160, 23, 0.45), 0 4px 20px rgba(0,0,0,0.3);
+    transform: translateY(-2px);
   }
 
+  .btn-gold:active { transform: translateY(0); }
+
   .btn-outline-gold {
-    @apply inline-flex items-center gap-2 px-7 py-3.5 font-medium text-sm tracking-wider uppercase text-gold-400;
+    @apply inline-flex items-center justify-center gap-2 px-7 py-3.5 font-medium text-sm tracking-wider uppercase text-gold-400;
     border: 1px solid rgba(212, 160, 23, 0.5);
     border-radius: 2px;
     transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
   }
+
+  .btn-outline-gold::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(212, 160, 23, 0.08);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.35s ease;
+  }
+
+  .btn-outline-gold:hover::before { transform: scaleX(1); }
 
   .btn-outline-gold:hover {
     @apply text-gold-300;
     border-color: rgba(212, 160, 23, 0.9);
-    background: rgba(212, 160, 23, 0.08);
     box-shadow: 0 0 20px rgba(212, 160, 23, 0.15);
   }
 
   /* ---- Page hero ---- */
   .page-hero {
-    @apply relative py-32 md:py-40 overflow-hidden;
+    @apply relative py-32 md:py-44 overflow-hidden;
     background: radial-gradient(ellipse at top, #2d1060 0%, #0a0118 70%);
   }
 
   /* ---- Scroll-reveal animations ---- */
   .scroll-reveal {
     opacity: 0;
-    transform: translateY(32px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
+    transform: translateY(36px);
+    transition: opacity 0.75s cubic-bezier(0.4,0,0.2,1), transform 0.75s cubic-bezier(0.4,0,0.2,1);
   }
 
   .scroll-reveal.delay-1 { transition-delay: 0.1s; }
@@ -128,6 +160,7 @@
   .scroll-reveal.delay-3 { transition-delay: 0.3s; }
   .scroll-reveal.delay-4 { transition-delay: 0.4s; }
   .scroll-reveal.delay-5 { transition-delay: 0.5s; }
+  .scroll-reveal.delay-6 { transition-delay: 0.6s; }
 
   .scroll-reveal.in-view {
     opacity: 1;
@@ -136,8 +169,8 @@
 
   .scroll-reveal-left {
     opacity: 0;
-    transform: translateX(-32px);
-    transition: opacity 0.8s ease, transform 0.8s ease;
+    transform: translateX(-40px);
+    transition: opacity 0.8s cubic-bezier(0.4,0,0.2,1), transform 0.8s cubic-bezier(0.4,0,0.2,1);
   }
 
   .scroll-reveal-left.in-view {
@@ -147,8 +180,8 @@
 
   .scroll-reveal-right {
     opacity: 0;
-    transform: translateX(32px);
-    transition: opacity 0.8s ease, transform 0.8s ease;
+    transform: translateX(40px);
+    transition: opacity 0.8s cubic-bezier(0.4,0,0.2,1), transform 0.8s cubic-bezier(0.4,0,0.2,1);
   }
 
   .scroll-reveal-right.in-view {
@@ -158,12 +191,98 @@
 
   .scroll-reveal-scale {
     opacity: 0;
-    transform: scale(0.92);
-    transition: opacity 0.7s ease, transform 0.7s ease;
+    transform: scale(0.9);
+    transition: opacity 0.7s cubic-bezier(0.4,0,0.2,1), transform 0.7s cubic-bezier(0.4,0,0.2,1);
   }
 
   .scroll-reveal-scale.in-view {
     opacity: 1;
     transform: scale(1);
+  }
+
+  /* ---- Marquee strip ---- */
+  .marquee-wrapper {
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marquee 28s linear infinite;
+  }
+
+  /* ---- Navbar gradient border bottom ---- */
+  .nav-gradient-border {
+    position: relative;
+  }
+
+  .nav-gradient-border::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(212,160,23,0.6), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .nav-gradient-border.scrolled::after {
+    opacity: 1;
+  }
+
+  /* ---- Mobile menu item ---- */
+  .mobile-nav-item {
+    @apply text-purple-200 text-lg font-medium tracking-wide;
+    transition: color 0.2s ease, padding-left 0.2s ease;
+  }
+
+  .mobile-nav-item:hover {
+    @apply text-gold-300;
+    padding-left: 4px;
+  }
+
+  .mobile-nav-item.active {
+    @apply text-gold-400;
+  }
+
+  /* ---- Footer link hover ---- */
+  .footer-link {
+    @apply text-purple-300/80 text-sm transition-all duration-300;
+    position: relative;
+    padding-left: 0;
+  }
+
+  .footer-link:hover {
+    @apply text-gold-300;
+    padding-left: 6px;
+  }
+
+  /* ---- Card hover effect ---- */
+  .event-card {
+    transition: transform 0.4s cubic-bezier(0.4,0,0.2,1), box-shadow 0.4s ease;
+  }
+
+  .event-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 30px rgba(212,160,23,0.08);
+  }
+
+  /* ---- Tag pill ---- */
+  .tag-pill {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs uppercase tracking-widest;
+    background: rgba(212,160,23,0.1);
+    border: 1px solid rgba(212,160,23,0.25);
+    color: #e6b930;
+  }
+}
+
+/* ---- Mobile specific helpers ---- */
+@media (max-width: 640px) {
+  .page-hero {
+    padding-top: 7rem;
+    padding-bottom: 5rem;
   }
 }
