@@ -48,11 +48,6 @@ const mainServices = [
       'Seating chart design',
       'Ceremony & reception logistics',
     ],
-    packages: [
-      { name: 'Essential', desc: 'Day-of coordination for couples who have planned most details themselves.', price: 'From N150,000' },
-      { name: ' Partial Planning', desc: 'Collaboration for couples midway through planning who need expert guidance.', price: 'From N300,000' },
-      { name: 'Full Service', desc: 'Complete planning from engagement to honeymoon send-off.', price: 'From N500,000' },
-    ],
     image: 'https://images.pexels.com/photos/1024993/pexels-photo-1024993.jpeg?auto=compress&cs=tinysrgb&w=1200',
   },
   {
@@ -75,11 +70,6 @@ const mainServices = [
       'Party favors & gift coordination',
       'Music & DJ arrangements',
     ],
-    packages: [
-      { name: 'Intimate', desc: 'Perfect for gatherings up to 30 guests with elegant styling.', price: 'From N80,000' },
-      { name: 'Celebration', desc: 'Full planning for 30-100 guests with entertainment and catering.', price: 'From N180,000' },
-      { name: 'Grand', desc: 'Luxury experience for 100+ guests with premium vendors.', price: 'From N350,000' },
-    ],
     image: 'https://images.pexels.com/photos/2072181/pexels-photo-2072181.jpeg?auto=compress&cs=tinysrgb&w=1200',
   },
   {
@@ -101,11 +91,6 @@ const mainServices = [
       'Photography & documentation',
       'On-site staff coordination',
       'Post-event reporting',
-    ],
-    packages: [
-      { name: 'Standard', desc: 'Essential coordination for meetings and small corporate gatherings.', price: 'From N100,000' },
-      { name: 'Professional', desc: 'Full planning for conferences, seminars, and corporate celebrations.', price: 'From N250,000' },
-      { name: 'Enterprise', desc: 'Premium service for large-scale events with complex requirements.', price: 'From N500,000' },
     ],
     image: 'https://images.pexels.com/photos/587741/pexels-photo-587741.jpeg?auto=compress&cs=tinysrgb&w=1200',
   },
@@ -219,7 +204,7 @@ export default function Services({ onNavigate }: ServicesProps) {
       {/* Main Services */}
       <section className="py-24 md:py-28" ref={servicesRef}>
         <div className="max-w-7xl mx-auto px-6 lg:px-10 space-y-32">
-          {mainServices.map(({ icon: Icon, title, tagline, description, detailedDescription, includes, packages, image }, i) => (
+          {mainServices.map(({ icon: Icon, title, tagline, description, detailedDescription, includes, image }, i) => (
             <div key={title} className="space-y-12">
               {/* Service Header */}
               <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
@@ -255,21 +240,6 @@ export default function Services({ onNavigate }: ServicesProps) {
                     <div key={item} className="glass-card rounded-lg px-4 py-3 flex items-start gap-2">
                       <span className="w-1.5 h-1.5 rounded-full bg-gold-400 shrink-0 mt-1.5" />
                       <span className="text-sm text-purple-200/80">{item}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Packages */}
-              <div className="scroll-reveal delay-3">
-                <h3 className="font-serif text-xl text-gold-300 mb-6 text-center">Package Options</h3>
-                <div className="grid md:grid-cols-3 gap-6">
-                  {packages.map((pkg, idx) => (
-                    <div key={pkg.name} className={`glass-card gold-border rounded-xl p-6 ${idx === 2 ? 'ring-1 ring-gold-400/30' : ''}`}>
-                      <p className="text-gold-400 text-xs uppercase tracking-widest mb-2">Package</p>
-                      <h4 className="font-serif text-xl text-purple-50 mb-2">{pkg.name}</h4>
-                      <p className="text-purple-300/70 text-sm mb-4">{pkg.desc}</p>
-                      <p className="text-gold-400 font-medium">{pkg.price}</p>
                     </div>
                   ))}
                 </div>
