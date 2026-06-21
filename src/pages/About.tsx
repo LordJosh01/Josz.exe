@@ -30,18 +30,10 @@ const values = [
   },
 ];
 
-const milestones = [
-  { year: '2019', title: 'Founded', desc: 'Events By BELSH was born from a passion for creating memorable celebrations' },
-  { year: '2020', title: 'First Wedding', desc: 'Delivered our first full-service wedding, setting the standard for our approach' },
-  { year: '2021', title: '50 Events', desc: 'Celebrated our 50th event and expanded our vendor network significantly' },
-  { year: '2022', title: 'Team Growth', desc: 'Built a dedicated team of coordinators and design specialists' },
-  { year: '2023', title: '100+ Weddings', desc: 'Milestone achieved with over 100 weddings successfully executed' },
-  { year: '2024', title: '200+ Events', desc: 'Reached our 200th event milestone with gratitude and joy' },
-];
 
 const stats = [
   { number: '200+', label: 'Events Executed', desc: 'Weddings, birthdays, and celebrations' },
-  { number: '5+', label: 'Years Experience', desc: 'In the event planning industry' },
+  { number: '3+', label: 'Years Experience', desc: 'In the event planning industry' },
   { number: '50+', label: 'Trusted Vendors', desc: 'In our curated network' },
   { number: '100%', label: 'Client Satisfaction', desc: 'Is our unwavering commitment' },
 ];
@@ -109,7 +101,6 @@ export default function About({ onNavigate }: AboutProps) {
   const storyRef = useReveal();
   const statsRef = useReveal();
   const valuesRef = useReveal();
-  const timelineRef = useReveal();
   const differentiatorsRef = useReveal();
   const ctaRef = useReveal();
 
@@ -229,25 +220,6 @@ export default function About({ onNavigate }: AboutProps) {
         </div>
       </section>
 
-      {/* Timeline */}
-      <section className="py-24 bg-purple-900/30 border-y border-dark-border" ref={timelineRef}>
-        <div className="max-w-5xl mx-auto px-6 lg:px-10">
-          <div className="text-center mb-16 scroll-reveal">
-            <p className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-4">Our Journey</p>
-            <h2 className="font-serif text-3xl md:text-4xl text-purple-50">Milestones</h2>
-            <div className="section-divider" />
-          </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {milestones.map(({ year, title, desc }, i) => (
-              <div key={year} className={`glass-card rounded-xl p-6 scroll-reveal delay-${i + 1}`}>
-                <p className="text-gold-400 text-2xl font-serif mb-2">{year}</p>
-                <h3 className="text-purple-100 font-medium mb-2">{title}</h3>
-                <p className="text-purple-400 text-sm">{desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Differentiators */}
       <section className="py-24 md:py-32" ref={differentiatorsRef}>

@@ -85,14 +85,6 @@ const items = [
     tags: ['21st', 'Black & Gold', 'DJ Night'],
   },
   {
-    title: '40th Birthday Surprise Party',
-    category: 'Birthday',
-    location: 'Kwara State',
-    image: 'https://images.pexels.com/photos/36956818/pexels-photo-36956818.jpeg?auto=compress&cs=tinysrgb&w=900',
-    desc: 'A seamlessly coordinated surprise birthday dinner for 60 guests — from secret logistics to a stunning reveal moment they will never forget.',
-    tags: ['Surprise Party', 'Intimate', 'Dinner'],
-  },
-  {
     title: '60th Birthday Royal Celebration',
     category: 'Birthday',
     location: 'Ilorin, Kwara',

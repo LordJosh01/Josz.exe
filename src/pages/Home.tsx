@@ -9,7 +9,7 @@ interface HomeProps {
 
 const stats = [
   { value: '200+', label: 'Events Delivered' },
-  { value: '5+', label: 'Years Experience' },
+  { value: '3+', label: 'Years Experience' },
   { value: '100%', label: 'Client Satisfaction' },
 ];
 
@@ -229,7 +229,7 @@ export default function Home({ onNavigate }: HomeProps) {
             {/* Badge */}
             <div className="absolute -bottom-4 -right-4 glass-dark border border-gold-500/30 rounded-xl px-4 py-3 shadow-xl">
               <p className="text-gold-300 text-xs tracking-widest uppercase">Est. in Kwara</p>
-              <p className="font-serif text-xl text-purple-50">5+ Years</p>
+              <p className="font-serif text-xl text-purple-50">3+ Years</p>
             </div>
           </div>
         </div>
