@@ -73,6 +73,22 @@
   ::-webkit-scrollbar-track { background: #050208; }
   ::-webkit-scrollbar-thumb { background: #2d1060; border-radius: 3px; }
   ::-webkit-scrollbar-thumb:hover { background: #3d1880; }
+
+  /* Confetti animation */
+  @keyframes fall {
+    0% {
+      transform: translateY(-10vh) rotate(0deg);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(100vh) rotate(720deg);
+      opacity: 0;
+    }
+  }
+
+  .animate-fall {
+    animation: fall 3s linear forwards;
+  }
 }
 
 @layer components {

@@ -1,14 +1,16 @@
 import { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import LoadingScreen from './components/LoadingScreen';
 import Home from './pages/Home';
 import Services from './pages/Services';
 import Portfolio from './pages/Portfolio';
 import About from './pages/About';
 import FAQ from './pages/FAQ';
 import Contact from './pages/Contact';
+import PremiumFeatures from './pages/PremiumFeatures';
 
-type Page = 'home' | 'services' | 'portfolio' | 'about' | 'faq' | 'contact';
+type Page = 'home' | 'services' | 'portfolio' | 'about' | 'faq' | 'contact' | 'premium';
 
 function CustomCursor() {
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -60,6 +62,7 @@ function CustomCursor() {
 }
 
 function App() {
+  const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState<Page>('home');
 
   const navigate = (page: Page) => {
@@ -74,11 +77,13 @@ function App() {
       case 'about': return <About onNavigate={navigate} />;
       case 'faq': return <FAQ onNavigate={navigate} />;
       case 'contact': return <Contact />;
+      case 'premium': return <PremiumFeatures onNavigate={navigate} />;
     }
   };
 
   return (
     <div className="min-h-screen bg-dark text-purple-100 overflow-x-hidden">
+      {loading && <LoadingScreen onComplete={() => setLoading(false)} />}
       <CustomCursor />
       <Navbar currentPage={currentPage} onNavigate={navigate} />
       <main>{renderPage()}</main>

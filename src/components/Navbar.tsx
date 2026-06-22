@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 
-type Page = 'home' | 'services' | 'portfolio' | 'about' | 'faq' | 'contact';
+type Page = 'home' | 'services' | 'portfolio' | 'about' | 'faq' | 'contact' | 'premium';
 
 interface NavbarProps {
   currentPage: Page;
@@ -11,6 +11,7 @@ interface NavbarProps {
 const links: { label: string; page: Page }[] = [
   { label: 'Services', page: 'services' },
   { label: 'Portfolio', page: 'portfolio' },
+  { label: 'Premium', page: 'premium' },
   { label: 'About', page: 'about' },
   { label: 'FAQ', page: 'faq' },
   { label: 'Contact', page: 'contact' },
