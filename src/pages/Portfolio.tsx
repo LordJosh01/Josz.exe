@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { ChevronRight, Eye } from 'lucide-react';
 
 type Page = 'home' | 'services' | 'portfolio' | 'about' | 'faq' | 'contact';
@@ -88,7 +88,7 @@ const items = [
     title: '60th Birthday Royal Celebration',
     category: 'Birthday',
     location: 'Ilorin, Kwara',
-    image: 'https://images.pexels.com/photos/25636568/pexels-photo-25636568.jpeg?auto=compress&cs=tinysrgb&w=900',
+    image: 'https://images.pexels.com/photos/33675890/pexels-photo-33675890.jpeg?auto=compress&cs=tinysrgb&w=900',
     desc: 'A majestic 60th birthday celebration with traditional and modern elements, an Agbada photo booth and a live highlife band.',
     tags: ['60th Birthday', 'Traditional', 'Highlife'],
   },
@@ -145,12 +145,12 @@ const items = [
     tags: ['Awards Night', 'Corporate', 'Branded'],
   },
   {
-    title: 'Nigerian Cultural Festival',
+    title: 'Executive Networking Dinner',
     category: 'Corporate',
     location: 'Kwara State',
-    image: 'https://images.pexels.com/photos/29083282/pexels-photo-29083282.jpeg?auto=compress&cs=tinysrgb&w=900',
-    desc: 'A vibrant Nigerian cultural festival celebrating heritage with traditional attire, live music, local cuisine and cultural performances.',
-    tags: ['Cultural', 'Festival', 'Nigerian'],
+    image: 'https://images.pexels.com/photos/3153192/pexels-photo-3153192.jpeg?auto=compress&cs=tinysrgb&w=900',
+    desc: 'An exclusive executive networking dinner for 40 senior leaders — intimate round tables, conversation curated and ambiance deliberately refined.',
+    tags: ['Executive', 'Networking', 'Dinner'],
   },
   {
     title: 'Product Launch Event',
@@ -184,19 +184,21 @@ function useReveal() {
 
 export default function Portfolio({ onNavigate }: PortfolioProps) {
   const [active, setActive] = useState<Filter>('All');
+  const [filtered, setFiltered] = useState(items);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const filters: Filter[] = ['All', 'Wedding', 'Birthday', 'Private', 'Corporate'];
   const galleryRef = useReveal();
   const ctaRef = useReveal();
 
-  const filtered = useMemo(() => {
-    return active === 'All' ? items : items.filter((i) => i.category === active);
-  }, [active]);
+  const handleFilterChange = useCallback((filter: Filter) => {
+    setActive(filter);
+    setFiltered(filter === 'All' ? items : items.filter((i) => i.category === filter));
+  }, []);
 
-  const navigate = (page: Page) => {
+  const navigate = useCallback((page: Page) => {
     onNavigate(page);
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  }, [onNavigate]);
 
   return (
     <div>
@@ -234,7 +236,7 @@ export default function Portfolio({ onNavigate }: PortfolioProps) {
             {filters.map((f) => (
               <button
                 key={f}
-                onClick={() => setActive(f)}
+                onClick={() => handleFilterChange(f)}
                 className={`px-4 sm:px-6 py-2.5 text-xs sm:text-sm uppercase tracking-widest rounded-full transition-all duration-300 ${
                   active === f
                     ? 'bg-gradient-to-r from-gold-600 to-gold-400 text-dark font-semibold shadow-lg shadow-gold-900/40 scale-105'
