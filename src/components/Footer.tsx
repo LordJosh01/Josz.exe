@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Mail, Phone, Instagram, MapPin, ChevronRight } from 'lucide-react';
 
 type Page = 'home' | 'services' | 'portfolio' | 'about' | 'faq' | 'contact';
@@ -17,7 +17,8 @@ const quickLinks: { label: string; page: Page }[] = [
 
 const GMAIL_URL = 'https://mail.google.com/mail/?view=cm&fs=1&to=aolagbaye@gmail.com&su=Event%20Enquiry%20-%20Events%20By%20BELSH';
 const WHATSAPP_URL = 'https://wa.me/2348035672491?text=Hi%20BELSH%20Events!%20I%27d%20like%20to%20inquire%20about%20my%20event.';
-const INSTAGRAM_URL = 'https://www.instagram.com/events_by_belsh';
+const INSTAGRAM_URL = 'https://www.instagram.com/rtw_by_belsh';
+const TIKTOK_URL = 'https://www.tiktok.com/@rtw_by_belsh';
 
 const marqueeItems = [
   'Weddings', 'Birthdays', 'Private Dinners', 'Corporate Events',
@@ -26,6 +27,7 @@ const marqueeItems = [
 
 export default function Footer({ onNavigate }: FooterProps) {
   const footerRef = useRef<HTMLElement>(null);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     const el = footerRef.current;
@@ -48,13 +50,35 @@ export default function Footer({ onNavigate }: FooterProps) {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    const el = footerRef.current;
+    if (!el) return;
+    const handleMouseMove = (e: MouseEvent) => {
+      const rect = el.getBoundingClientRect();
+      setMousePos({
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
+      });
+    };
+    el.addEventListener('mousemove', handleMouseMove);
+    return () => el.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
   const navigate = (page: Page) => {
     onNavigate(page);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
-    <footer ref={footerRef} className="bg-purple-900 border-t border-dark-border overflow-hidden">
+    <footer ref={footerRef} className="bg-purple-900 border-t border-dark-border overflow-hidden relative">
+
+      {/* Cursor-following shine effect */}
+      <div
+        className="pointer-events-none absolute inset-0 z-10"
+        style={{
+          background: `radial-gradient(circle 400px at ${mousePos.x}px ${mousePos.y}px, rgba(212, 160, 23, 0.08) 0%, transparent 70%)`,
+        }}
+      />
 
       {/* Marquee strip */}
       <div className="border-b border-dark-border py-3 bg-purple-950/60">
@@ -101,6 +125,15 @@ export default function Footer({ onNavigate }: FooterProps) {
                   label: 'Instagram',
                   icon: (
                     <Instagram size={16} className="text-gold-400 group-hover:text-gold-300 transition-colors" />
+                  ),
+                },
+                {
+                  href: TIKTOK_URL,
+                  label: 'TikTok',
+                  icon: (
+                    <svg className="w-4 h-4 text-gold-400 group-hover:text-gold-300 transition-colors fill-current" viewBox="0 0 24 24">
+                      <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.98 3 3 0 0 1 .85.14V9.27a6.33 6.33 0 0 0-1-.09A6.34 6.34 0 0 0 5 15.69a6.33 6.33 0 0 0 10.86 4.49 6.34 6.34 0 0 0 1.87-4.49V8.88a8.14 8.14 0 0 0 4.73 1.52V6.69z" />
+                    </svg>
                   ),
                 },
                 {
@@ -196,19 +229,19 @@ export default function Footer({ onNavigate }: FooterProps) {
                 </a>
               </li>
               <li>
-                <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer"
-                  className="flex items-start gap-3 text-purple-300/80 hover:text-gold-300 transition-colors text-sm group">
-                  <Instagram size={15} className="text-gold-500 mt-0.5 shrink-0 group-hover:text-gold-300 transition-colors" />
-                  <span>@events_by_belsh</span>
-                </a>
-              </li>
-              <li>
                 <div className="flex items-start gap-3 text-purple-300/60 text-sm">
                   <MapPin size={15} className="text-gold-500/60 mt-0.5 shrink-0" />
                   <span>Ilorin, Kwara State, Nigeria</span>
                 </div>
               </li>
             </ul>
+            {/* Social handle */}
+            <div className="mt-4 pt-4 border-t border-dark-border/50">
+              <p className="text-purple-400 text-[10px] uppercase tracking-widest mb-2">Follow Us</p>
+              <div className="flex gap-4">
+                <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="text-gold-400 hover:text-gold-300 text-sm transition-colors">@rtw_by_belsh</a>
+              </div>
+            </div>
           </div>
         </div>
 

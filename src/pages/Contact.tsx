@@ -1,11 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
-import { Mail, Phone, MapPin, Send, CheckCircle, Instagram, Clock, MessageCircle, Sparkles, Heart, Calendar } from 'lucide-react';
+import { MapPin, Send, CheckCircle, Instagram, Clock, Heart, Sparkles, Calendar } from 'lucide-react';
 
 const emptyForm = { name: '', email: '', phone: '', eventType: '', date: '', guestCount: '', budget: '', message: '' };
 
 const GMAIL_URL = 'https://mail.google.com/mail/?view=cm&fs=1&to=aolagbaye@gmail.com&su=Event%20Enquiry%20-%20Events%20By%20BELSH';
 const WHATSAPP_URL = 'https://wa.me/2348035672491?text=Hi%20BELSH!%20I%27d%20like%20to%20inquire%20about%20planning%20my%20event.';
-const INSTAGRAM_URL = 'https://www.instagram.com/events_by_belsh';
+const INSTAGRAM_URL = 'https://www.instagram.com/rtw_by_belsh';
+const TIKTOK_URL = 'https://www.tiktok.com/@rtw_by_belsh';
 
 const eventTypes = [
   { value: 'Wedding', label: 'Wedding' },
@@ -84,7 +85,7 @@ export default function Contact() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 1000));
+    await new Promise((r) => setTimeout(r, 800));
     setLoading(false);
     setSubmitted(true);
   };
@@ -95,7 +96,7 @@ export default function Contact() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(85,33,160,0.4)_0%,transparent_70%)]" />
         <div className="relative z-10 max-w-3xl mx-auto px-6">
           <p className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-4 opacity-0 animate-fade-in-up">Let us Connect</p>
-          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-purple-50 mb-4 opacity-0 animate-fade-in-up-2">Contact Us</h1>
+          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-purple-100 mb-4 opacity-0 animate-fade-in-up-2">Contact Us</h1>
           <div className="section-divider" />
           <p className="text-purple-300/80 text-lg max-w-xl mx-auto mt-4 opacity-0 animate-fade-in-up-3">
             Ready to bring your celebration to life? Tell us about your vision — we will reply within 24 hours.
@@ -104,7 +105,7 @@ export default function Contact() {
       </section>
 
       {/* Reasons */}
-      <section className="py-16 bg-purple-900/30 border-y border-dark-border">
+      <section className="py-16 bg-purple-800/30 border-y border-dark-border">
         <div className="max-w-5xl mx-auto px-6">
           <div className="grid md:grid-cols-3 gap-6">
             {reasons.map(({ icon: Icon, title, desc }, i) => (
@@ -126,7 +127,7 @@ export default function Contact() {
           {/* Info column */}
           <div className="lg:col-span-2 space-y-8 scroll-reveal-left">
             <div>
-              <h2 className="font-serif text-2xl md:text-3xl text-purple-50 mb-3">Ready to celebrate?</h2>
+              <h2 className="font-serif text-2xl md:text-3xl text-purple-100 mb-3">Ready to celebrate?</h2>
               <p className="text-purple-300/80 text-sm leading-relaxed">
                 Whether you have a full vision or just a feeling you want to create, we would love to hear from you.
                 Every great event begins with a conversation — let's start yours.
@@ -142,7 +143,9 @@ export default function Contact() {
                 className="flex items-start gap-4 glass-card gold-border rounded-xl p-5 group hover:-translate-y-0.5 transition-all duration-300"
               >
                 <div className="w-10 h-10 rounded-lg bg-gold-900/40 border border-gold-600/30 flex items-center justify-center shrink-0 group-hover:border-gold-400/60 transition-colors">
-                  <Mail size={18} className="text-gold-400" />
+                  <svg className="w-5 h-5 text-gold-400" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.72L12 16.64l-6.545-4.92v9.282H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-.904.732-1.636 1.636-1.636h3.819L12 8.91l6.545-5.09h3.819c.904 0 1.636.732 1.636 1.636zM12 14.18l6.545-5.09V4.82H5.455v4.27z"/>
+                  </svg>
                 </div>
                 <div>
                   <p className="text-purple-400 text-xs uppercase tracking-widest mb-1">Email (Gmail)</p>
@@ -159,7 +162,9 @@ export default function Contact() {
                 className="flex items-start gap-4 glass-card gold-border rounded-xl p-5 group hover:-translate-y-0.5 transition-all duration-300"
               >
                 <div className="w-10 h-10 rounded-lg bg-gold-900/40 border border-gold-600/30 flex items-center justify-center shrink-0 group-hover:border-gold-400/60 transition-colors">
-                  <Phone size={18} className="text-gold-400" />
+                  <svg className="w-5 h-5 text-gold-400 fill-current" viewBox="0 0 24 24">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                  </svg>
                 </div>
                 <div>
                   <p className="text-purple-400 text-xs uppercase tracking-widest mb-1">WhatsApp</p>
@@ -168,22 +173,35 @@ export default function Contact() {
                 </div>
               </a>
 
-              {/* Instagram */}
-              <a
-                href={INSTAGRAM_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-start gap-4 glass-card gold-border rounded-xl p-5 group hover:-translate-y-0.5 transition-all duration-300"
-              >
-                <div className="w-10 h-10 rounded-lg bg-gold-900/40 border border-gold-600/30 flex items-center justify-center shrink-0 group-hover:border-gold-400/60 transition-colors">
-                  <Instagram size={18} className="text-gold-400" />
-                </div>
-                <div>
-                  <p className="text-purple-400 text-xs uppercase tracking-widest mb-1">Instagram</p>
-                  <p className="text-purple-100 text-sm">@events_by_belsh</p>
-                  <p className="text-purple-500 text-xs mt-1">See our recent work</p>
-                </div>
-              </a>
+              {/* Instagram & TikTok */}
+              <div className="grid grid-cols-2 gap-3">
+                <a
+                  href={INSTAGRAM_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex flex-col items-center gap-2 glass-card gold-border rounded-xl p-4 group hover:-translate-y-0.5 transition-all duration-300"
+                >
+                  <Instagram size={22} className="text-gold-400 group-hover:text-gold-300 transition-colors" />
+                  <div className="text-center">
+                    <p className="text-purple-100 text-sm">Instagram</p>
+                    <p className="text-gold-400 text-xs">@rtw_by_belsh</p>
+                  </div>
+                </a>
+                <a
+                  href={TIKTOK_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex flex-col items-center gap-2 glass-card gold-border rounded-xl p-4 group hover:-translate-y-0.5 transition-all duration-300"
+                >
+                  <svg className="w-5.5 h-5.5 text-gold-400 group-hover:text-gold-300 transition-colors fill-current" viewBox="0 0 24 24">
+                    <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.98 3 3 0 0 1 .85.14V9.27a6.33 6.33 0 0 0-1-.09A6.34 6.34 0 0 0 5 15.69a6.33 6.33 0 0 0 10.86 4.49 6.34 6.34 0 0 0 1.87-4.49V8.88a8.14 8.14 0 0 0 4.73 1.52V6.69z" />
+                  </svg>
+                  <div className="text-center">
+                    <p className="text-purple-100 text-sm">TikTok</p>
+                    <p className="text-gold-400 text-xs">@rtw_by_belsh</p>
+                  </div>
+                </a>
+              </div>
 
               {/* Location */}
               <div className="flex items-start gap-4 glass-card gold-border rounded-xl p-5">
@@ -209,17 +227,6 @@ export default function Contact() {
                 </div>
               </div>
             </div>
-
-            {/* WhatsApp CTA */}
-            <a
-              href={WHATSAPP_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-3 px-6 py-3.5 rounded-sm bg-green-700 hover:bg-green-600 text-white text-sm font-medium tracking-wider uppercase transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 w-full justify-center"
-            >
-              <MessageCircle size={18} className="shrink-0" />
-              Chat on WhatsApp
-            </a>
 
             {/* Quick Info */}
             <div className="pt-6 border-t border-dark-border">
@@ -254,14 +261,38 @@ export default function Contact() {
                     <CheckCircle size={32} className="text-gold-400" />
                   </div>
                   <div>
-                    <h3 className="font-serif text-2xl text-purple-50 mb-2">Message Received!</h3>
-                    <p className="text-purple-300/80 max-w-sm">
-                      Thank you for reaching out. We will be in touch within 24 hours to discuss your celebration.
+                    <h3 className="font-serif text-2xl text-purple-100 mb-2">How would you like to send your message?</h3>
+                    <p className="text-purple-300/80 max-w-sm mb-6">
+                      Choose your preferred method below to send your enquiry.
                     </p>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-md">
+                    <a
+                      href={WHATSAPP_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-gold flex items-center justify-center gap-2 py-4"
+                    >
+                      <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                      </svg>
+                      WhatsApp
+                    </a>
+                    <a
+                      href={GMAIL_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-outline-gold flex items-center justify-center gap-2 py-4"
+                    >
+                      <svg className="w-5 h-5 text-gold-400" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.72L12 16.64l-6.545-4.92v9.282H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-.904.732-1.636 1.636-1.636h3.819L12 8.91l6.545-5.09h3.819c.904 0 1.636.732 1.636 1.636zM12 14.18l6.545-5.09V4.82H5.455v4.27z"/>
+                      </svg>
+                      Gmail
+                    </a>
                   </div>
                   <button
                     onClick={() => { setSubmitted(false); setForm(emptyForm); }}
-                    className="btn-outline-gold text-xs"
+                    className="text-gold-400 text-sm hover:text-gold-300 transition-colors mt-4"
                   >
                     Send Another Message
                   </button>
@@ -269,7 +300,7 @@ export default function Contact() {
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div>
-                    <h3 className="font-serif text-2xl text-purple-50 mb-2">Tell Us About Your Event</h3>
+                    <h3 className="font-serif text-2xl text-purple-100 mb-2">Tell Us About Your Event</h3>
                     <p className="text-purple-400 text-sm">Fill in the details below and we will get back to you shortly.</p>
                   </div>
 
@@ -354,7 +385,7 @@ export default function Contact() {
                     />
                   </div>
 
-                  <button type="submit" disabled={loading} className="btn-gold w-full justify-center">
+                  <button type="submit" disabled={loading} className="btn-gold w-full justify-center py-4">
                     {loading ? (
                       <span className="flex items-center gap-2">
                         <span className="w-4 h-4 border-2 border-dark/40 border-t-dark rounded-full animate-spin" />
@@ -376,10 +407,10 @@ export default function Contact() {
       </section>
 
       {/* Map / Location Section */}
-      <section className="py-16 bg-purple-900/30 border-t border-dark-border">
+      <section className="py-16 bg-purple-800/30 border-t border-dark-border">
         <div className="max-w-5xl mx-auto px-6 text-center">
           <p className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-4">Our Location</p>
-          <h2 className="font-serif text-2xl md:text-3xl text-purple-50 mb-4">Based in Kwara, Serving Beyond</h2>
+          <h2 className="font-serif text-2xl md:text-3xl text-purple-100 mb-4">Based in Kwara, Serving Beyond</h2>
           <p className="text-purple-300/70 max-w-xl mx-auto mb-8">
             While we are proudly based in Ilorin, Kwara State, we plan events across Nigeria and are open to destination celebrations.
             Wherever your vision takes you, we are ready to follow.

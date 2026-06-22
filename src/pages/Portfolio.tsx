@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { ChevronRight, Eye } from 'lucide-react';
 
 type Page = 'home' | 'services' | 'portfolio' | 'about' | 'faq' | 'contact';
@@ -80,7 +80,7 @@ const items = [
     title: '21st Birthday Elegance Night',
     category: 'Birthday',
     location: 'Ilorin, Kwara',
-    image: 'https://images.pexels.com/photos/1729931/pexels-photo-1729931.jpeg?auto=compress&cs=tinysrgb&w=900',
+    image: 'https://images.pexels.com/photos/33748012/pexels-photo-33748012.jpeg?auto=compress&cs=tinysrgb&w=900',
     desc: 'A sophisticated all-black-and-rose-gold 21st birthday night with a live DJ, neon signage and a custom cake tower.',
     tags: ['21st', 'Black & Gold', 'DJ Night'],
   },
@@ -88,7 +88,7 @@ const items = [
     title: '60th Birthday Royal Celebration',
     category: 'Birthday',
     location: 'Ilorin, Kwara',
-    image: 'https://images.pexels.com/photos/1759539/pexels-photo-1759539.jpeg?auto=compress&cs=tinysrgb&w=900',
+    image: 'https://images.pexels.com/photos/25636568/pexels-photo-25636568.jpeg?auto=compress&cs=tinysrgb&w=900',
     desc: 'A majestic 60th birthday celebration with traditional and modern elements, an Agbada photo booth and a live highlife band.',
     tags: ['60th Birthday', 'Traditional', 'Highlife'],
   },
@@ -122,7 +122,7 @@ const items = [
     title: 'Baby Shower Garden Party',
     category: 'Private',
     location: 'Ilorin, Kwara',
-    image: 'https://images.pexels.com/photos/3692895/pexels-photo-3692895.jpeg?auto=compress&cs=tinysrgb&w=900',
+    image: 'https://images.pexels.com/photos/31461721/pexels-photo-31461721.jpeg?auto=compress&cs=tinysrgb&w=900',
     desc: 'A dreamy outdoor baby shower in soft sage and ivory, with a custom balloon installation and a grazing board station.',
     tags: ['Baby Shower', 'Outdoor', 'Soft Tones'],
   },
@@ -145,12 +145,12 @@ const items = [
     tags: ['Awards Night', 'Corporate', 'Branded'],
   },
   {
-    title: 'Executive Networking Dinner',
+    title: 'Nigerian Cultural Festival',
     category: 'Corporate',
     location: 'Kwara State',
-    image: 'https://images.pexels.com/photos/3153192/pexels-photo-3153192.jpeg?auto=compress&cs=tinysrgb&w=900',
-    desc: 'An exclusive executive networking dinner for 40 senior leaders — intimate round tables, conversation curated and ambiance deliberately refined.',
-    tags: ['Executive', 'Networking', 'Dinner'],
+    image: 'https://images.pexels.com/photos/29083282/pexels-photo-29083282.jpeg?auto=compress&cs=tinysrgb&w=900',
+    desc: 'A vibrant Nigerian cultural festival celebrating heritage with traditional attire, live music, local cuisine and cultural performances.',
+    tags: ['Cultural', 'Festival', 'Nigerian'],
   },
   {
     title: 'Product Launch Event',
@@ -189,7 +189,9 @@ export default function Portfolio({ onNavigate }: PortfolioProps) {
   const galleryRef = useReveal();
   const ctaRef = useReveal();
 
-  const filtered = active === 'All' ? items : items.filter((i) => i.category === active);
+  const filtered = useMemo(() => {
+    return active === 'All' ? items : items.filter((i) => i.category === active);
+  }, [active]);
 
   const navigate = (page: Page) => {
     onNavigate(page);
@@ -201,10 +203,10 @@ export default function Portfolio({ onNavigate }: PortfolioProps) {
       {/* Hero */}
       <section className="page-hero text-center">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(85,33,160,0.4)_0%,transparent_70%)]" />
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-purple-950 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-dark to-transparent" />
         <div className="relative z-10 max-w-3xl mx-auto px-6">
           <p className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-4 opacity-0 animate-fade-in-up">Our Work</p>
-          <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-purple-50 mb-4 opacity-0 animate-fade-in-up-2 leading-tight">
+          <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-purple-100 mb-4 opacity-0 animate-fade-in-up-2 leading-tight">
             Our <span className="italic gold-text">Portfolio</span>
           </h1>
           <div className="section-divider" />
@@ -233,7 +235,7 @@ export default function Portfolio({ onNavigate }: PortfolioProps) {
               <button
                 key={f}
                 onClick={() => setActive(f)}
-                className={`px-4 sm:px-6 py-2 text-xs sm:text-sm uppercase tracking-widest rounded-full transition-all duration-300 ${
+                className={`px-4 sm:px-6 py-2.5 text-xs sm:text-sm uppercase tracking-widest rounded-full transition-all duration-300 ${
                   active === f
                     ? 'bg-gradient-to-r from-gold-600 to-gold-400 text-dark font-semibold shadow-lg shadow-gold-900/40 scale-105'
                     : 'glass-card gold-border text-purple-300 hover:text-gold-300 hover:scale-102'
@@ -253,7 +255,7 @@ export default function Portfolio({ onNavigate }: PortfolioProps) {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
             {filtered.map((item, i) => (
               <div
-                key={item.title}
+                key={`${item.title}-${i}`}
                 onMouseEnter={() => setHoveredItem(item.title)}
                 onMouseLeave={() => setHoveredItem(null)}
                 className={`group relative glass-card gold-border rounded-2xl overflow-hidden event-card scroll-reveal-scale delay-${Math.min((i % 6) + 1, 6)}`}
@@ -285,7 +287,7 @@ export default function Portfolio({ onNavigate }: PortfolioProps) {
                 <div className="absolute inset-0 p-5 flex flex-col justify-end">
                   <div className="transition-transform duration-400 translate-y-2 group-hover:translate-y-0">
                     <p className="text-gold-400 text-[10px] uppercase tracking-widest mb-1">{item.location}</p>
-                    <h3 className="font-serif text-lg sm:text-xl text-purple-50 mb-2 leading-snug">{item.title}</h3>
+                    <h3 className="font-serif text-lg sm:text-xl text-purple-100 mb-2 leading-snug">{item.title}</h3>
                     <p className="text-purple-300/80 text-xs sm:text-sm leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-400 line-clamp-2">
                       {item.desc}
                     </p>
@@ -306,10 +308,10 @@ export default function Portfolio({ onNavigate }: PortfolioProps) {
       </section>
 
       {/* Process note */}
-      <section className="py-16 bg-purple-900/40 border-y border-dark-border">
+      <section className="py-16 bg-purple-800/40 border-y border-dark-border">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <p className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-4">Behind Every Event</p>
-          <h2 className="font-serif text-2xl md:text-3xl text-purple-50 mb-4">Every photo tells a story of intentional design.</h2>
+          <h2 className="font-serif text-2xl md:text-3xl text-purple-100 mb-4">Every photo tells a story of intentional design.</h2>
           <p className="text-purple-300/70 text-sm max-w-2xl mx-auto leading-relaxed">
             Each event in our portfolio began with a single conversation. A couple, a family, a company — sharing a vision with us. What you see here is the result of hundreds of hours of planning, styling, vendor coordination and on-the-day precision. We are proud of every single one.
           </p>
@@ -319,7 +321,7 @@ export default function Portfolio({ onNavigate }: PortfolioProps) {
       {/* CTA */}
       <section className="py-20 md:py-24 text-center" ref={ctaRef}>
         <div className="max-w-2xl mx-auto px-6 scroll-reveal">
-          <h2 className="font-serif text-3xl md:text-4xl text-purple-50 mb-4">Imagine your event here.</h2>
+          <h2 className="font-serif text-3xl md:text-4xl text-purple-100 mb-4">Imagine your event here.</h2>
           <p className="text-purple-300/80 mb-10">Every great celebration starts with a conversation. Reach out and let us build your vision.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button onClick={() => navigate('contact')} className="btn-gold">

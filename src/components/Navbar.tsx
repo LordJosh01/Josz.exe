@@ -34,7 +34,6 @@ export default function Navbar({ currentPage, onNavigate }: NavbarProps) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Prevent body scroll when mobile menu open
   useEffect(() => {
     document.body.style.overflow = isOpen ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
@@ -44,12 +43,11 @@ export default function Navbar({ currentPage, onNavigate }: NavbarProps) {
     <>
       <nav
         className={`fixed top-0 left-0 right-0 z-50 nav-gradient-border transition-all duration-500 ${
-          scrolled || isOpen ? 'scrolled bg-purple-900/97 backdrop-blur-xl shadow-2xl shadow-black/50' : 'bg-transparent'
+          scrolled || isOpen ? 'scrolled bg-dark/97 backdrop-blur-xl shadow-2xl shadow-black/50' : 'bg-transparent'
         }`}
       >
         <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10 flex items-center justify-between h-18 md:h-20">
 
-          {/* Logo + Brand */}
           <button
             onClick={() => navigate('home')}
             className={`flex items-center gap-3 group transition-all duration-700 ${mounted ? 'opacity-100' : 'opacity-0'}`}
@@ -72,7 +70,6 @@ export default function Navbar({ currentPage, onNavigate }: NavbarProps) {
             </div>
           </button>
 
-          {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-7 lg:gap-9">
             {links.map(({ label, page }, i) => (
               <button
@@ -93,11 +90,10 @@ export default function Navbar({ currentPage, onNavigate }: NavbarProps) {
             </button>
           </div>
 
-          {/* Mobile hamburger */}
           <button
             onClick={() => setIsOpen(!isOpen)}
             aria-label={isOpen ? 'Close menu' : 'Open menu'}
-            className="md:hidden relative w-10 h-10 flex items-center justify-center text-purple-200 hover:text-gold-300 transition-colors"
+            className="md:hidden relative w-12 h-12 flex items-center justify-center rounded-lg glass-card gold-border text-purple-200 hover:text-gold-300 hover:border-gold-400/60 transition-all duration-300"
           >
             <span className={`absolute transition-all duration-300 ${isOpen ? 'opacity-100 rotate-0' : 'opacity-0 rotate-90'}`}>
               <X size={24} />
@@ -109,56 +105,56 @@ export default function Navbar({ currentPage, onNavigate }: NavbarProps) {
         </div>
       </nav>
 
-      {/* Mobile Menu Overlay */}
       <div
         className={`fixed inset-0 z-40 md:hidden transition-all duration-500 ${
           isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
       >
-        {/* Backdrop */}
         <div
-          className="absolute inset-0 bg-purple-950/80 backdrop-blur-sm"
+          className="absolute inset-0 bg-dark/90 backdrop-blur-md"
           onClick={() => setIsOpen(false)}
         />
 
-        {/* Slide-in panel */}
         <div
-          className={`absolute top-0 right-0 h-full w-4/5 max-w-xs bg-purple-900 border-l border-dark-border flex flex-col transition-transform duration-400 ease-out ${
+          className={`absolute top-0 right-0 h-full w-[85%] max-w-sm bg-gradient-to-b from-purple-900/95 to-dark/98 border-l-2 border-gold-500/30 flex flex-col transition-transform duration-400 ease-out shadow-[-20px_0_60px_rgba(0,0,0,0.5)] ${
             isOpen ? 'translate-x-0' : 'translate-x-full'
           }`}
         >
-          {/* Panel header */}
-          <div className="flex items-center justify-between px-6 py-5 border-b border-dark-border">
-            <div className="flex items-center gap-2">
-              <img src="/EVENT_BY_BELSH.jpg" alt="BELSH" className="h-9 w-9 rounded-full ring-1 ring-gold-500/40" />
-              <span className="font-serif text-gold-400 text-sm tracking-widest">BELSH EVENTS</span>
+          <div className="flex items-center justify-between px-6 py-5 border-b border-gold-500/20 bg-purple-900/50">
+            <div className="flex items-center gap-3">
+              <img src="/EVENT_BY_BELSH.jpg" alt="BELSH" className="h-10 w-10 rounded-full ring-2 ring-gold-500/50" />
+              <div>
+                <span className="font-serif text-gold-400 text-sm tracking-widest block">BELSH EVENTS</span>
+                <span className="text-purple-400 text-[9px] tracking-widest uppercase">Planning & Design</span>
+              </div>
             </div>
-            <button onClick={() => setIsOpen(false)} className="text-purple-300 hover:text-gold-300 transition-colors">
+            <button
+              onClick={() => setIsOpen(false)}
+              className="w-10 h-10 rounded-lg glass-card gold-border flex items-center justify-center text-purple-300 hover:text-gold-300 hover:border-gold-400/60 transition-all duration-300"
+            >
               <X size={22} />
             </button>
           </div>
 
-          {/* Links */}
-          <nav className="flex flex-col gap-1 px-4 py-6 flex-1">
+          <nav className="flex flex-col gap-2 px-4 py-8 flex-1 overflow-y-auto">
             {links.map(({ label, page }, i) => (
               <button
                 key={page}
                 onClick={() => navigate(page)}
                 style={{ transitionDelay: isOpen ? `${i * 60}ms` : '0ms' }}
-                className={`mobile-nav-item text-left px-4 py-3.5 rounded-lg transition-all duration-300 ${
+                className={`mobile-nav-item text-left px-5 py-4 rounded-xl transition-all duration-300 ${
                   currentPage === page
-                    ? 'active bg-purple-800/50 pl-5'
-                    : 'hover:bg-purple-800/30'
+                    ? 'active bg-gold-900/20 border-l-4 border-gold-500 pl-6'
+                    : 'hover:bg-purple-800/30 border-l-4 border-transparent hover:border-gold-500/30'
                 } ${isOpen ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4'}`}
               >
-                {label}
+                <span className="text-lg font-medium">{label}</span>
               </button>
             ))}
           </nav>
 
-          {/* Book CTA */}
-          <div className="px-6 py-6 border-t border-dark-border">
-            <button onClick={() => navigate('contact')} className="btn-gold w-full text-xs">
+          <div className="px-6 py-6 border-t border-gold-500/20 bg-purple-900/30">
+            <button onClick={() => navigate('contact')} className="btn-gold w-full text-sm py-4">
               Book a Free Consultation
             </button>
           </div>

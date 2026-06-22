@@ -5,17 +5,17 @@ export default {
     extend: {
       colors: {
         purple: {
-          950: '#0a0118',
-          900: '#110228',
-          850: '#17053a',
-          800: '#1f0a4d',
-          700: '#2d1060',
-          600: '#3f1878',
-          500: '#5521a0',
-          400: '#7a3ec7',
-          300: '#a66de0',
-          200: '#cda8f5',
-          100: '#ecdeff',
+          950: '#050208',
+          900: '#0a0118',
+          850: '#0f0320',
+          800: '#150829',
+          700: '#1f0a4d',
+          600: '#2d1060',
+          500: '#3f1878',
+          400: '#5521a0',
+          300: '#7a3ec7',
+          200: '#a66de0',
+          100: '#cda8f5',
         },
         gold: {
           900: '#5c4100',
@@ -29,10 +29,10 @@ export default {
           100: '#fdf0c2',
         },
         dark: {
-          DEFAULT: '#0a0118',
-          card: '#150829',
-          border: '#2a1145',
-          muted: '#3d1f5e',
+          DEFAULT: '#030105',
+          card: '#0a0118',
+          border: '#1f0a4d',
+          muted: '#2d1060',
         },
       },
       fontFamily: {
@@ -104,8 +104,8 @@ export default {
       },
       backgroundImage: {
         'gold-shimmer': 'linear-gradient(90deg, #c48b00, #f2cc5a, #e6b930, #f2cc5a, #c48b00)',
-        'purple-glow': 'radial-gradient(ellipse at center, #2d1060 0%, #0a0118 70%)',
-        'purple-radial': 'radial-gradient(ellipse at top, #3f1878 0%, #0a0118 65%)',
+        'purple-glow': 'radial-gradient(ellipse at center, #150829 0%, #050208 70%)',
+        'purple-radial': 'radial-gradient(ellipse at top, #1f0a4d 0%, #050208 65%)',
       },
       screens: {
         xs: '480px',
