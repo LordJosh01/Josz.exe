@@ -1,8 +1,7 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { ChevronRight, Eye } from 'lucide-react';
 
 type Page = 'home' | 'services' | 'portfolio' | 'about' | 'faq' | 'contact';
-type Filter = 'All' | 'Wedding' | 'Birthday' | 'Private' | 'Corporate';
 
 interface PortfolioProps {
   onNavigate: (page: Page) => void;
@@ -145,14 +144,6 @@ const items = [
     tags: ['Awards Night', 'Corporate', 'Branded'],
   },
   {
-    title: 'Executive Networking Dinner',
-    category: 'Corporate',
-    location: 'Kwara State',
-    image: 'https://images.pexels.com/photos/3153192/pexels-photo-3153192.jpeg?auto=compress&cs=tinysrgb&w=900',
-    desc: 'An exclusive executive networking dinner for 40 senior leaders — intimate round tables, conversation curated and ambiance deliberately refined.',
-    tags: ['Executive', 'Networking', 'Dinner'],
-  },
-  {
     title: 'Product Launch Event',
     category: 'Corporate',
     location: 'Ilorin, Kwara',
@@ -183,22 +174,14 @@ function useReveal() {
 }
 
 export default function Portfolio({ onNavigate }: PortfolioProps) {
-  const [active, setActive] = useState<Filter>('All');
-  const [filtered, setFiltered] = useState(items);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
-  const filters: Filter[] = ['All', 'Wedding', 'Birthday', 'Private', 'Corporate'];
   const galleryRef = useReveal();
   const ctaRef = useReveal();
 
-  const handleFilterChange = useCallback((filter: Filter) => {
-    setActive(filter);
-    setFiltered(filter === 'All' ? items : items.filter((i) => i.category === filter));
-  }, []);
-
-  const navigate = useCallback((page: Page) => {
+  const navigate = (page: Page) => {
     onNavigate(page);
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [onNavigate]);
+  };
 
   return (
     <div>
@@ -217,7 +200,7 @@ export default function Portfolio({ onNavigate }: PortfolioProps) {
           </p>
           {/* Stats strip */}
           <div className="flex flex-wrap justify-center gap-8 mt-10 opacity-0 animate-fade-in-up-4">
-            {[['18+', 'Events Shown'], ['5', 'Event Types'], ['100%', 'In Kwara']].map(([val, label]) => (
+            {[['17+', 'Events Shown'], ['4', 'Event Types'], ['100%', 'In Kwara']].map(([val, label]) => (
               <div key={label} className="text-center">
                 <p className="font-serif text-2xl gold-text">{val}</p>
                 <p className="text-purple-400 text-xs uppercase tracking-widest">{label}</p>
@@ -231,31 +214,14 @@ export default function Portfolio({ onNavigate }: PortfolioProps) {
       <section className="py-16 md:py-24" ref={galleryRef}>
         <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10">
 
-          {/* Filter tabs */}
-          <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-12 scroll-reveal">
-            {filters.map((f) => (
-              <button
-                key={f}
-                onClick={() => handleFilterChange(f)}
-                className={`px-4 sm:px-6 py-2.5 text-xs sm:text-sm uppercase tracking-widest rounded-full transition-all duration-300 ${
-                  active === f
-                    ? 'bg-gradient-to-r from-gold-600 to-gold-400 text-dark font-semibold shadow-lg shadow-gold-900/40 scale-105'
-                    : 'glass-card gold-border text-purple-300 hover:text-gold-300 hover:scale-102'
-                }`}
-              >
-                {f}
-              </button>
-            ))}
-          </div>
-
           {/* Count */}
-          <p className="text-center text-purple-400 text-xs uppercase tracking-widest mb-8 scroll-reveal">
-            Showing {filtered.length} {active === 'All' ? 'events' : `${active.toLowerCase()} events`}
+          <p className="text-center text-purple-400 text-xs uppercase tracking-widest mb-12 scroll-reveal">
+            Showing {items.length} events
           </p>
 
           {/* Masonry-style grid */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
-            {filtered.map((item, i) => (
+            {items.map((item, i) => (
               <div
                 key={`${item.title}-${i}`}
                 onMouseEnter={() => setHoveredItem(item.title)}
