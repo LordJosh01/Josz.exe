@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { ChevronRight, Eye } from 'lucide-react';
 
-type Page = 'home' | 'services' | 'portfolio' | 'about' | 'faq' | 'contact';
+type Page = 'home' | 'services' | 'portfolio' | 'about' | 'faq' | 'contact' | 'premium';
 
 interface PortfolioProps {
   onNavigate: (page: Page) => void;
