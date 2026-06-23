@@ -44,11 +44,16 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
         <p className="text-purple-400 text-xs tracking-[0.25em] uppercase mt-2">Planning &amp; Design</p>
       </div>
 
-      {/* Progress bar */}
-      <div className="w-64 h-1 bg-purple-900 rounded-full overflow-hidden">
+      {/* Rainbow Progress bar */}
+      <div className="w-64 h-2 bg-dark-card rounded-full overflow-hidden relative">
         <div
-          className="h-full bg-gradient-to-r from-gold-600 to-gold-400 transition-all duration-100"
-          style={{ width: `${progress}%` }}
+          className="h-full transition-all duration-100 rounded-full"
+          style={{
+            width: `${progress}%`,
+            background: 'linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8f00ff)',
+            backgroundSize: '200% 100%',
+            animation: 'rainbow 2s linear infinite',
+          }}
         />
       </div>
 
@@ -56,6 +61,13 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
       <p className="text-purple-500 text-xs mt-4 tracking-widest uppercase">
         {progress < 100 ? 'Loading...' : 'Welcome'}
       </p>
+
+      <style>{`
+        @keyframes rainbow {
+          0% { background-position: 0% 50%; }
+          100% { background-position: 200% 50%; }
+        }
+      `}</style>
     </div>
   );
 }

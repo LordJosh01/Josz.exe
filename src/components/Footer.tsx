@@ -238,9 +238,19 @@ export default function Footer({ onNavigate }: FooterProps) {
             </ul>
             {/* Social handle */}
             <div className="mt-4 pt-4 border-t border-dark-border/50">
-              <p className="text-purple-400 text-[10px] uppercase tracking-widest mb-2">Follow Us</p>
+              <p className="text-purple-400 text-[10px] uppercase tracking-widest mb-2">Ready to Wear</p>
+              <p className="text-purple-300/70 text-xs mb-2">Follow us or contact us on Instagram & TikTok:</p>
               <div className="flex gap-4">
-                <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="text-gold-400 hover:text-gold-300 text-sm transition-colors">@rtw_by_belsh</a>
+                <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="text-gold-400 hover:text-gold-300 text-sm transition-colors flex items-center gap-1">
+                  <Instagram size={12} />
+                  @rtw_by_belsh
+                </a>
+                <a href={TIKTOK_URL} target="_blank" rel="noopener noreferrer" className="text-gold-400 hover:text-gold-300 text-sm transition-colors flex items-center gap-1">
+                  <svg className="w-3 h-3 fill-current" viewBox="0 0 24 24">
+                    <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.98 3 3 0 0 1 .85.14V9.27a6.33 6.33 0 0 0-1-.09A6.34 6.34 0 0 0 5 15.69a6.33 6.33 0 0 0 10.86 4.49 6.34 6.34 0 0 0 1.87-4.49V8.88a8.14 8.14 0 0 0 4.73 1.52V6.69z" />
+                  </svg>
+                  @rtw_by_belsh
+                </a>
               </div>
             </div>
           </div>
