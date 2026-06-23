@@ -19,7 +19,7 @@ const quickLinks: { label: string; page: Page }[] = [
 const GMAIL_URL = 'https://mail.google.com/mail/?view=cm&fs=1&to=aolagbaye@gmail.com&su=Event%20Enquiry%20-%20Events%20By%20BELSH';
 const WHATSAPP_URL = 'https://wa.me/2348035672491?text=Hi%20BELSH%20Events!%20I%27d%20like%20to%20inquire%20about%20my%20event.';
 const INSTAGRAM_URL = 'https://www.instagram.com/rtw_by_belsh';
-const TIKTOK_URL = 'https://www.tiktok.com/@rtw_by_belsh';
+const TIKTOK_URL = 'https://www.tiktok.com/@rtw_by_blesh';
 
 const marqueeItems = [
   'Weddings', 'Birthdays', 'Private Dinners', 'Corporate Events',
@@ -249,7 +249,7 @@ export default function Footer({ onNavigate }: FooterProps) {
                   <svg className="w-3 h-3 fill-current" viewBox="0 0 24 24">
                     <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.98 3 3 0 0 1 .85.14V9.27a6.33 6.33 0 0 0-1-.09A6.34 6.34 0 0 0 5 15.69a6.33 6.33 0 0 0 10.86 4.49 6.34 6.34 0 0 0 1.87-4.49V8.88a8.14 8.14 0 0 0 4.73 1.52V6.69z" />
                   </svg>
-                  @rtw_by_belsh
+                  @rtw_by_blesh
                 </a>
               </div>
             </div>
