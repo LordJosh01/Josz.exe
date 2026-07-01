@@ -1,14 +1,10 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { createClient } from '@supabase/supabase-js';
+import { useState, useEffect, useRef } from 'react';
 import {
-  ChevronRight, Calendar, Users, MapPin, Sparkles, Camera, Music, Download, Heart, Clock,
-  CheckCircle, FileText, Bell, Eye, Share2, Gift, Crown, Wand2, Image, Video, Mic2,
-  Palette, Cake, Car, Hotel, Star, MessageCircle, Send, X, Plus, Trash2, Edit3,
-  Copy, QrCode, Mail, Phone, Globe, AlertTriangle, Shirt, ListMusic, PartyPopper,
-  Building, UserCheck, Award, TrendingUp, DollarSign, Clock3, MapPinned, GalleryVerticalEnd,
-  Film, Clapperboard, Theater, Users2, Ticket, ClipboardCheck, UserPlus, Menu as MenuIcon,
-  Layout, Layers, PenTool, Save, RefreshCw, Info, ChevronDown, ChevronUp, Settings,
-  Play, Pause, SkipForward, Volume2, Sun, Moon, Cloud, Umbrella, Thermometer, Instagram
+  Calendar, Users, Sparkles, Camera, Heart, Clock,
+  CheckCircle, Bell, Gift, Crown, Wand2,
+  MessageCircle, Plus, Trash2, Mail, Phone,
+  PartyPopper, UserCheck, MapPinned, GalleryVerticalEnd,
+  RefreshCw, Play, Image, Instagram, Upload, X
 } from 'lucide-react';
 
 type Page = 'home' | 'services' | 'portfolio' | 'about' | 'faq' | 'contact' | 'premium';
@@ -17,14 +13,8 @@ interface PremiumFeaturesProps {
   onNavigate: (page: Page) => void;
 }
 
-const GMAIL_URL = 'https://mail.google.com/mail/?view=cm&fs=1&to=aolagbaye@gmail.com&su=Event%20Enquiry%20-%20Events%20By%20BELSH';
 const WHATSAPP_URL = 'https://wa.me/2348035672491?text=Hi%20BELSH!%20I%27d%20like%20to%20inquire%20about%20planning%20my%20event.';
 const INSTAGRAM_URL = 'https://www.instagram.com/rtw_by_belsh';
-
-// Initialize Supabase client
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
-const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
-const supabase = supabaseUrl && supabaseKey ? createClient(supabaseUrl, supabaseKey) : null;
 
 // Enhanced Confetti Component
 function Confetti({ active }: { active: boolean }) {
@@ -165,7 +155,6 @@ function CountdownTimer() {
       setCountdown({ days, hours, minutes, seconds });
       setIsComplete(false);
 
-      // Send reminder notifications
       if (notificationPermission === 'granted' && days !== lastDayNotified) {
         if (days === 30) {
           sendNotification('📅 30 Days Reminder', `${eventName} is in 30 days!`);
@@ -210,10 +199,11 @@ function CountdownTimer() {
     : null;
 
   return (
-    <div className="glass-card gold-border rounded-2xl p-6">
-      <div className="flex items-center justify-between mb-6">
+    <div className="glass-card gold-border rounded-2xl p-6 relative overflow-hidden animate-fade-in-up">
+      <div className="absolute inset-0 bg-gradient-to-br from-gold-500/5 to-transparent pointer-events-none" />
+      <div className="flex items-center justify-between mb-6 relative z-10">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-gold-900/40 flex items-center justify-center">
+          <div className="w-10 h-10 rounded-full bg-gold-900/40 flex items-center justify-center animate-pulse">
             <Clock size={20} className="text-gold-400" />
           </div>
           <div>
@@ -224,7 +214,7 @@ function CountdownTimer() {
         {notificationPermission !== 'granted' && (
           <button
             onClick={requestNotificationPermission}
-            className="text-xs px-3 py-2 rounded-lg bg-gold-500/20 border border-gold-500/40 text-gold-400 hover:bg-gold-500/30 transition-colors flex items-center gap-2"
+            className="text-xs px-3 py-2 rounded-lg bg-gold-500/20 border border-gold-500/40 text-gold-400 hover:bg-gold-500/30 transition-all flex items-center gap-2 hover:scale-105"
           >
             <Bell size={14} />
             Enable Notifications
@@ -233,30 +223,30 @@ function CountdownTimer() {
       </div>
 
       {!countdown ? (
-        <div className="space-y-4">
+        <div className="space-y-4 relative z-10">
           <input
             type="text"
             value={eventName}
             onChange={(e) => setEventName(e.target.value)}
             placeholder="Event Name"
-            className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-purple-100 placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-colors"
+            className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-purple-100 placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-all"
           />
           <input
             type="datetime-local"
             value={eventDate}
             onChange={(e) => setEventDate(e.target.value)}
-            className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-purple-100 text-sm focus:outline-none focus:border-gold-500/50 transition-colors"
+            className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-purple-100 text-sm focus:outline-none focus:border-gold-500/50 transition-all"
           />
-          <button onClick={saveEvent} className="btn-gold w-full text-sm">
+          <button onClick={saveEvent} className="btn-gold w-full text-sm hover:scale-[1.02] transition-transform">
             Start Countdown
           </button>
         </div>
       ) : (
-        <div className="space-y-6">
-          {eventName && <p className="text-center text-gold-400 text-sm uppercase tracking-widest">{eventName}</p>}
+        <div className="space-y-6 relative z-10">
+          {eventName && <p className="text-center text-gold-400 text-sm uppercase tracking-widest animate-pulse">{eventName}</p>}
 
           {isComplete ? (
-            <div className="text-center py-8">
+            <div className="text-center py-8 animate-bounce-in">
               <div className="w-16 h-16 rounded-full bg-gold-900/40 border border-gold-500/50 flex items-center justify-center mx-auto mb-4 animate-bounce">
                 <PartyPopper size={32} className="text-gold-400" />
               </div>
@@ -265,9 +255,9 @@ function CountdownTimer() {
             </div>
           ) : (
             <div className="grid grid-cols-4 gap-2">
-              {timeUnits?.map(({ value, label }) => (
-                <div key={label} className="text-center">
-                  <div className="glass-dark rounded-xl p-3 border border-gold-500/20 hover:border-gold-500/40 transition-colors">
+              {timeUnits?.map(({ value, label }, i) => (
+                <div key={label} className="text-center animate-pop-in" style={{ animationDelay: `${i * 100}ms` }}>
+                  <div className="glass-dark rounded-xl p-3 border border-gold-500/20 hover:border-gold-500/40 transition-all hover:scale-105 hover:shadow-lg hover:shadow-gold-500/10">
                     <p className="font-serif text-2xl md:text-3xl text-gold-400 mb-1">{value.toString().padStart(2, '0')}</p>
                     <p className="text-purple-400 text-[10px] uppercase tracking-widest">{label}</p>
                   </div>
@@ -282,18 +272,17 @@ function CountdownTimer() {
         </div>
       )}
 
-      {/* Saved Events */}
       {savedEvents.length > 0 && (
-        <div className="mt-6 pt-6 border-t border-dark-border">
+        <div className="mt-6 pt-6 border-t border-dark-border relative z-10">
           <p className="text-purple-400 text-xs uppercase tracking-widest mb-3">My Events</p>
           <div className="space-y-2">
             {savedEvents.map((event, i) => (
-              <div key={i} className="flex items-center justify-between glass-dark rounded-lg p-3">
+              <div key={i} className="flex items-center justify-between glass-dark rounded-lg p-3 hover:border-gold-500/30 transition-all group">
                 <div>
                   <p className="text-purple-100 text-sm">{event.name}</p>
                   <p className="text-purple-400 text-xs">{new Date(event.date).toLocaleDateString()}</p>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                   <button onClick={() => { setEventName(event.name); setEventDate(event.date); }} className="text-purple-400 hover:text-gold-400">
                     <Play size={14} />
                   </button>
@@ -310,7 +299,7 @@ function CountdownTimer() {
   );
 }
 
-// 2. EVENT INVITATION GENERATOR
+// 2. EVENT INVITATION GENERATOR WITH CUSTOM BACKGROUND
 function InvitationGenerator() {
   const [step, setStep] = useState(1);
   const [invitation, setInvitation] = useState({
@@ -325,7 +314,8 @@ function InvitationGenerator() {
     primaryColor: '#d4a017',
     photo: '',
   });
-  const [showPreview, setShowPreview] = useState(false);
+  const [customBg, setCustomBg] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const themes = [
     { id: 'elegant', name: 'Elegant Gold', colors: ['#d4a017', '#150829'] },
@@ -342,6 +332,18 @@ function InvitationGenerator() {
     'https://images.pexels.com/photos/29083282/pexels-photo-29083282.jpeg?auto=compress&cs=tinysrgb&w=400',
   ];
 
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setCustomBg(reader.result as string);
+        setInvitation({ ...invitation, photo: reader.result as string });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const shareViaWhatsApp = () => {
     const text = `${invitation.title}%0A%0A${invitation.event}%0ADate: ${invitation.date}%0ATime: ${invitation.time}%0AVenue: ${invitation.venue}%0A%0A${invitation.message}%0A%0A- ${invitation.host}`;
     window.open(`https://wa.me/?text=${text}`, '_blank');
@@ -353,9 +355,12 @@ function InvitationGenerator() {
     window.open(`mailto:?subject=${subject}&body=${body}`, '_blank');
   };
 
+  const activeBackground = customBg || invitation.photo;
+
   return (
-    <div className="glass-card gold-border rounded-2xl p-6">
-      <div className="flex items-center gap-3 mb-6">
+    <div className="glass-card gold-border rounded-2xl p-6 relative overflow-hidden animate-fade-in-up" style={{ animationDelay: '150ms' }}>
+      <div className="absolute inset-0 bg-gradient-to-tr from-purple-500/5 to-transparent pointer-events-none" />
+      <div className="flex items-center gap-3 mb-6 relative z-10">
         <div className="w-10 h-10 rounded-full bg-gold-900/40 flex items-center justify-center">
           <Mail size={20} className="text-gold-400" />
         </div>
@@ -366,36 +371,36 @@ function InvitationGenerator() {
       </div>
 
       {/* Progress */}
-      <div className="flex items-center gap-2 mb-6">
+      <div className="flex items-center gap-2 mb-6 relative z-10">
         {[1, 2, 3].map((s) => (
           <div
             key={s}
-            className={`flex-1 h-1 rounded-full ${s <= step ? 'bg-gold-500' : 'bg-dark-card'}`}
+            className={`flex-1 h-1 rounded-full transition-all duration-500 ${s <= step ? 'bg-gold-500 scale-y-110' : 'bg-dark-card'}`}
           />
         ))}
       </div>
 
       {step === 1 && (
-        <div className="space-y-4">
+        <div className="space-y-4 relative z-10 animate-slide-in-right">
           <input
             type="text"
             placeholder="Event Title (e.g., Adeola Wedding Ceremony)"
             value={invitation.event}
             onChange={(e) => setInvitation({ ...invitation, event: e.target.value })}
-            className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-purple-100 placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50"
+            className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-purple-100 placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-all"
           />
           <div className="grid grid-cols-2 gap-4">
             <input
               type="date"
               value={invitation.date}
               onChange={(e) => setInvitation({ ...invitation, date: e.target.value })}
-              className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-purple-100 text-sm focus:outline-none focus:border-gold-500/50"
+              className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-purple-100 text-sm focus:outline-none focus:border-gold-500/50 transition-all"
             />
             <input
               type="time"
               value={invitation.time}
               onChange={(e) => setInvitation({ ...invitation, time: e.target.value })}
-              className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-purple-100 text-sm focus:outline-none focus:border-gold-500/50"
+              className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-purple-100 text-sm focus:outline-none focus:border-gold-500/50 transition-all"
             />
           </div>
           <input
@@ -403,26 +408,26 @@ function InvitationGenerator() {
             placeholder="Venue"
             value={invitation.venue}
             onChange={(e) => setInvitation({ ...invitation, venue: e.target.value })}
-            className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-purple-100 placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50"
+            className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-purple-100 placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-all"
           />
         </div>
       )}
 
       {step === 2 && (
-        <div className="space-y-4">
+        <div className="space-y-4 relative z-10 animate-slide-in-right">
           <input
             type="text"
             placeholder="Host Name"
             value={invitation.host}
             onChange={(e) => setInvitation({ ...invitation, host: e.target.value })}
-            className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-purple-100 placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50"
+            className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-purple-100 placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-all"
           />
           <textarea
             placeholder="Personal Message"
             value={invitation.message}
             onChange={(e) => setInvitation({ ...invitation, message: e.target.value })}
             rows={3}
-            className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-purple-100 placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 resize-none"
+            className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-purple-100 placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 resize-none transition-all"
           />
           <div>
             <p className="text-xs text-purple-400 mb-2">Choose Theme</p>
@@ -431,7 +436,7 @@ function InvitationGenerator() {
                 <button
                   key={t.id}
                   onClick={() => { setInvitation({ ...invitation, theme: t.id, primaryColor: t.colors[0] }); }}
-                  className={`p-2 rounded-lg border ${invitation.theme === t.id ? 'border-gold-500' : 'border-dark-border'}`}
+                  className={`p-2 rounded-lg border transition-all hover:scale-105 ${invitation.theme === t.id ? 'border-gold-500 ring-2 ring-gold-500/30' : 'border-dark-border'}`}
                 >
                   <div className="w-full h-6 rounded" style={{ background: t.colors[0] }} />
                   <p className="text-[10px] text-purple-400 mt-1 truncate">{t.name}</p>
@@ -440,13 +445,41 @@ function InvitationGenerator() {
             </div>
           </div>
           <div>
-            <p className="text-xs text-purple-400 mb-2">Background Photo (Optional)</p>
+            <p className="text-xs text-purple-400 mb-2">Background Photo</p>
+            {/* Custom Upload */}
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              className="w-full glass-dark rounded-lg p-4 border-2 border-dashed border-gold-500/30 hover:border-gold-500/60 transition-all flex flex-col items-center justify-center gap-2 mb-3 hover:bg-gold-500/5"
+            >
+              <Upload size={24} className="text-gold-400" />
+              <p className="text-purple-300 text-xs">Upload Your Own Background</p>
+              <p className="text-purple-500 text-[10px]">PNG, JPG up to 5MB</p>
+            </button>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handleFileUpload}
+              className="hidden"
+            />
+            {customBg && (
+              <div className="relative mb-3 rounded-lg overflow-hidden">
+                <img src={customBg} alt="Custom background" className="w-full h-20 object-cover opacity-70" />
+                <button
+                  onClick={() => { setCustomBg(null); setInvitation({ ...invitation, photo: '' }); }}
+                  className="absolute top-1 right-1 w-6 h-6 rounded-full bg-red-500/80 flex items-center justify-center"
+                >
+                  <X size={12} className="text-white" />
+                </button>
+              </div>
+            )}
+            <p className="text-[10px] text-purple-500 text-center mb-2">Or choose from presets:</p>
             <div className="grid grid-cols-4 gap-2">
               {photoOptions.map((photo, i) => (
                 <button
                   key={i}
-                  onClick={() => setInvitation({ ...invitation, photo })}
-                  className={`aspect-square rounded-lg overflow-hidden border-2 ${invitation.photo === photo ? 'border-gold-500' : 'border-transparent'}`}
+                  onClick={() => { setCustomBg(null); setInvitation({ ...invitation, photo }); }}
+                  className={`aspect-square rounded-lg overflow-hidden border-2 transition-all hover:scale-105 ${invitation.photo === photo && !customBg ? 'border-gold-500 ring-2 ring-gold-500/30' : 'border-transparent'}`}
                 >
                   <img src={photo} alt="" className="w-full h-full object-cover opacity-70" />
                 </button>
@@ -457,40 +490,40 @@ function InvitationGenerator() {
       )}
 
       {step === 3 && (
-        <div className="space-y-4">
+        <div className="space-y-4 relative z-10 animate-slide-in-right">
           {/* Preview */}
           <div
-            className="relative aspect-[3/4] rounded-xl overflow-hidden"
+            className="relative aspect-[3/4] rounded-xl overflow-hidden shadow-2xl hover:shadow-gold-500/20 transition-shadow duration-500"
             style={{ backgroundColor: themes.find(t => t.id === invitation.theme)?.colors[1] || '#150829' }}
           >
-            {invitation.photo && (
-              <img src={invitation.photo} alt="" className="absolute inset-0 w-full h-full object-cover opacity-30" />
+            {activeBackground && (
+              <img src={activeBackground} alt="" className="absolute inset-0 w-full h-full object-cover opacity-30" />
             )}
             <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
-              <p className="text-gold-400 text-sm tracking-widest uppercase mb-2">{invitation.title}</p>
-              <h2 className="font-serif text-2xl text-white mb-4">{invitation.event || 'Your Event'}</h2>
-              <div className="space-y-2">
+              <p className="text-gold-400 text-sm tracking-widest uppercase mb-2 animate-fade-in">{invitation.title}</p>
+              <h2 className="font-serif text-2xl text-white mb-4 animate-pop-in">{invitation.event || 'Your Event'}</h2>
+              <div className="space-y-2 animate-fade-in" style={{ animationDelay: '200ms' }}>
                 <p className="text-white/80 text-sm">{invitation.date}</p>
                 <p className="text-white/80 text-sm">{invitation.time}</p>
                 <p className="text-white/80 text-sm">{invitation.venue}</p>
               </div>
               {invitation.message && (
-                <p className="text-white/60 text-xs mt-4 italic">"{invitation.message}"</p>
+                <p className="text-white/60 text-xs mt-4 italic animate-fade-in" style={{ animationDelay: '400ms' }}>"{invitation.message}"</p>
               )}
               {invitation.host && (
-                <p className="text-gold-400 text-sm mt-4">Hosted by {invitation.host}</p>
+                <p className="text-gold-400 text-sm mt-4 animate-pop-in" style={{ animationDelay: '600ms' }}>Hosted by {invitation.host}</p>
               )}
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
-            <button onClick={shareViaWhatsApp} className="flex items-center justify-center gap-2 py-3 rounded-lg bg-green-700 hover:bg-green-600 text-white text-sm transition-colors">
+            <button onClick={shareViaWhatsApp} className="flex items-center justify-center gap-2 py-3 rounded-lg bg-green-700 hover:bg-green-600 text-white text-sm transition-all hover:scale-[1.02] hover:shadow-lg hover:shadow-green-500/20">
               <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
                 <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
               </svg>
               Share via WhatsApp
             </button>
-            <button onClick={shareViaEmail} className="flex items-center justify-center gap-2 py-3 rounded-lg bg-blue-700 hover:bg-blue-600 text-white text-sm transition-colors">
+            <button onClick={shareViaEmail} className="flex items-center justify-center gap-2 py-3 rounded-lg bg-blue-700 hover:bg-blue-600 text-white text-sm transition-all hover:scale-[1.02] hover:shadow-lg hover:shadow-blue-500/20">
               <Mail size={16} />
               Share via Email
             </button>
@@ -498,14 +531,14 @@ function InvitationGenerator() {
         </div>
       )}
 
-      <div className="flex gap-3 mt-6">
+      <div className="flex gap-3 mt-6 relative z-10">
         {step > 1 && (
-          <button onClick={() => setStep(step - 1)} className="btn-outline-gold flex-1 text-sm">
+          <button onClick={() => setStep(step - 1)} className="btn-outline-gold flex-1 text-sm hover:scale-[1.02] transition-transform">
             Back
           </button>
         )}
         {step < 3 && (
-          <button onClick={() => setStep(step + 1)} className="btn-gold flex-1 text-sm">
+          <button onClick={() => setStep(step + 1)} className="btn-gold flex-1 text-sm hover:scale-[1.02] transition-transform">
             Next
           </button>
         )}
@@ -514,117 +547,7 @@ function InvitationGenerator() {
   );
 }
 
-// 3. VENUE FINDER FOR KWARA STATE
-const kwaraVenues = [
-  { name: 'Kwara Hotel', location: 'Ilorin', capacity: 500, type: ['Wedding', 'Corporate'], image: 'https://images.pexels.com/photos/587741/pexels-photo-587741.jpeg?auto=compress&cs=tinysrgb&w=400', features: ['AC', 'Parking', 'Catering'] },
-  { name: 'Princess Luxury Hotel', location: 'Ilorin', capacity: 800, type: ['Wedding', 'Birthday'], image: 'https://images.pexels.com/photos/1128782/pexels-photo-1128782.jpeg?auto=compress&cs=tinysrgb&w=400', features: ['Pool', 'Garden', 'VIP Lounge'] },
-  { name: 'Grand Park Hotel', location: 'Ilorin', capacity: 400, type: ['Corporate', 'Birthday'], image: 'https://images.pexels.com/photos/1024993/pexels-photo-1024993.jpeg?auto=compress&cs=tinysrgb&w=400', features: ['Conference Room', 'Projector', 'Sound System'] },
-  { name: 'Iya Alaro Event Centre', location: 'Ilorin', capacity: 1200, type: ['Wedding', 'Traditional'], image: 'https://images.pexels.com/photos/29083282/pexels-photo-29083282.jpeg?auto=compress&cs=tinysrgb&w=400', features: ['Large Hall', 'Stage', 'Decor Services'] },
-  { name: 'Golden Tulip Hotel', location: 'Offa', capacity: 350, type: ['Wedding', 'Corporate'], image: 'https://images.pexels.com/photos/1616113/pexels-photo-1616113.jpeg?auto=compress&cs=tinysrgb&w=400', features: ['AC', 'Restaurant', 'Bar'] },
-  { name: 'Harmony Event Hall', location: 'Ilorin', capacity: 600, type: ['Birthday', 'Corporate'], image: 'https://images.pexels.com/photos/1181622/pexels-photo-1181622.jpeg?auto=compress&cs=tinysrgb&w=400', features: ['Modern Design', 'Parking', 'Security'] },
-];
-
-function VenueFinder() {
-  const [eventType, setEventType] = useState('All');
-  const [guestCount, setGuestCount] = useState('');
-  const [location, setLocation] = useState('All');
-  const [hoveredVenue, setHoveredVenue] = useState<string | null>(null);
-
-  const filteredVenues = kwaraVenues.filter((v) => {
-    if (eventType !== 'All' && !v.type.includes(eventType)) return false;
-    if (location !== 'All' && v.location !== location) return false;
-    if (guestCount && v.capacity < parseInt(guestCount)) return false;
-    return true;
-  });
-
-  return (
-    <div className="glass-card gold-border rounded-2xl p-6">
-      <div className="flex items-center gap-3 mb-6">
-        <div className="w-10 h-10 rounded-full bg-gold-900/40 flex items-center justify-center">
-          <MapPinned size={20} className="text-gold-400" />
-        </div>
-        <div>
-          <h3 className="font-serif text-xl text-purple-100">Venue Finder</h3>
-          <p className="text-purple-400 text-sm">Discover venues in Kwara State</p>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-3 gap-3 mb-6">
-        <select
-          value={eventType}
-          onChange={(e) => setEventType(e.target.value)}
-          className="bg-dark-card border border-dark-border rounded-lg px-3 py-2 text-purple-100 text-sm focus:outline-none focus:border-gold-500/50"
-        >
-          <option value="All">All Events</option>
-          <option value="Wedding">Wedding</option>
-          <option value="Birthday">Birthday</option>
-          <option value="Corporate">Corporate</option>
-          <option value="Traditional">Traditional</option>
-        </select>
-        <select
-          value={location}
-          onChange={(e) => setLocation(e.target.value)}
-          className="bg-dark-card border border-dark-border rounded-lg px-3 py-2 text-purple-100 text-sm focus:outline-none focus:border-gold-500/50"
-        >
-          <option value="All">All Locations</option>
-          <option value="Ilorin">Ilorin</option>
-          <option value="Offa">Offa</option>
-        </select>
-        <input
-          type="number"
-          placeholder="Min Guests"
-          value={guestCount}
-          onChange={(e) => setGuestCount(e.target.value)}
-          className="bg-dark-card border border-dark-border rounded-lg px-3 py-2 text-purple-100 placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50"
-        />
-      </div>
-
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-        {filteredVenues.map((venue) => (
-          <div
-            key={venue.name}
-            onMouseEnter={() => setHoveredVenue(venue.name)}
-            onMouseLeave={() => setHoveredVenue(null)}
-            className="relative rounded-xl overflow-hidden border border-dark-border hover:border-gold-500/40 transition-all cursor-pointer group"
-          >
-            <div className="aspect-video relative">
-              <img src={venue.image} alt={venue.name} className="w-full h-full object-cover opacity-70 group-hover:opacity-90 group-hover:scale-105 transition-all duration-500" />
-              <div className="absolute inset-0 bg-gradient-to-t from-dark/90 to-transparent" />
-              <div className="absolute bottom-3 left-3 right-3">
-                <p className="font-serif text-purple-100 text-sm">{venue.name}</p>
-                <p className="text-purple-400 text-xs">{venue.location}</p>
-              </div>
-            </div>
-            <div className="p-3">
-              <div className="flex items-center gap-2 text-xs text-purple-300 mb-2">
-                <Users size={12} />
-                <span>Capacity: {venue.capacity}</span>
-              </div>
-              <div className="flex flex-wrap gap-1">
-                {venue.features.slice(0, 2).map((f) => (
-                  <span key={f} className="text-[10px] px-2 py-0.5 rounded-full bg-gold-900/30 text-gold-400">{f}</span>
-                ))}
-              </div>
-            </div>
-            {hoveredVenue === venue.name && (
-              <button
-                onClick={() => {
-                  const msg = `Hi BELSH Events! I'm interested in ${venue.name} for my upcoming event. Can you provide more details?`;
-                  window.open(`https://wa.me/2348035672491?text=${encodeURIComponent(msg)}`, '_blank');
-                }}
-                className="absolute inset-0 bg-dark/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-              >
-                <span className="btn-gold text-xs">Inquire</span>
-              </button>
-            )}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-// 4. PLAN MY EVENT WIZARD
+// 3. PLAN MY EVENT WIZARD
 function PlanMyEvent() {
   const [step, setStep] = useState(1);
   const totalSteps = 5;
@@ -632,7 +555,6 @@ function PlanMyEvent() {
     eventType: '',
     guestCount: '',
     date: '',
-    budget: '',
     venue: '',
     style: '',
     meals: '',
@@ -650,13 +572,14 @@ function PlanMyEvent() {
   };
 
   const sharePlan = () => {
-    const msg = `Hi BELSH Events! I'd like to plan a ${plan.eventType} for ${plan.guestCount} guests on ${plan.date}. My preferred style is ${plan.style}. Here's my plan: Venue: ${plan.venue}, Entertainment: ${plan.entertainment}, Meals: ${plan.meals}. Can we discuss further?`;
+    const msg = `Hi BELSH Events! I'd like to plan a ${plan.eventType} for ${plan.guestCount} guests on ${plan.date}. My preferred style is ${plan.style}. Venue: ${plan.venue}, Entertainment: ${plan.entertainment}, Meals: ${plan.meals}. Can we discuss further?`;
     window.open(`https://wa.me/2348035672491?text=${encodeURIComponent(msg)}`, '_blank');
   };
 
   return (
-    <div className="glass-card gold-border rounded-2xl p-6">
-      <div className="flex items-center gap-3 mb-6">
+    <div className="glass-card gold-border rounded-2xl p-6 relative overflow-hidden animate-fade-in-up" style={{ animationDelay: '200ms' }}>
+      <div className="absolute inset-0 bg-gradient-to-bl from-purple-500/5 to-transparent pointer-events-none" />
+      <div className="flex items-center gap-3 mb-6 relative z-10">
         <div className="w-10 h-10 rounded-full bg-gold-900/40 flex items-center justify-center">
           <Wand2 size={20} className="text-gold-400" />
         </div>
@@ -667,28 +590,28 @@ function PlanMyEvent() {
       </div>
 
       {/* Progress */}
-      <div className="flex items-center gap-2 mb-6">
+      <div className="flex items-center gap-2 mb-6 relative z-10">
         {Array.from({ length: totalSteps }).map((_, i) => (
           <div key={i} className="flex items-center flex-1">
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium ${i + 1 <= step ? 'bg-gold-500 text-dark' : 'bg-dark-card text-purple-400'}`}>
+            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium transition-all duration-300 ${i + 1 <= step ? 'bg-gold-500 text-dark scale-110' : 'bg-dark-card text-purple-400'}`}>
               {i + 1}
             </div>
-            {i < totalSteps - 1 && <div className={`flex-1 h-0.5 ${i + 1 < step ? 'bg-gold-500' : 'bg-dark-card'}`} />}
+            {i < totalSteps - 1 && <div className={`flex-1 h-0.5 transition-all duration-500 ${i + 1 < step ? 'bg-gold-500' : 'bg-dark-card'}`} />}
           </div>
         ))}
       </div>
 
       {!generated ? (
-        <div className="space-y-6">
+        <div className="space-y-6 relative z-10">
           {step === 1 && (
-            <div className="space-y-4">
+            <div className="space-y-4 animate-slide-in-right">
               <p className="text-sm text-purple-300">What type of event are you planning?</p>
               <div className="grid grid-cols-2 gap-3">
                 {['Wedding', 'Birthday', 'Corporate', 'Anniversary', 'Baby Shower', 'Naming Ceremony'].map((type) => (
                   <button
                     key={type}
                     onClick={() => setPlan({ ...plan, eventType: type })}
-                    className={`py-3 px-4 rounded-lg text-sm transition-all ${plan.eventType === type ? 'bg-gold-500/20 border border-gold-500 text-gold-400' : 'bg-dark-card border border-dark-border text-purple-300 hover:border-gold-500/40'}`}
+                    className={`py-3 px-4 rounded-lg text-sm transition-all hover:scale-[1.02] ${plan.eventType === type ? 'bg-gold-500/20 border border-gold-500 text-gold-400 shadow-lg shadow-gold-500/10' : 'bg-dark-card border border-dark-border text-purple-300 hover:border-gold-500/40'}`}
                   >
                     {type}
                   </button>
@@ -698,7 +621,7 @@ function PlanMyEvent() {
           )}
 
           {step === 2 && (
-            <div className="space-y-4">
+            <div className="space-y-4 animate-slide-in-right">
               <div>
                 <p className="text-sm text-purple-300 mb-2">How many guests do you expect?</p>
                 <input
@@ -706,7 +629,7 @@ function PlanMyEvent() {
                   value={plan.guestCount}
                   onChange={(e) => setPlan({ ...plan, guestCount: e.target.value })}
                   placeholder="e.g., 150"
-                  className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-purple-100 placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50"
+                  className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-purple-100 placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-all"
                 />
               </div>
               <div>
@@ -715,21 +638,21 @@ function PlanMyEvent() {
                   type="date"
                   value={plan.date}
                   onChange={(e) => setPlan({ ...plan, date: e.target.value })}
-                  className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-purple-100 text-sm focus:outline-none focus:border-gold-500/50"
+                  className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-purple-100 text-sm focus:outline-none focus:border-gold-500/50 transition-all"
                 />
               </div>
             </div>
           )}
 
           {step === 3 && (
-            <div className="space-y-4">
+            <div className="space-y-4 animate-slide-in-right">
               <p className="text-sm text-purple-300">What's your preferred venue type?</p>
               <div className="grid grid-cols-2 gap-3">
                 {['Indoor Hall', 'Outdoor Garden', 'Hotel Ballroom', 'Traditional Setting', 'Beach/Lakeside', 'Private Residence'].map((venue) => (
                   <button
                     key={venue}
                     onClick={() => setPlan({ ...plan, venue })}
-                    className={`py-3 px-4 rounded-lg text-sm transition-all ${plan.venue === venue ? 'bg-gold-500/20 border border-gold-500 text-gold-400' : 'bg-dark-card border border-dark-border text-purple-300 hover:border-gold-500/40'}`}
+                    className={`py-3 px-4 rounded-lg text-sm transition-all hover:scale-[1.02] ${plan.venue === venue ? 'bg-gold-500/20 border border-gold-500 text-gold-400 shadow-lg shadow-gold-500/10' : 'bg-dark-card border border-dark-border text-purple-300 hover:border-gold-500/40'}`}
                   >
                     {venue}
                   </button>
@@ -739,14 +662,14 @@ function PlanMyEvent() {
           )}
 
           {step === 4 && (
-            <div className="space-y-4">
+            <div className="space-y-4 animate-slide-in-right">
               <p className="text-sm text-purple-300">What style do you prefer?</p>
               <div className="grid grid-cols-2 gap-3">
                 {['Classic Elegant', 'Modern Minimalist', 'Traditional Nigerian', 'Bohemian', 'Luxury Glam', 'Rustic Charm'].map((style) => (
                   <button
                     key={style}
                     onClick={() => setPlan({ ...plan, style })}
-                    className={`py-3 px-4 rounded-lg text-sm transition-all ${plan.style === style ? 'bg-gold-500/20 border border-gold-500 text-gold-400' : 'bg-dark-card border border-dark-border text-purple-300 hover:border-gold-500/40'}`}
+                    className={`py-3 px-4 rounded-lg text-sm transition-all hover:scale-[1.02] ${plan.style === style ? 'bg-gold-500/20 border border-gold-500 text-gold-400 shadow-lg shadow-gold-500/10' : 'bg-dark-card border border-dark-border text-purple-300 hover:border-gold-500/40'}`}
                   >
                     {style}
                   </button>
@@ -756,7 +679,7 @@ function PlanMyEvent() {
           )}
 
           {step === 5 && (
-            <div className="space-y-4">
+            <div className="space-y-4 animate-slide-in-right">
               <div>
                 <p className="text-sm text-purple-300 mb-2">Do you need entertainment?</p>
                 <div className="grid grid-cols-2 gap-3">
@@ -764,7 +687,7 @@ function PlanMyEvent() {
                     <button
                       key={ent}
                       onClick={() => setPlan({ ...plan, entertainment: ent })}
-                      className={`py-3 px-4 rounded-lg text-sm transition-all ${plan.entertainment === ent ? 'bg-gold-500/20 border border-gold-500 text-gold-400' : 'bg-dark-card border border-dark-border text-purple-300 hover:border-gold-500/40'}`}
+                      className={`py-3 px-4 rounded-lg text-sm transition-all hover:scale-[1.02] ${plan.entertainment === ent ? 'bg-gold-500/20 border border-gold-500 text-gold-400 shadow-lg shadow-gold-500/10' : 'bg-dark-card border border-dark-border text-purple-300 hover:border-gold-500/40'}`}
                     >
                       {ent}
                     </button>
@@ -778,7 +701,7 @@ function PlanMyEvent() {
                     <button
                       key={meal}
                       onClick={() => setPlan({ ...plan, meals: meal })}
-                      className={`py-3 px-4 rounded-lg text-sm transition-all ${plan.meals === meal ? 'bg-gold-500/20 border border-gold-500 text-gold-400' : 'bg-dark-card border border-dark-border text-purple-300 hover:border-gold-500/40'}`}
+                      className={`py-3 px-4 rounded-lg text-sm transition-all hover:scale-[1.02] ${plan.meals === meal ? 'bg-gold-500/20 border border-gold-500 text-gold-400 shadow-lg shadow-gold-500/10' : 'bg-dark-card border border-dark-border text-purple-300 hover:border-gold-500/40'}`}
                     >
                       {meal}
                     </button>
@@ -788,69 +711,55 @@ function PlanMyEvent() {
             </div>
           )}
 
-          <div className="flex gap-3">
+          <div className="flex gap-3 relative z-10">
             {step > 1 && (
-              <button onClick={() => setStep(step - 1)} className="btn-outline-gold flex-1 text-sm">
+              <button onClick={() => setStep(step - 1)} className="btn-outline-gold flex-1 text-sm hover:scale-[1.02] transition-transform">
                 Back
               </button>
             )}
             {step < totalSteps ? (
-              <button onClick={() => setStep(step + 1)} className="btn-gold flex-1 text-sm">
+              <button onClick={() => setStep(step + 1)} className="btn-gold flex-1 text-sm hover:scale-[1.02] transition-transform">
                 Next
               </button>
             ) : (
-              <button onClick={generatePlan} className="btn-gold flex-1 text-sm">
+              <button onClick={generatePlan} className="btn-gold flex-1 text-sm hover:scale-[1.02] transition-transform">
                 Generate My Plan
               </button>
             )}
           </div>
         </div>
       ) : (
-        <div className="space-y-6">
+        <div className="space-y-6 relative z-10">
           {loading ? (
-            <div className="text-center py-12">
+            <div className="text-center py-12 animate-pulse">
               <RefreshCw size={32} className="text-gold-400 animate-spin mx-auto mb-4" />
               <p className="text-purple-300">Creating your personalized plan...</p>
             </div>
           ) : (
             <>
-              <div className="glass-dark rounded-xl p-4 space-y-4">
-                <div className="flex items-center gap-2">
-                  <CheckCircle size={16} className="text-gold-400" />
-                  <span className="text-sm text-purple-300">Event: <span className="text-purple-100">{plan.eventType}</span></span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle size={16} className="text-gold-400" />
-                  <span className="text-sm text-purple-300">Guests: <span className="text-purple-100">{plan.guestCount}</span></span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle size={16} className="text-gold-400" />
-                  <span className="text-sm text-purple-300">Date: <span className="text-purple-100">{plan.date}</span></span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle size={16} className="text-gold-400" />
-                  <span className="text-sm text-purple-300">Venue: <span className="text-purple-100">{plan.venue}</span></span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle size={16} className="text-gold-400" />
-                  <span className="text-sm text-purple-300">Style: <span className="text-purple-100">{plan.style}</span></span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle size={16} className="text-gold-400" />
-                  <span className="text-sm text-purple-300">Entertainment: <span className="text-purple-100">{plan.entertainment}</span></span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle size={16} className="text-gold-400" />
-                  <span className="text-sm text-purple-300">Meals: <span className="text-purple-100">{plan.meals}</span></span>
-                </div>
+              <div className="glass-dark rounded-xl p-4 space-y-4 animate-pop-in">
+                {[
+                  { label: 'Event', value: plan.eventType },
+                  { label: 'Guests', value: plan.guestCount },
+                  { label: 'Date', value: plan.date },
+                  { label: 'Venue', value: plan.venue },
+                  { label: 'Style', value: plan.style },
+                  { label: 'Entertainment', value: plan.entertainment },
+                  { label: 'Meals', value: plan.meals },
+                ].map((item, i) => (
+                  <div key={item.label} className="flex items-center gap-2 animate-slide-in-left" style={{ animationDelay: `${i * 100}ms` }}>
+                    <CheckCircle size={16} className="text-gold-400" />
+                    <span className="text-sm text-purple-300">{item.label}: <span className="text-purple-100">{item.value}</span></span>
+                  </div>
+                ))}
               </div>
 
-              <button onClick={sharePlan} className="btn-gold w-full text-sm">
-                <MessageCircle size={16} />
+              <button onClick={sharePlan} className="btn-gold w-full text-sm hover:scale-[1.02] transition-all hover:shadow-lg hover:shadow-gold-500/20">
+                <MessageCircle size={16} className="mr-2" />
                 Book This Plan on WhatsApp
               </button>
 
-              <button onClick={() => { setStep(1); setGenerated(false); setPlan({ eventType: '', guestCount: '', date: '', budget: '', venue: '', style: '', meals: '', entertainment: '' }); }} className="text-sm text-purple-400 hover:text-gold-300 w-full text-center">
+              <button onClick={() => { setStep(1); setGenerated(false); setPlan({ eventType: '', guestCount: '', date: '', venue: '', style: '', meals: '', entertainment: '' }); }} className="text-sm text-purple-400 hover:text-gold-300 w-full text-center transition-colors">
                 Start Over
               </button>
             </>
@@ -861,7 +770,7 @@ function PlanMyEvent() {
   );
 }
 
-// 5. RSVP MANAGEMENT
+// 4. RSVP MANAGEMENT
 function RSVPManager() {
   const [guests, setGuests] = useState<{ name: string; phone: string; status: 'pending' | 'attending' | 'declined'; meal: string }[]>([]);
   const [newGuest, setNewGuest] = useState({ name: '', phone: '' });
@@ -882,6 +791,10 @@ function RSVPManager() {
     }
   };
 
+  const removeGuest = (index: number) => {
+    setGuests(guests.filter((_, i) => i !== index));
+  };
+
   const updateStatus = (index: number, status: 'attending' | 'declined' | 'pending') => {
     const updated = [...guests];
     updated[index].status = status;
@@ -894,8 +807,9 @@ function RSVPManager() {
   };
 
   return (
-    <div className="glass-card gold-border rounded-2xl p-6">
-      <div className="flex items-center gap-3 mb-6">
+    <div className="glass-card gold-border rounded-2xl p-6 relative overflow-hidden animate-fade-in-up" style={{ animationDelay: '250ms' }}>
+      <div className="absolute inset-0 bg-gradient-to-tr from-green-500/5 to-transparent pointer-events-none" />
+      <div className="flex items-center gap-3 mb-6 relative z-10">
         <div className="w-10 h-10 rounded-full bg-gold-900/40 flex items-center justify-center">
           <UserCheck size={20} className="text-gold-400" />
         </div>
@@ -906,49 +820,47 @@ function RSVPManager() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-3 gap-3 mb-6">
-        <div className="text-center glass-dark rounded-lg p-3">
-          <p className="text-2xl text-green-400 font-serif">{stats.attending}</p>
-          <p className="text-xs text-purple-400">Attending</p>
-        </div>
-        <div className="text-center glass-dark rounded-lg p-3">
-          <p className="text-2xl text-red-400 font-serif">{stats.declined}</p>
-          <p className="text-xs text-purple-400">Declined</p>
-        </div>
-        <div className="text-center glass-dark rounded-lg p-3">
-          <p className="text-2xl text-yellow-400 font-serif">{stats.pending}</p>
-          <p className="text-xs text-purple-400">Pending</p>
-        </div>
+      <div className="grid grid-cols-3 gap-3 mb-6 relative z-10">
+        {[
+          { value: stats.attending, label: 'Attending', color: 'text-green-400' },
+          { value: stats.declined, label: 'Declined', color: 'text-red-400' },
+          { value: stats.pending, label: 'Pending', color: 'text-yellow-400' },
+        ].map((stat, i) => (
+          <div key={stat.label} className="text-center glass-dark rounded-lg p-3 animate-pop-in hover:scale-105 transition-transform" style={{ animationDelay: `${i * 100}ms` }}>
+            <p className={`text-2xl font-serif ${stat.color}`}>{stat.value}</p>
+            <p className="text-xs text-purple-400">{stat.label}</p>
+          </div>
+        ))}
       </div>
 
       {/* Add Guest */}
-      <div className="grid grid-cols-2 gap-3 mb-4">
+      <div className="grid grid-cols-2 gap-3 mb-4 relative z-10">
         <input
           type="text"
           placeholder="Guest Name"
           value={newGuest.name}
           onChange={(e) => setNewGuest({ ...newGuest, name: e.target.value })}
-          className="bg-dark-card border border-dark-border rounded-lg px-3 py-2 text-purple-100 placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50"
+          className="bg-dark-card border border-dark-border rounded-lg px-3 py-2 text-purple-100 placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-all"
         />
         <input
           type="tel"
           placeholder="Phone (e.g., +234...)"
           value={newGuest.phone}
           onChange={(e) => setNewGuest({ ...newGuest, phone: e.target.value })}
-          className="bg-dark-card border border-dark-border rounded-lg px-3 py-2 text-purple-100 placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50"
+          className="bg-dark-card border border-dark-border rounded-lg px-3 py-2 text-purple-100 placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-all"
         />
       </div>
-      <button onClick={addGuest} className="btn-gold w-full text-sm mb-6">
+      <button onClick={addGuest} className="btn-gold w-full text-sm mb-6 relative z-10 hover:scale-[1.02] transition-transform">
         <Plus size={14} />
         Add Guest
       </button>
 
       {/* Guest List */}
-      <div className="space-y-2 max-h-64 overflow-y-auto">
+      <div className="space-y-2 max-h-64 overflow-y-auto relative z-10">
         {guests.map((guest, i) => (
-          <div key={i} className="flex items-center justify-between glass-dark rounded-lg p-3">
+          <div key={i} className="flex items-center justify-between glass-dark rounded-lg p-3 hover:border-gold-500/30 transition-all group animate-slide-in-right" style={{ animationDelay: `${i * 50}ms` }}>
             <div className="flex items-center gap-3">
-              <div className={`w-2 h-2 rounded-full ${guest.status === 'attending' ? 'bg-green-400' : guest.status === 'declined' ? 'bg-red-400' : 'bg-yellow-400'}`} />
+              <div className={`w-2 h-2 rounded-full animate-pulse ${guest.status === 'attending' ? 'bg-green-400' : guest.status === 'declined' ? 'bg-red-400' : 'bg-yellow-400'}`} />
               <div>
                 <p className="text-purple-100 text-sm">{guest.name}</p>
                 <p className="text-purple-400 text-xs">{guest.phone}</p>
@@ -964,8 +876,11 @@ function RSVPManager() {
                 <option value="attending">Attending</option>
                 <option value="declined">Declined</option>
               </select>
-              <button onClick={() => sendReminder(guest.phone, guest.name)} className="text-purple-400 hover:text-gold-400">
+              <button onClick={() => sendReminder(guest.phone, guest.name)} className="text-purple-400 hover:text-gold-400 transition-colors">
                 <MessageCircle size={14} />
+              </button>
+              <button onClick={() => removeGuest(i)} className="text-purple-400 hover:text-red-400 transition-colors opacity-0 group-hover:opacity-100">
+                <Trash2 size={14} />
               </button>
             </div>
           </div>
@@ -975,84 +890,154 @@ function RSVPManager() {
   );
 }
 
-// 6. EVENT MEMORY WALL
+// 5. EVENT MEMORY WALL (Public, with photo upload and delete)
 function MemoryWall() {
-  const [memories, setMemories] = useState<{ name: string; message: string; photo: string }[]>([]);
+  const [memories, setMemories] = useState<{ id: string; name: string; message: string; photo: string; date: string }[]>([]);
   const [newMemory, setNewMemory] = useState({ name: '', message: '' });
-  const [activeFilter, setActiveFilter] = useState('all');
+  const [newPhoto, setNewPhoto] = useState<string>('');
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const sampleMemories = [
-    { name: 'Adeola Family', message: 'What an amazing celebration! Thank you BELSH Events!', photo: 'https://images.pexels.com/photos/1024993/pexels-photo-1024993.jpeg?auto=compress&cs=tinysrgb&w=300' },
-    { name: 'The Okoyes', message: 'Our dream wedding came true. Forever grateful!', photo: 'https://images.pexels.com/photos/1114425/pexels-photo-1114425.jpeg?auto=compress&cs=tinysrgb&w=300' },
-    { name: 'Chidinma', message: 'Best birthday ever! The decor was stunning.', photo: 'https://images.pexels.com/photos/33748012/pexels-photo-33748012.jpeg?auto=compress&cs=tinysrgb&w=300' },
-  ];
-
+  // Load memories from localStorage on mount
   useEffect(() => {
-    setMemories(sampleMemories);
+    const saved = localStorage.getItem('belsh_memories');
+    if (saved) {
+      setMemories(JSON.parse(saved));
+    }
   }, []);
 
-  const addMemory = () => {
-    if (newMemory.name && newMemory.message) {
-      setMemories([...memories, { ...newMemory, photo: '' }]);
-      setNewMemory({ name: '', message: '' });
+  // Save to localStorage whenever memories change
+  useEffect(() => {
+    localStorage.setItem('belsh_memories', JSON.stringify(memories));
+  }, [memories]);
+
+  const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setNewPhoto(reader.result as string);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
+  const addMemory = () => {
+    if (newMemory.name && newMemory.message) {
+      const memory = {
+        id: Date.now().toString(),
+        name: newMemory.name,
+        message: newMemory.message,
+        photo: newPhoto,
+        date: new Date().toLocaleDateString(),
+      };
+      setMemories([memory, ...memories]);
+      setNewMemory({ name: '', message: '' });
+      setNewPhoto('');
+    }
+  };
+
+  const removeMemory = (id: string) => {
+    setMemories(memories.filter(m => m.id !== id));
+  };
+
   return (
-    <div className="glass-card gold-border rounded-2xl p-6">
-      <div className="flex items-center gap-3 mb-6">
+    <div className="glass-card gold-border rounded-2xl p-6 relative overflow-hidden animate-fade-in-up" style={{ animationDelay: '300ms' }}>
+      <div className="absolute inset-0 bg-gradient-to-br from-pink-500/5 to-transparent pointer-events-none" />
+      <div className="flex items-center gap-3 mb-6 relative z-10">
         <div className="w-10 h-10 rounded-full bg-gold-900/40 flex items-center justify-center">
           <GalleryVerticalEnd size={20} className="text-gold-400" />
         </div>
         <div>
           <h3 className="font-serif text-xl text-purple-100">Memory Wall</h3>
-          <p className="text-purple-400 text-sm">Share your event memories</p>
+          <p className="text-purple-400 text-sm">Share your event memories with everyone</p>
         </div>
       </div>
 
       {/* Add Memory */}
-      <div className="space-y-3 mb-6">
+      <div className="space-y-3 mb-6 relative z-10">
         <input
           type="text"
           placeholder="Your Name"
           value={newMemory.name}
           onChange={(e) => setNewMemory({ ...newMemory, name: e.target.value })}
-          className="w-full bg-dark-card border border-dark-border rounded-lg px-3 py-2 text-purple-100 placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50"
+          className="w-full bg-dark-card border border-dark-border rounded-lg px-3 py-2 text-purple-100 placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-all"
         />
         <textarea
           placeholder="Share your memory..."
           value={newMemory.message}
           onChange={(e) => setNewMemory({ ...newMemory, message: e.target.value })}
           rows={2}
-          className="w-full bg-dark-card border border-dark-border rounded-lg px-3 py-2 text-purple-100 placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 resize-none"
+          className="w-full bg-dark-card border border-dark-border rounded-lg px-3 py-2 text-purple-100 placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 resize-none transition-all"
         />
-        <button onClick={addMemory} className="btn-gold w-full text-sm">
+
+        {/* Photo Upload */}
+        <button
+          onClick={() => fileInputRef.current?.click()}
+          className="w-full glass-dark rounded-lg p-3 border-2 border-dashed border-gold-500/30 hover:border-gold-500/60 transition-all flex items-center justify-center gap-2 hover:bg-gold-500/5"
+        >
+          <Upload size={16} className="text-gold-400" />
+          <span className="text-purple-300 text-xs">Add Photo (Optional)</span>
+        </button>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          onChange={handlePhotoUpload}
+          className="hidden"
+        />
+        {newPhoto && (
+          <div className="relative rounded-lg overflow-hidden">
+            <img src={newPhoto} alt="Preview" className="w-full h-32 object-cover opacity-80" />
+            <button
+              onClick={() => setNewPhoto('')}
+              className="absolute top-2 right-2 w-6 h-6 rounded-full bg-red-500/80 flex items-center justify-center hover:bg-red-500 transition-colors"
+            >
+              <X size={12} className="text-white" />
+            </button>
+          </div>
+        )}
+
+        <button onClick={addMemory} className="btn-gold w-full text-sm hover:scale-[1.02] transition-transform">
           <Plus size={14} />
           Add Memory
         </button>
       </div>
 
       {/* Gallery */}
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 gap-3 relative z-10">
         {memories.map((memory, i) => (
-          <div key={i} className="glass-dark rounded-xl p-3 group hover:border-gold-500/40 transition-all">
+          <div
+            key={memory.id}
+            className="glass-dark rounded-xl p-3 group hover:border-gold-500/40 transition-all animate-pop-in hover:scale-[1.02] hover:shadow-lg hover:shadow-gold-500/10"
+            style={{ animationDelay: `${i * 100}ms` }}
+          >
             {memory.photo && (
-              <img src={memory.photo} alt="" className="w-full h-24 object-cover rounded-lg mb-2 opacity-70" />
+              <img src={memory.photo} alt="" className="w-full h-24 object-cover rounded-lg mb-2 opacity-80 group-hover:opacity-100 transition-opacity" />
             )}
             <p className="text-purple-100 text-sm mb-1">{memory.name}</p>
             <p className="text-purple-400 text-xs line-clamp-2">{memory.message}</p>
+            <div className="flex items-center justify-between mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
+              <p className="text-purple-500 text-[10px]">{memory.date}</p>
+              <button onClick={() => removeMemory(memory.id)} className="text-red-400 hover:text-red-300 transition-colors">
+                <Trash2 size={12} />
+              </button>
+            </div>
           </div>
         ))}
       </div>
+
+      {memories.length === 0 && (
+        <div className="text-center py-8 relative z-10">
+          <Image size={40} className="text-purple-600 mx-auto mb-3 opacity-50" />
+          <p className="text-purple-400 text-sm">No memories yet. Be the first to share!</p>
+        </div>
+      )}
     </div>
   );
 }
 
-// 7. VIP CLIENT PORTAL
-function VIPPortal() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [user, setUser] = useState({ name: 'Premium Client', tier: 'Gold' });
-
+// 6. VIP CLIENT PORTAL with Contact Button
+function VIPPortal({ onNavigate }: { onNavigate: (page: Page) => void }) {
   const exclusiveOffers = [
     { title: 'Priority Booking', desc: 'Book your dates before anyone else', icon: Crown },
     { title: 'Private Consultation', desc: '1-on-1 session with our lead planner', icon: Calendar },
@@ -1061,8 +1046,11 @@ function VIPPortal() {
   ];
 
   return (
-    <div className="glass-card gold-border rounded-2xl p-6">
-      <div className="flex items-center gap-3 mb-6">
+    <div className="glass-card gold-border rounded-2xl p-6 relative overflow-hidden animate-fade-in-up" style={{ animationDelay: '350ms' }}>
+      <div className="absolute inset-0 bg-gradient-to-tr from-gold-500/10 to-transparent pointer-events-none" />
+      <div className="absolute top-0 right-0 w-32 h-32 bg-gold-500/10 rounded-full blur-3xl" />
+
+      <div className="flex items-center gap-3 mb-6 relative z-10">
         <div className="w-10 h-10 rounded-full bg-gold-900/40 flex items-center justify-center">
           <Crown size={20} className="text-gold-400" />
         </div>
@@ -1072,48 +1060,46 @@ function VIPPortal() {
         </div>
       </div>
 
-      {!isLoggedIn ? (
-        <div className="text-center py-8">
-          <Crown size={48} className="text-gold-400 mx-auto mb-4 opacity-50" />
-          <p className="text-purple-300 mb-4">Access exclusive tools and benefits</p>
-          <button onClick={() => setIsLoggedIn(true)} className="btn-gold text-sm">
-            Request VIP Access
-          </button>
-          <p className="text-purple-500 text-xs mt-3">Contact us to become a VIP client</p>
+      <div className="text-center py-6 relative z-10">
+        <div className="relative inline-block mb-4">
+          <div className="absolute inset-0 bg-gold-500/20 rounded-full blur-xl animate-pulse" />
+          <Crown size={48} className="text-gold-400 relative z-10 animate-float" />
         </div>
-      ) : (
-        <div className="space-y-6">
-          <div className="flex items-center gap-3 glass-dark rounded-lg p-3">
-            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-gold-500 to-gold-700 flex items-center justify-center">
-              <Crown size={20} className="text-dark" />
-            </div>
-            <div>
-              <p className="text-purple-100 font-medium">{user.name}</p>
-              <p className="text-gold-400 text-xs uppercase tracking-widest">{user.tier} Member</p>
-            </div>
-          </div>
+        <p className="text-purple-300 mb-4">Access exclusive tools and benefits</p>
 
-          <div className="grid grid-cols-2 gap-3">
-            {exclusiveOffers.map(({ title, desc, icon: Icon }) => (
-              <div key={title} className="glass-dark rounded-lg p-3 hover:border-gold-500/40 transition-colors">
-                <Icon size={20} className="text-gold-400 mb-2" />
-                <p className="text-purple-100 text-sm">{title}</p>
-                <p className="text-purple-400 text-xs">{desc}</p>
-              </div>
-            ))}
+        <button
+          onClick={() => onNavigate('contact')}
+          className="btn-gold text-sm hover:scale-105 transition-all hover:shadow-lg hover:shadow-gold-500/30"
+        >
+          <Sparkles size={14} className="mr-2" />
+          Get VIP Access
+        </button>
+        <p className="text-purple-500 text-xs mt-3">Contact us to become a VIP client</p>
+      </div>
+
+      <div className="grid grid-cols-2 gap-3 mt-6 relative z-10">
+        {exclusiveOffers.map(({ title, desc, icon: Icon }, i) => (
+          <div
+            key={title}
+            className="glass-dark rounded-lg p-3 hover:border-gold-500/40 transition-all animate-pop-in hover:scale-[1.02] hover:shadow-md"
+            style={{ animationDelay: `${i * 100}ms` }}
+          >
+            <Icon size={20} className="text-gold-400 mb-2" />
+            <p className="text-purple-100 text-sm">{title}</p>
+            <p className="text-purple-400 text-xs">{desc}</p>
           </div>
-        </div>
-      )}
+        ))}
+      </div>
     </div>
   );
 }
 
-// 8. AI EVENT PLANNER (Speech, Program, Highlights)
+// 7. AI EVENT PLANNER
 function AIEventPlanner() {
   const [activeTab, setActiveTab] = useState<'speech' | 'program' | 'highlights'>('speech');
   const [generating, setGenerating] = useState(false);
   const [generated, setGenerated] = useState('');
-  const [input, setInput] = useState({ eventType: '', names: '', tone: 'formal' });
+  const [input, setInput] = useState({ eventType: '', names: '' });
 
   const generate = () => {
     setGenerating(true);
@@ -1138,41 +1124,28 @@ I raise my glass to love, laughter, and a lifetime of happiness. Cheers!`);
 2:30 PM - Photo Session
 3:00 PM - Cake Cutting & Toasts
 3:30 PM - Entertainment & Dance
-5:00 PM - Closing Remarks & Departure
-
-Note: Times are flexible and can be adjusted based on your preferences.`);
+5:00 PM - Closing Remarks & Departure`);
       } else {
         setGenerated(`EVENT HIGHLIGHT REEL CONCEPT
 
-Opening Scene: Aerial shot of venue
-Duration: 5 seconds
+Opening: Aerial shot of venue (5s)
+Scene 1: Guest arrivals (15s)
+Scene 2: Main ceremony (20s)
+Scene 3: Emotional moments (10s)
+Scene 4: Dance floor energy (15s)
+Closing: Slow-motion celebration (5s)
 
-Scene 1: Guest arrivals and candid moments
-Duration: 15 seconds
-
-Scene 2: Main ceremony highlights
-Duration: 20 seconds
-
-Scene 3: Emotional moments (tears, laughter)
-Duration: 10 seconds
-
-Scene 4: Dance floor energy
-Duration: 15 seconds
-
-Closing: Slow-motion confetti and celebration
-Duration: 5 seconds
-
-Total Runtime: ~70 seconds
-Music: Upbeat Afro-pop with emotional crescendo`);
+Total Runtime: ~70 seconds`);
       }
       setGenerating(false);
     }, 2000);
   };
 
   return (
-    <div className="glass-card gold-border rounded-2xl p-6">
-      <div className="flex items-center gap-3 mb-6">
-        <div className="w-10 h-10 rounded-full bg-gold-900/40 flex items-center justify-center">
+    <div className="glass-card gold-border rounded-2xl p-6 relative overflow-hidden animate-fade-in-up" style={{ animationDelay: '400ms' }}>
+      <div className="absolute inset-0 bg-gradient-to-bl from-blue-500/5 to-transparent pointer-events-none" />
+      <div className="flex items-center gap-3 mb-6 relative z-10">
+        <div className="w-10 h-10 rounded-full bg-gold-900/40 flex items-center justify-center animate-pulse">
           <Sparkles size={20} className="text-gold-400" />
         </div>
         <div>
@@ -1182,12 +1155,13 @@ Music: Upbeat Afro-pop with emotional crescendo`);
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-2 mb-6">
-        {(['speech', 'program', 'highlights'] as const).map((tab) => (
+      <div className="flex gap-2 mb-6 relative z-10">
+        {(['speech', 'program', 'highlights'] as const).map((tab, i) => (
           <button
             key={tab}
             onClick={() => { setActiveTab(tab); setGenerated(''); }}
-            className={`flex-1 py-2 rounded-lg text-xs uppercase tracking-widest transition-all ${activeTab === tab ? 'bg-gold-500/20 border border-gold-500/40 text-gold-400' : 'bg-dark-card border border-dark-border text-purple-400 hover:border-gold-500/30'}`}
+            className={`flex-1 py-2 rounded-lg text-xs uppercase tracking-widest transition-all animate-pop-in ${activeTab === tab ? 'bg-gold-500/20 border border-gold-500/40 text-gold-400 shadow-lg shadow-gold-500/10' : 'bg-dark-card border border-dark-border text-purple-400 hover:border-gold-500/30'}`}
+            style={{ animationDelay: `${i * 100}ms` }}
           >
             {tab}
           </button>
@@ -1195,13 +1169,13 @@ Music: Upbeat Afro-pop with emotional crescendo`);
       </div>
 
       {/* Input */}
-      <div className="space-y-3 mb-4">
+      <div className="space-y-3 mb-4 relative z-10">
         <input
           type="text"
           placeholder="Event Type (e.g., Wedding, Birthday)"
           value={input.eventType}
           onChange={(e) => setInput({ ...input, eventType: e.target.value })}
-          className="w-full bg-dark-card border border-dark-border rounded-lg px-3 py-2 text-purple-100 placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50"
+          className="w-full bg-dark-card border border-dark-border rounded-lg px-3 py-2 text-purple-100 placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-all"
         />
         {activeTab === 'speech' && (
           <input
@@ -1209,14 +1183,14 @@ Music: Upbeat Afro-pop with emotional crescendo`);
             placeholder="Names (e.g., Tunde & Funke)"
             value={input.names}
             onChange={(e) => setInput({ ...input, names: e.target.value })}
-            className="w-full bg-dark-card border border-dark-border rounded-lg px-3 py-2 text-purple-100 placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50"
+            className="w-full bg-dark-card border border-dark-border rounded-lg px-3 py-2 text-purple-100 placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-all animate-slide-in-down"
           />
         )}
       </div>
 
-      <button onClick={generate} className="btn-gold w-full text-sm mb-4" disabled={generating}>
+      <button onClick={generate} className="btn-gold w-full text-sm mb-4 relative z-10 hover:scale-[1.02] transition-transform" disabled={generating}>
         {generating ? (
-          <span className="flex items-center gap-2">
+          <span className="flex items-center gap-2 justify-center">
             <RefreshCw size={14} className="animate-spin" />
             Generating...
           </span>
@@ -1230,17 +1204,17 @@ Music: Upbeat Afro-pop with emotional crescendo`);
 
       {/* Output */}
       {generated && (
-        <div className="glass-dark rounded-lg p-4">
+        <div className="glass-dark rounded-lg p-4 relative z-10 animate-pop-in">
           <pre className="text-purple-200 text-sm whitespace-pre-wrap font-sans">{generated}</pre>
           <div className="flex gap-2 mt-4">
-            <button onClick={() => navigator.clipboard.writeText(generated)} className="flex-1 btn-outline-gold text-xs flex items-center justify-center gap-2">
-              <Copy size={12} />
+            <button onClick={() => navigator.clipboard.writeText(generated)} className="flex-1 btn-outline-gold text-xs flex items-center justify-center gap-2 hover:scale-[1.02] transition-transform">
+              <Plus size={12} className="rotate-45" />
               Copy
             </button>
             <button onClick={() => {
               const msg = `Hi BELSH! I generated this ${activeTab}: ${generated.substring(0, 200)}... Can we use this for my event?`;
               window.open(`https://wa.me/2348035672491?text=${encodeURIComponent(msg)}`, '_blank');
-            }} className="flex-1 btn-gold text-xs flex items-center justify-center gap-2">
+            }} className="flex-1 btn-gold text-xs flex items-center justify-center gap-2 hover:scale-[1.02] transition-transform">
               <MessageCircle size={12} />
               Share
             </button>
@@ -1264,7 +1238,6 @@ export default function PremiumFeatures({ onNavigate }: PremiumFeaturesProps) {
   const sections = [
     { id: 'countdown', label: 'Countdown', icon: Clock },
     { id: 'invitation', label: 'Invitations', icon: Mail },
-    { id: 'venue', label: 'Venues', icon: MapPinned },
     { id: 'planner', label: 'Plan Event', icon: Wand2 },
     { id: 'rsvp', label: 'RSVP', icon: UserCheck },
     { id: 'memory', label: 'Memories', icon: GalleryVerticalEnd },
@@ -1282,9 +1255,26 @@ export default function PremiumFeatures({ onNavigate }: PremiumFeaturesProps) {
       <Confetti active={showConfetti} />
 
       {/* Hero */}
-      <section className="page-hero text-center">
+      <section className="page-hero text-center relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(85,33,160,0.4)_0%,transparent_70%)]" />
         <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-dark to-transparent" />
+
+        {/* Floating particles */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {Array.from({ length: 20 }).map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-1 h-1 bg-gold-400/30 rounded-full animate-float"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 5}s`,
+                animationDuration: `${5 + Math.random() * 5}s`,
+              }}
+            />
+          ))}
+        </div>
+
         <div className="relative z-10 max-w-3xl mx-auto px-6">
           <p className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-4 opacity-0 animate-fade-in-up">Event Planning Suite</p>
           <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-purple-100 mb-4 opacity-0 animate-fade-in-up-2 leading-tight">
@@ -1292,7 +1282,7 @@ export default function PremiumFeatures({ onNavigate }: PremiumFeaturesProps) {
           </h1>
           <div className="section-divider" />
           <p className="text-purple-300/80 text-base sm:text-lg max-w-xl mx-auto mt-4 opacity-0 animate-fade-in-up-3">
-            Your all-in-one event planning ecosystem. Count down, create invitations, find venues, and manage guests.
+            Your all-in-one event planning ecosystem. Count down, create invitations, plan events, and manage guests.
           </p>
         </div>
       </section>
@@ -1301,15 +1291,15 @@ export default function PremiumFeatures({ onNavigate }: PremiumFeaturesProps) {
       <section className="sticky top-16 md:top-20 z-40 bg-dark/90 backdrop-blur-md border-b border-dark-border py-3">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
-            {sections.map(({ id, label, icon: Icon }) => (
+            {sections.map(({ id, label, icon: Icon }, i) => (
               <button
                 key={id}
                 onClick={() => setActiveSection(id)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium whitespace-nowrap transition-all ${
-                  activeSection === id
-                    ? 'bg-gold-500/20 border border-gold-500/40 text-gold-400'
-                    : 'bg-dark-card border border-dark-border text-purple-300 hover:border-gold-500/30'
+                className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium whitespace-nowrap transition-all animate-pop-in ${activeSection === id
+                  ? 'bg-gold-500/20 border border-gold-500/40 text-gold-400 shadow-lg shadow-gold-500/10'
+                  : 'bg-dark-card border border-dark-border text-purple-300 hover:border-gold-500/30'
                 }`}
+                style={{ animationDelay: `${i * 50}ms` }}
               >
                 <Icon size={14} />
                 {label}
@@ -1326,16 +1316,14 @@ export default function PremiumFeatures({ onNavigate }: PremiumFeaturesProps) {
             {activeSection === 'countdown' && <CountdownTimer />}
             {activeSection === 'countdown' && <InvitationGenerator />}
             {activeSection === 'invitation' && <InvitationGenerator />}
-            {activeSection === 'invitation' && <VenueFinder />}
-            {activeSection === 'venue' && <VenueFinder />}
-            {activeSection === 'venue' && <PlanMyEvent />}
+            {activeSection === 'invitation' && <PlanMyEvent />}
             {activeSection === 'planner' && <PlanMyEvent />}
             {activeSection === 'planner' && <RSVPManager />}
             {activeSection === 'rsvp' && <RSVPManager />}
             {activeSection === 'rsvp' && <MemoryWall />}
             {activeSection === 'memory' && <MemoryWall />}
-            {activeSection === 'memory' && <VIPPortal />}
-            {activeSection === 'vip' && <VIPPortal />}
+            {activeSection === 'memory' && <VIPPortal onNavigate={navigate} />}
+            {activeSection === 'vip' && <VIPPortal onNavigate={navigate} />}
             {activeSection === 'vip' && <AIEventPlanner />}
             {activeSection === 'ai' && <AIEventPlanner />}
             {activeSection === 'ai' && <CountdownTimer />}
@@ -1351,7 +1339,7 @@ export default function PremiumFeatures({ onNavigate }: PremiumFeaturesProps) {
             href={INSTAGRAM_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 px-6 py-3 rounded-lg bg-gradient-to-r from-purple-700/50 to-gold-700/50 border border-gold-500/30 hover:border-gold-500/60 transition-all"
+            className="inline-flex items-center gap-3 px-6 py-3 rounded-lg bg-gradient-to-r from-purple-700/50 to-gold-700/50 border border-gold-500/30 hover:border-gold-500/60 transition-all hover:scale-105 hover:shadow-lg hover:shadow-gold-500/20"
           >
             <Instagram size={20} className="text-gold-400" />
             <div className="text-left">
