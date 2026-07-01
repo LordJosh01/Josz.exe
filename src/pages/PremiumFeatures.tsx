@@ -8,7 +8,7 @@ import {
   Building, UserCheck, Award, TrendingUp, DollarSign, Clock3, MapPinned, GalleryVerticalEnd,
   Film, Clapperboard, Theater, Users2, Ticket, ClipboardCheck, UserPlus, Menu as MenuIcon,
   Layout, Layers, PenTool, Save, RefreshCw, Info, ChevronDown, ChevronUp, Settings,
-  Play, Pause, SkipForward, Volume2, Sun, Moon, Cloud, Umbrella, Thermometer
+  Play, Pause, SkipForward, Volume2, Sun, Moon, Cloud, Umbrella, Thermometer, Instagram
 } from 'lucide-react';
 
 type Page = 'home' | 'services' | 'portfolio' | 'about' | 'faq' | 'contact' | 'premium';
