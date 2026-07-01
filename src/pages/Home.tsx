@@ -1,7 +1,9 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ChevronRight, Heart, Star, Award, Sparkles, CheckCircle, ArrowRight } from 'lucide-react';
+import Confetti from '../components/Confetti';
+import FloatingDots from '../components/FloatingDots';
 
-type Page = 'home' | 'services' | 'portfolio' | 'about' | 'faq' | 'contact';
+type Page = 'home' | 'services' | 'portfolio' | 'about' | 'faq' | 'contact' | 'premium';
 
 interface HomeProps {
   onNavigate: (page: Page) => void;
@@ -85,6 +87,14 @@ function useReveal() {
 }
 
 export default function Home({ onNavigate }: HomeProps) {
+  const [showConfetti, setShowConfetti] = useState(false);
+
+  useEffect(() => {
+    setShowConfetti(true);
+    const timer = setTimeout(() => setShowConfetti(false), 5000);
+    return () => clearTimeout(timer);
+  }, []);
+
   const navigate = (page: Page) => {
     onNavigate(page);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -99,9 +109,11 @@ export default function Home({ onNavigate }: HomeProps) {
 
   return (
     <div>
+      <Confetti style="celebration" active={showConfetti} />
       {/* ---- HERO ---- */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-purple-glow" />
+        <FloatingDots color="mixed" count={40} size="md" />
         <div className="absolute top-1/4 -left-48 w-[500px] h-[500px] bg-purple-700/15 rounded-full blur-3xl" />
         <div className="absolute bottom-1/4 -right-48 w-[600px] h-[600px] bg-purple-600/10 rounded-full blur-3xl" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-gold-900/8 rounded-full blur-3xl" />
@@ -160,8 +172,9 @@ export default function Home({ onNavigate }: HomeProps) {
       </section>
 
       {/* ---- STATS ---- */}
-      <section className="py-14 bg-purple-900/70 border-y border-dark-border" ref={statsRef}>
-        <div className="max-w-4xl mx-auto px-6 grid grid-cols-3 gap-6 sm:gap-12 text-center">
+      <section className="py-14 bg-purple-900/70 border-y border-dark-border relative overflow-hidden" ref={statsRef}>
+        <FloatingDots color="gold" count={20} size="sm" />
+        <div className="max-w-4xl mx-auto px-6 grid grid-cols-3 gap-6 sm:gap-12 text-center relative z-10">
           {stats.map((s, i) => (
             <div key={s.label} className={`scroll-reveal delay-${i + 1}`}>
               <p className="font-serif text-2xl sm:text-3xl md:text-4xl gold-text mb-1">{s.value}</p>
@@ -236,8 +249,9 @@ export default function Home({ onNavigate }: HomeProps) {
       </section>
 
       {/* ---- SERVICES ---- */}
-      <section className="py-20 bg-purple-900/40 border-y border-dark-border" ref={servicesRef}>
-        <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10">
+      <section className="py-20 bg-purple-900/40 border-y border-dark-border relative overflow-hidden" ref={servicesRef}>
+        <FloatingDots color="purple" count={25} size="sm" />
+        <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10 relative z-10">
           <div className="text-center mb-14 scroll-reveal">
             <p className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-4">What We Offer</p>
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-purple-50">Our Services</h2>
@@ -300,8 +314,9 @@ export default function Home({ onNavigate }: HomeProps) {
       </section>
 
       {/* ---- WHY US ---- */}
-      <section className="py-16 bg-purple-900/50 border-y border-dark-border" ref={whyRef}>
-        <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10 grid lg:grid-cols-2 gap-10 items-center">
+      <section className="py-16 bg-purple-900/50 border-y border-dark-border relative overflow-hidden" ref={whyRef}>
+        <FloatingDots color="mixed" count={30} size="sm" />
+        <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10 grid lg:grid-cols-2 gap-10 items-center relative z-10">
           <div className="scroll-reveal-left">
             <p className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-4">Why Choose Us</p>
             <h2 className="font-serif text-3xl sm:text-4xl text-purple-50 mb-4">

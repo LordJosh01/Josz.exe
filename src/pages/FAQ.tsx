@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Plus, Minus, ChevronRight, MessageCircle } from 'lucide-react';
+import Confetti from '../components/Confetti';
+import FloatingDots from '../components/FloatingDots';
 
 function useReveal() {
   const ref = useRef<HTMLDivElement>(null);
@@ -21,7 +23,7 @@ function useReveal() {
   return ref;
 }
 
-type Page = 'home' | 'services' | 'portfolio' | 'about' | 'faq' | 'contact';
+type Page = 'home' | 'services' | 'portfolio' | 'about' | 'faq' | 'contact' | 'premium';
 
 interface FAQProps {
   onNavigate: (page: Page) => void;
@@ -195,6 +197,14 @@ function AccordionItem({ q, a }: { q: string; a: string }) {
 }
 
 export default function FAQ({ onNavigate }: FAQProps) {
+  const [showConfetti, setShowConfetti] = useState(false);
+
+  useEffect(() => {
+    setShowConfetti(true);
+    const timer = setTimeout(() => setShowConfetti(false), 5000);
+    return () => clearTimeout(timer);
+  }, []);
+
   const navigate = (page: Page) => {
     onNavigate(page);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -207,8 +217,10 @@ export default function FAQ({ onNavigate }: FAQProps) {
 
   return (
     <div>
-      <section className="page-hero text-center">
+      <Confetti style="corporate" active={showConfetti} />
+      <section className="page-hero text-center relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(85,33,160,0.4)_0%,transparent_70%)]" />
+        <FloatingDots color="purple" count={25} size="sm" />
         <div className="relative z-10 max-w-3xl mx-auto px-6">
           <p className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-4 opacity-0 animate-fade-in-up">Got Questions?</p>
           <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-purple-50 mb-4 opacity-0 animate-fade-in-up-2">

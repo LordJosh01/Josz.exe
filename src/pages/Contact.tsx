@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { MapPin, Send, CheckCircle, Instagram, Clock, Heart, Sparkles, Calendar } from 'lucide-react';
+import Confetti from '../components/Confetti';
+import FloatingDots from '../components/FloatingDots';
 
 const emptyForm = { name: '', email: '', phone: '', eventType: '', date: '', guestCount: '', budget: '', message: '' };
 
@@ -75,7 +77,14 @@ export default function Contact() {
   const [form, setForm] = useState(emptyForm);
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
   const bodyRef = useReveal();
+
+  useEffect(() => {
+    setShowConfetti(true);
+    const timer = setTimeout(() => setShowConfetti(false), 5000);
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -91,8 +100,10 @@ export default function Contact() {
 
   return (
     <div>
-      <section className="page-hero text-center">
+      <Confetti style="rainbow" active={showConfetti} />
+      <section className="page-hero text-center relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(85,33,160,0.4)_0%,transparent_70%)]" />
+        <FloatingDots color="rainbow" count={35} size="md" />
         <div className="relative z-10 max-w-3xl mx-auto px-6">
           <p className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-4 opacity-0 animate-fade-in-up">Let us Connect</p>
           <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-purple-100 mb-4 opacity-0 animate-fade-in-up-2">Contact Us</h1>
@@ -104,8 +115,9 @@ export default function Contact() {
       </section>
 
       {/* Reasons */}
-      <section className="py-16 bg-purple-800/30 border-y border-dark-border">
-        <div className="max-w-5xl mx-auto px-6">
+      <section className="py-16 bg-purple-800/30 border-y border-dark-border relative overflow-hidden">
+        <FloatingDots color="gold" count={20} size="sm" />
+        <div className="max-w-5xl mx-auto px-6 relative z-10">
           <div className="grid md:grid-cols-3 gap-6">
             {reasons.map(({ icon: Icon, title, desc }, i) => (
               <div key={title} className={`text-center scroll-reveal delay-${i + 1}`}>

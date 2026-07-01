@@ -1,7 +1,9 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Heart, Star, Award, Camera, Music, Utensils, ChevronRight, Users, Gift, Cake, PartyPopper, Sparkles, MapPin, Clock, Palette, Flower2, Wine, Calendar, Baby, Briefcase } from 'lucide-react';
+import Confetti from '../components/Confetti';
+import FloatingDots from '../components/FloatingDots';
 
-type Page = 'home' | 'services' | 'portfolio' | 'about' | 'faq' | 'contact';
+type Page = 'home' | 'services' | 'portfolio' | 'about' | 'faq' | 'contact' | 'premium';
 
 function useReveal() {
   const ref = useRef<HTMLDivElement>(null);
@@ -175,6 +177,14 @@ const whyChooseUs = [
 ];
 
 export default function Services({ onNavigate }: ServicesProps) {
+  const [showConfetti, setShowConfetti] = useState(false);
+
+  useEffect(() => {
+    setShowConfetti(true);
+    const timer = setTimeout(() => setShowConfetti(false), 5000);
+    return () => clearTimeout(timer);
+  }, []);
+
   const navigate = (page: Page) => {
     onNavigate(page);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -189,8 +199,10 @@ export default function Services({ onNavigate }: ServicesProps) {
 
   return (
     <div>
-      <section className="page-hero text-center">
+      <Confetti style="wedding" active={showConfetti} />
+      <section className="page-hero text-center relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(85,33,160,0.4)_0%,transparent_70%)]" />
+        <FloatingDots color="mixed" count={35} size="md" />
         <div className="relative z-10 max-w-3xl mx-auto px-6">
           <p className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-4 opacity-0 animate-fade-in-up">What We Offer</p>
           <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-purple-50 mb-4 opacity-0 animate-fade-in-up-2">Our Services</h1>

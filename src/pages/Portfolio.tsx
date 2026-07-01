@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { ChevronRight, Eye } from 'lucide-react';
+import Confetti from '../components/Confetti';
+import FloatingDots from '../components/FloatingDots';
 
 type Page = 'home' | 'services' | 'portfolio' | 'about' | 'faq' | 'contact' | 'premium';
 
@@ -175,8 +177,15 @@ function useReveal() {
 
 export default function Portfolio({ onNavigate }: PortfolioProps) {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+  const [showConfetti, setShowConfetti] = useState(false);
   const galleryRef = useReveal();
   const ctaRef = useReveal();
+
+  useEffect(() => {
+    setShowConfetti(true);
+    const timer = setTimeout(() => setShowConfetti(false), 5000);
+    return () => clearTimeout(timer);
+  }, []);
 
   const navigate = (page: Page) => {
     onNavigate(page);
@@ -185,9 +194,11 @@ export default function Portfolio({ onNavigate }: PortfolioProps) {
 
   return (
     <div>
+      <Confetti style="birthday" active={showConfetti} />
       {/* Hero */}
-      <section className="page-hero text-center">
+      <section className="page-hero text-center relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(85,33,160,0.4)_0%,transparent_70%)]" />
+        <FloatingDots color="rainbow" count={40} size="md" />
         <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-dark to-transparent" />
         <div className="relative z-10 max-w-3xl mx-auto px-6">
           <p className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-4 opacity-0 animate-fade-in-up">Our Work</p>

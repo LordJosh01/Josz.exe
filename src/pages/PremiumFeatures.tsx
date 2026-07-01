@@ -3,9 +3,11 @@ import {
   Calendar, Users, Sparkles, Camera, Heart, Clock,
   CheckCircle, Bell, Gift, Crown, Wand2,
   MessageCircle, Plus, Trash2, Mail, Phone,
-  PartyPopper, UserCheck, MapPinned, GalleryVerticalEnd,
+  PartyPopper, UserCheck, GalleryVerticalEnd,
   RefreshCw, Play, Image, Instagram, Upload, X
 } from 'lucide-react';
+import Confetti from '../components/Confetti';
+import FloatingDots from '../components/FloatingDots';
 
 type Page = 'home' | 'services' | 'portfolio' | 'about' | 'faq' | 'contact' | 'premium';
 
@@ -15,82 +17,6 @@ interface PremiumFeaturesProps {
 
 const WHATSAPP_URL = 'https://wa.me/2348035672491?text=Hi%20BELSH!%20I%27d%20like%20to%20inquire%20about%20planning%20my%20event.';
 const INSTAGRAM_URL = 'https://www.instagram.com/rtw_by_belsh';
-
-// Enhanced Confetti Component
-function Confetti({ active }: { active: boolean }) {
-  if (!active) return null;
-
-  const colors = ['#d4a017', '#f2cc5a', '#e6b930', '#c48b00', '#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ff9f43', '#ee5a5a'];
-  const shapes = ['circle', 'square', 'triangle', 'star'];
-
-  return (
-    <div className="fixed inset-0 pointer-events-none z-50 overflow-hidden">
-      {Array.from({ length: 200 }).map((_, i) => {
-        const shape = shapes[Math.floor(Math.random() * shapes.length)];
-        const size = 6 + Math.random() * 8;
-        return (
-          <div
-            key={i}
-            className="absolute animate-fall"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: '-20px',
-              animationDelay: `${Math.random() * 2}s`,
-              animationDuration: `${3 + Math.random() * 3}s`,
-            }}
-          >
-            {shape === 'circle' && (
-              <div
-                className="rounded-full"
-                style={{
-                  width: size,
-                  height: size,
-                  backgroundColor: colors[Math.floor(Math.random() * colors.length)],
-                  boxShadow: '0 0 6px rgba(255,255,255,0.5)',
-                }}
-              />
-            )}
-            {shape === 'square' && (
-              <div
-                style={{
-                  width: size,
-                  height: size,
-                  backgroundColor: colors[Math.floor(Math.random() * colors.length)],
-                  transform: `rotate(${Math.random() * 360}deg)`,
-                  boxShadow: '0 0 6px rgba(255,255,255,0.5)',
-                }}
-              />
-            )}
-            {shape === 'triangle' && (
-              <div
-                style={{
-                  width: 0,
-                  height: 0,
-                  borderLeft: `${size/2}px solid transparent`,
-                  borderRight: `${size/2}px solid transparent`,
-                  borderBottom: `${size}px solid ${colors[Math.floor(Math.random() * colors.length)]}`,
-                  filter: 'drop-shadow(0 0 3px rgba(255,255,255,0.5))',
-                }}
-              />
-            )}
-            {shape === 'star' && (
-              <div
-                className="text-center leading-none"
-                style={{
-                  fontSize: size,
-                  color: colors[Math.floor(Math.random() * colors.length)],
-                  textShadow: '0 0 6px rgba(255,255,255,0.5)',
-                }}
-              >
-                ★
-              </div>
-            )}
-          </div>
-        );
-      })}
-    </div>
-  );
-}
 
 // 1. COUNTDOWN TIMER WITH NOTIFICATIONS
 function CountdownTimer() {
@@ -203,7 +129,7 @@ function CountdownTimer() {
       <div className="absolute inset-0 bg-gradient-to-br from-gold-500/5 to-transparent pointer-events-none" />
       <div className="flex items-center justify-between mb-6 relative z-10">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-gold-900/40 flex items-center justify-center animate-pulse">
+          <div className="w-10 h-10 rounded-full bg-gold-900/40 flex items-center justify-center animate-icon-bounce">
             <Clock size={20} className="text-gold-400" />
           </div>
           <div>
@@ -361,7 +287,7 @@ function InvitationGenerator() {
     <div className="glass-card gold-border rounded-2xl p-6 relative overflow-hidden animate-fade-in-up" style={{ animationDelay: '150ms' }}>
       <div className="absolute inset-0 bg-gradient-to-tr from-purple-500/5 to-transparent pointer-events-none" />
       <div className="flex items-center gap-3 mb-6 relative z-10">
-        <div className="w-10 h-10 rounded-full bg-gold-900/40 flex items-center justify-center">
+        <div className="w-10 h-10 rounded-full bg-gold-900/40 flex items-center justify-center animate-icon-wiggle">
           <Mail size={20} className="text-gold-400" />
         </div>
         <div>
@@ -580,7 +506,7 @@ function PlanMyEvent() {
     <div className="glass-card gold-border rounded-2xl p-6 relative overflow-hidden animate-fade-in-up" style={{ animationDelay: '200ms' }}>
       <div className="absolute inset-0 bg-gradient-to-bl from-purple-500/5 to-transparent pointer-events-none" />
       <div className="flex items-center gap-3 mb-6 relative z-10">
-        <div className="w-10 h-10 rounded-full bg-gold-900/40 flex items-center justify-center">
+        <div className="w-10 h-10 rounded-full bg-gold-900/40 flex items-center justify-center animate-icon-spin">
           <Wand2 size={20} className="text-gold-400" />
         </div>
         <div>
@@ -810,7 +736,7 @@ function RSVPManager() {
     <div className="glass-card gold-border rounded-2xl p-6 relative overflow-hidden animate-fade-in-up" style={{ animationDelay: '250ms' }}>
       <div className="absolute inset-0 bg-gradient-to-tr from-green-500/5 to-transparent pointer-events-none" />
       <div className="flex items-center gap-3 mb-6 relative z-10">
-        <div className="w-10 h-10 rounded-full bg-gold-900/40 flex items-center justify-center">
+        <div className="w-10 h-10 rounded-full bg-gold-900/40 flex items-center justify-center animate-icon-pulse">
           <UserCheck size={20} className="text-gold-400" />
         </div>
         <div>
@@ -944,7 +870,7 @@ function MemoryWall() {
     <div className="glass-card gold-border rounded-2xl p-6 relative overflow-hidden animate-fade-in-up" style={{ animationDelay: '300ms' }}>
       <div className="absolute inset-0 bg-gradient-to-br from-pink-500/5 to-transparent pointer-events-none" />
       <div className="flex items-center gap-3 mb-6 relative z-10">
-        <div className="w-10 h-10 rounded-full bg-gold-900/40 flex items-center justify-center">
+        <div className="w-10 h-10 rounded-full bg-gold-900/40 flex items-center justify-center animate-icon-float">
           <GalleryVerticalEnd size={20} className="text-gold-400" />
         </div>
         <div>
@@ -1051,7 +977,7 @@ function VIPPortal({ onNavigate }: { onNavigate: (page: Page) => void }) {
       <div className="absolute top-0 right-0 w-32 h-32 bg-gold-500/10 rounded-full blur-3xl" />
 
       <div className="flex items-center gap-3 mb-6 relative z-10">
-        <div className="w-10 h-10 rounded-full bg-gold-900/40 flex items-center justify-center">
+        <div className="w-10 h-10 rounded-full bg-gold-900/40 flex items-center justify-center animate-icon-bounce">
           <Crown size={20} className="text-gold-400" />
         </div>
         <div>
@@ -1252,28 +1178,13 @@ export default function PremiumFeatures({ onNavigate }: PremiumFeaturesProps) {
 
   return (
     <div>
-      <Confetti active={showConfetti} />
+      <Confetti style="celebration" active={showConfetti} />
 
       {/* Hero */}
       <section className="page-hero text-center relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(85,33,160,0.4)_0%,transparent_70%)]" />
+        <FloatingDots color="mixed" count={45} size="md" />
         <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-dark to-transparent" />
-
-        {/* Floating particles */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {Array.from({ length: 20 }).map((_, i) => (
-            <div
-              key={i}
-              className="absolute w-1 h-1 bg-gold-400/30 rounded-full animate-float"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 5}s`,
-                animationDuration: `${5 + Math.random() * 5}s`,
-              }}
-            />
-          ))}
-        </div>
 
         <div className="relative z-10 max-w-3xl mx-auto px-6">
           <p className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-4 opacity-0 animate-fade-in-up">Event Planning Suite</p>
