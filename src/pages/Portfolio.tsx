@@ -252,14 +252,21 @@ export default function Portfolio({ onNavigate }: PortfolioProps) {
                 {/* Gradient overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-dark/95 via-dark/50 to-transparent" />
 
-                {/* Eye icon on hover */}
-                <div className={`absolute top-4 right-4 w-9 h-9 rounded-full glass-dark border border-gold-500/30 flex items-center justify-center transition-all duration-300 ${hoveredItem === item.title ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}`}>
-                  <Eye size={14} className="text-gold-400" />
+                {/* Category badge */}
+                <div className="absolute top-4 left-4 z-10">
+                  <span className="tag-pill text-[10px]">{item.category}</span>
                 </div>
 
-                {/* Category badge */}
-                <div className="absolute top-4 left-4">
-                  <span className="tag-pill text-[10px]">{item.category}</span>
+                {/* Book Now button on hover */}
+                <div className={`absolute inset-0 flex items-center justify-center transition-all duration-300 ${hoveredItem === item.title ? 'opacity-100' : 'opacity-0'}`}>
+                  <div className="absolute inset-0 bg-dark/60 backdrop-blur-sm" />
+                  <button
+                    onClick={() => navigate('contact')}
+                    className="relative z-10 btn-gold text-xs sm:text-sm px-6 py-3 hover:scale-105 transition-transform"
+                  >
+                    Book Now
+                    <ChevronRight size={14} />
+                  </button>
                 </div>
 
                 {/* Content */}

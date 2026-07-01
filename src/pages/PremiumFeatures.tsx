@@ -225,9 +225,10 @@ function CountdownTimer() {
   );
 }
 
-// 2. EVENT INVITATION GENERATOR WITH CUSTOM BACKGROUND
+// 2. EVENT INVITATION GENERATOR WITH TEMPLATES & DOWNLOAD
 function InvitationGenerator() {
   const [step, setStep] = useState(1);
+  const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null);
   const [invitation, setInvitation] = useState({
     title: 'You Are Invited!',
     event: '',
@@ -239,9 +240,20 @@ function InvitationGenerator() {
     theme: 'elegant',
     primaryColor: '#d4a017',
     photo: '',
+    style: 'classic',
   });
   const [customBg, setCustomBg] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const previewRef = useRef<HTMLDivElement>(null);
+
+  const templates = [
+    { id: 'wedding', name: 'Wedding Classic', icon: Heart, preview: 'Elegant wedding invitation with romantic details' },
+    { id: 'birthday', name: 'Birthday Bash', icon: PartyPopper, preview: 'Fun and colorful birthday celebration' },
+    { id: 'corporate', name: 'Corporate Event', icon: Gift, preview: 'Professional and sophisticated business event' },
+    { id: 'traditional', name: 'Traditional', icon: Crown, preview: 'Cultural celebration with traditional styling' },
+    { id: 'baby', name: 'Baby Shower', icon: Sparkles, preview: 'Soft and sweet baby shower invitation' },
+    { id: 'engagement', name: 'Engagement', icon: Star, preview: 'Romantic engagement party invitation' },
+  ];
 
   const themes = [
     { id: 'elegant', name: 'Elegant Gold', colors: ['#d4a017', '#150829'] },
@@ -249,6 +261,14 @@ function InvitationGenerator() {
     { id: 'modern', name: 'Modern Minimal', colors: ['#ffffff', '#0a0118'] },
     { id: 'traditional', name: 'Traditional', colors: ['#8b4513', '#1a0f05'] },
     { id: 'royal', name: 'Royal Purple', colors: ['#6b21a8', '#0f0520'] },
+  ];
+
+  const styles = [
+    { id: 'classic', name: 'Classic Centered', desc: 'Centered layout with event details below' },
+    { id: 'modern', name: 'Modern Split', desc: 'Left-aligned title with right-aligned details' },
+    { id: 'minimal', name: 'Minimal', desc: 'Clean design with essential info only' },
+    { id: 'floral', name: 'Floral Frame', desc: 'Decorative border around content' },
+    { id: 'bold', name: 'Bold Statement', desc: 'Large typography, minimal design' },
   ];
 
   const photoOptions = [
@@ -281,7 +301,125 @@ function InvitationGenerator() {
     window.open(`mailto:?subject=${subject}&body=${body}`, '_blank');
   };
 
+  const downloadInvitation = async () => {
+    if (!previewRef.current) return;
+
+    // Create canvas for download
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    canvas.width = 800;
+    canvas.height = 1000;
+
+    // Draw background
+    const bgColor = themes.find(t => t.id === invitation.theme)?.colors[1] || '#150829';
+    ctx.fillStyle = bgColor;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Draw background image if exists
+    if (invitation.photo) {
+      const img = new window.Image();
+      img.crossOrigin = 'anonymous';
+      img.src = invitation.photo;
+      return new Promise<void>((resolve) => {
+        img.onload = () => {
+          ctx.globalAlpha = 0.3;
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          ctx.globalAlpha = 1;
+
+          // Draw text
+          ctx.textAlign = 'center';
+          ctx.fillStyle = '#d4a017';
+          ctx.font = '24px Georgia, serif';
+          ctx.fillText(invitation.title.toUpperCase(), canvas.width / 2, 300);
+
+          ctx.fillStyle = '#ffffff';
+          ctx.font = 'bold 48px Georgia, serif';
+          ctx.fillText(invitation.event || 'Your Event', canvas.width / 2, 400);
+
+          ctx.font = '24px sans-serif';
+          ctx.fillText(invitation.date, canvas.width / 2, 500);
+          ctx.fillText(invitation.time, canvas.width / 2, 550);
+          ctx.fillText(invitation.venue, canvas.width / 2, 600);
+
+          if (invitation.message) {
+            ctx.font = 'italic 18px Georgia, serif';
+            ctx.fillStyle = '#cccccc';
+            wrapText(ctx, `"${invitation.message}"`, canvas.width / 2, 700, canvas.width - 100, 25);
+          }
+
+          if (invitation.host) {
+            ctx.font = '20px sans-serif';
+            ctx.fillStyle = '#d4a017';
+            ctx.fillText(`Hosted by ${invitation.host}`, canvas.width / 2, 850);
+          }
+
+          // Download
+          const link = document.createElement('a');
+          link.download = `invitation-${invitation.event || 'event'}.png`;
+          link.href = canvas.toDataURL('image/png');
+          link.click();
+          resolve();
+        };
+        img.onerror = () => resolve();
+      });
+    } else {
+      // Draw text without background image
+      ctx.textAlign = 'center';
+      ctx.fillStyle = '#d4a017';
+      ctx.font = '24px Georgia, serif';
+      ctx.fillText(invitation.title.toUpperCase(), canvas.width / 2, 300);
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 48px Georgia, serif';
+      ctx.fillText(invitation.event || 'Your Event', canvas.width / 2, 400);
+
+      ctx.font = '24px sans-serif';
+      ctx.fillText(invitation.date, canvas.width / 2, 500);
+      ctx.fillText(invitation.time, canvas.width / 2, 550);
+      ctx.fillText(invitation.venue, canvas.width / 2, 600);
+
+      if (invitation.message) {
+        ctx.font = 'italic 18px Georgia, serif';
+        ctx.fillStyle = '#cccccc';
+        wrapText(ctx, `"${invitation.message}"`, canvas.width / 2, 700, canvas.width - 100, 25);
+      }
+
+      if (invitation.host) {
+        ctx.font = '20px sans-serif';
+        ctx.fillStyle = '#d4a017';
+        ctx.fillText(`Hosted by ${invitation.host}`, canvas.width / 2, 850);
+      }
+
+      // Download
+      const link = document.createElement('a');
+      link.download = `invitation-${invitation.event || 'event'}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+  };
+
+  const wrapText = (ctx: CanvasRenderingContext2D, text: string, x: number, y: number, maxWidth: number, lineHeight: number) => {
+    const words = text.split(' ');
+    let line = '';
+    for (const word of words) {
+      const testLine = line + word + ' ';
+      const metrics = ctx.measureText(testLine);
+      if (metrics.width > maxWidth && line !== '') {
+        ctx.fillText(line, x, y);
+        line = word + ' ';
+        y += lineHeight;
+      } else {
+        line = testLine;
+      }
+    }
+    ctx.fillText(line, x, y);
+  };
+
   const activeBackground = customBg || invitation.photo;
+
+  const activeTheme = themes.find(t => t.id === invitation.theme);
 
   return (
     <div className="glass-card gold-border rounded-2xl p-6 relative overflow-hidden animate-fade-in-up" style={{ animationDelay: '150ms' }}>
@@ -292,13 +430,13 @@ function InvitationGenerator() {
         </div>
         <div>
           <h3 className="font-serif text-xl text-purple-100">Invitation Generator</h3>
-          <p className="text-purple-400 text-sm">Create beautiful digital invitations</p>
+          <p className="text-purple-400 text-sm">Create, customize & download invitations</p>
         </div>
       </div>
 
       {/* Progress */}
       <div className="flex items-center gap-2 mb-6 relative z-10">
-        {[1, 2, 3].map((s) => (
+        {[1, 2, 3, 4].map((s) => (
           <div
             key={s}
             className={`flex-1 h-1 rounded-full transition-all duration-500 ${s <= step ? 'bg-gold-500 scale-y-110' : 'bg-dark-card'}`}
@@ -308,13 +446,37 @@ function InvitationGenerator() {
 
       {step === 1 && (
         <div className="space-y-4 relative z-10 animate-slide-in-right">
+          <p className="text-xs text-purple-400 mb-2">Choose a Template</p>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+            {templates.map(({ id, name, icon: Icon, preview }) => (
+              <button
+                key={id}
+                onClick={() => setSelectedTemplate(id)}
+                className={`p-4 rounded-xl border transition-all hover:scale-[1.02] ${
+                  selectedTemplate === id
+                    ? 'border-gold-500 bg-gold-500/10 shadow-lg shadow-gold-500/20'
+                    : 'border-dark-border bg-dark-card hover:border-gold-500/40'
+                }`}
+              >
+                <Icon size={24} className={`mb-2 ${selectedTemplate === id ? 'text-gold-400' : 'text-purple-400'}`} />
+                <p className="text-sm text-purple-100 font-medium">{name}</p>
+                <p className="text-[10px] text-purple-400 mt-1">{preview}</p>
+              </button>
+            ))}
+          </div>
+
           <input
             type="text"
             placeholder="Event Title (e.g., Adeola Wedding Ceremony)"
             value={invitation.event}
             onChange={(e) => setInvitation({ ...invitation, event: e.target.value })}
-            className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-purple-100 placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-all"
+            className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-purple-100 placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-all mt-4"
           />
+        </div>
+      )}
+
+      {step === 2 && (
+        <div className="space-y-4 relative z-10 animate-slide-in-right">
           <div className="grid grid-cols-2 gap-4">
             <input
               type="date"
@@ -336,27 +498,49 @@ function InvitationGenerator() {
             onChange={(e) => setInvitation({ ...invitation, venue: e.target.value })}
             className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-purple-100 placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-all"
           />
-        </div>
-      )}
-
-      {step === 2 && (
-        <div className="space-y-4 relative z-10 animate-slide-in-right">
           <input
             type="text"
-            placeholder="Host Name"
+            placeholder="Host Name(s)"
             value={invitation.host}
             onChange={(e) => setInvitation({ ...invitation, host: e.target.value })}
             className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-purple-100 placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-all"
           />
           <textarea
-            placeholder="Personal Message"
+            placeholder="Personal Message (Optional)"
             value={invitation.message}
             onChange={(e) => setInvitation({ ...invitation, message: e.target.value })}
-            rows={3}
+            rows={2}
             className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-purple-100 placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 resize-none transition-all"
           />
+        </div>
+      )}
+
+      {step === 3 && (
+        <div className="space-y-4 relative z-10 animate-slide-in-right">
+          {/* Style */}
           <div>
-            <p className="text-xs text-purple-400 mb-2">Choose Theme</p>
+            <p className="text-xs text-purple-400 mb-2">Layout Style</p>
+            <div className="space-y-2">
+              {styles.map((s) => (
+                <button
+                  key={s.id}
+                  onClick={() => setInvitation({ ...invitation, style: s.id })}
+                  className={`w-full p-3 rounded-lg border text-left transition-all ${
+                    invitation.style === s.id
+                      ? 'border-gold-500 bg-gold-500/10'
+                      : 'border-dark-border bg-dark-card hover:border-gold-500/30'
+                  }`}
+                >
+                  <p className="text-sm text-purple-100">{s.name}</p>
+                  <p className="text-[10px] text-purple-400">{s.desc}</p>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Theme */}
+          <div>
+            <p className="text-xs text-purple-400 mb-2">Color Theme</p>
             <div className="grid grid-cols-5 gap-2">
               {themes.map((t) => (
                 <button
@@ -370,16 +554,16 @@ function InvitationGenerator() {
               ))}
             </div>
           </div>
+
+          {/* Background */}
           <div>
             <p className="text-xs text-purple-400 mb-2">Background Photo</p>
-            {/* Custom Upload */}
             <button
               onClick={() => fileInputRef.current?.click()}
               className="w-full glass-dark rounded-lg p-4 border-2 border-dashed border-gold-500/30 hover:border-gold-500/60 transition-all flex flex-col items-center justify-center gap-2 mb-3 hover:bg-gold-500/5"
             >
               <Upload size={24} className="text-gold-400" />
               <p className="text-purple-300 text-xs">Upload Your Own Background</p>
-              <p className="text-purple-500 text-[10px]">PNG, JPG up to 5MB</p>
             </button>
             <input
               ref={fileInputRef}
@@ -399,7 +583,7 @@ function InvitationGenerator() {
                 </button>
               </div>
             )}
-            <p className="text-[10px] text-purple-500 text-center mb-2">Or choose from presets:</p>
+            <p className="text-[10px] text-purple-500 text-center mb-2">Or choose preset:</p>
             <div className="grid grid-cols-4 gap-2">
               {photoOptions.map((photo, i) => (
                 <button
@@ -415,43 +599,119 @@ function InvitationGenerator() {
         </div>
       )}
 
-      {step === 3 && (
+      {step === 4 && (
         <div className="space-y-4 relative z-10 animate-slide-in-right">
           {/* Preview */}
           <div
+            ref={previewRef}
             className="relative aspect-[3/4] rounded-xl overflow-hidden shadow-2xl hover:shadow-gold-500/20 transition-shadow duration-500"
-            style={{ backgroundColor: themes.find(t => t.id === invitation.theme)?.colors[1] || '#150829' }}
+            style={{ backgroundColor: activeTheme?.colors[1] || '#150829' }}
           >
             {activeBackground && (
               <img src={activeBackground} alt="" className="absolute inset-0 w-full h-full object-cover opacity-30" />
             )}
-            <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
-              <p className="text-gold-400 text-sm tracking-widest uppercase mb-2 animate-fade-in">{invitation.title}</p>
-              <h2 className="font-serif text-2xl text-white mb-4 animate-pop-in">{invitation.event || 'Your Event'}</h2>
-              <div className="space-y-2 animate-fade-in" style={{ animationDelay: '200ms' }}>
-                <p className="text-white/80 text-sm">{invitation.date}</p>
-                <p className="text-white/80 text-sm">{invitation.time}</p>
-                <p className="text-white/80 text-sm">{invitation.venue}</p>
-              </div>
-              {invitation.message && (
-                <p className="text-white/60 text-xs mt-4 italic animate-fade-in" style={{ animationDelay: '400ms' }}>"{invitation.message}"</p>
+
+            {/* Style-based layouts */}
+            <div className="absolute inset-0 p-6">
+              {invitation.style === 'classic' && (
+                <div className="h-full flex flex-col items-center justify-center text-center">
+                  <p className="text-gold-400 text-sm tracking-widest uppercase mb-2">{invitation.title}</p>
+                  <h2 className="font-serif text-2xl text-white mb-4">{invitation.event || 'Your Event'}</h2>
+                  <div className="space-y-2">
+                    <p className="text-white/80 text-sm">{invitation.date}</p>
+                    <p className="text-white/80 text-sm">{invitation.time}</p>
+                    <p className="text-white/80 text-sm">{invitation.venue}</p>
+                  </div>
+                  {invitation.message && (
+                    <p className="text-white/60 text-xs mt-4 italic">"{invitation.message}"</p>
+                  )}
+                  {invitation.host && (
+                    <p className="text-gold-400 text-sm mt-4">Hosted by {invitation.host}</p>
+                  )}
+                </div>
               )}
-              {invitation.host && (
-                <p className="text-gold-400 text-sm mt-4 animate-pop-in" style={{ animationDelay: '600ms' }}>Hosted by {invitation.host}</p>
+
+              {invitation.style === 'modern' && (
+                <div className="h-full flex">
+                  <div className="flex-1 flex flex-col justify-center text-left">
+                    <p className="text-gold-400 text-xs tracking-widest uppercase mb-2">{invitation.title}</p>
+                    <h2 className="font-serif text-3xl text-white">{invitation.event || 'Your Event'}</h2>
+                  </div>
+                  <div className="flex-1 flex flex-col justify-center items-end text-right">
+                    <p className="text-white/80 text-sm mb-1">{invitation.date}</p>
+                    <p className="text-white/80 text-sm mb-1">{invitation.time}</p>
+                    <p className="text-white/80 text-sm">{invitation.venue}</p>
+                    {invitation.host && (
+                      <p className="text-gold-400 text-xs mt-4">- {invitation.host}</p>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {invitation.style === 'minimal' && (
+                <div className="h-full flex flex-col items-center justify-center text-center">
+                  <h2 className="font-serif text-3xl text-white mb-6">{invitation.event || 'Your Event'}</h2>
+                  <div className="w-16 h-px bg-gold-500/50 mb-6" />
+                  <div className="text-white/80 text-sm space-y-1">
+                    <p>{invitation.date} | {invitation.time}</p>
+                    <p>{invitation.venue}</p>
+                  </div>
+                </div>
+              )}
+
+              {invitation.style === 'floral' && (
+                <div className="h-full flex flex-col items-center justify-center text-center border-2 border-gold-500/30 m-4 rounded-xl p-4">
+                  <div className="absolute top-2 left-2 text-gold-400/50 text-2xl">❀</div>
+                  <div className="absolute top-2 right-2 text-gold-400/50 text-2xl">❀</div>
+                  <div className="absolute bottom-2 left-2 text-gold-400/50 text-2xl">❀</div>
+                  <div className="absolute bottom-2 right-2 text-gold-400/50 text-2xl">❀</div>
+                  <p className="text-gold-400 text-xs tracking-widest uppercase mb-2">{invitation.title}</p>
+                  <h2 className="font-serif text-2xl text-white mb-4">{invitation.event || 'Your Event'}</h2>
+                  <div className="space-y-2">
+                    <p className="text-white/80 text-sm">{invitation.date}</p>
+                    <p className="text-white/80 text-sm">{invitation.time}</p>
+                    <p className="text-white/80 text-sm">{invitation.venue}</p>
+                  </div>
+                  {invitation.host && (
+                    <p className="text-gold-400 text-xs mt-4">~ {invitation.host}</p>
+                  )}
+                </div>
+              )}
+
+              {invitation.style === 'bold' && (
+                <div className="h-full flex flex-col items-center justify-center text-center">
+                  <h2 className="font-serif text-5xl text-white mb-6 leading-tight">{invitation.event || 'Your Event'}</h2>
+                  <p className="text-gold-400 text-lg tracking-widest uppercase">{invitation.date}</p>
+                  <p className="text-white/60 text-sm mt-2">{invitation.venue}</p>
+                </div>
               )}
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
-            <button onClick={shareViaWhatsApp} className="flex items-center justify-center gap-2 py-3 rounded-lg bg-green-700 hover:bg-green-600 text-white text-sm transition-all hover:scale-[1.02] hover:shadow-lg hover:shadow-green-500/20">
+          {/* Action Buttons */}
+          <div className="grid grid-cols-3 gap-2">
+            <button
+              onClick={downloadInvitation}
+              className="flex items-center justify-center gap-2 py-3 rounded-lg bg-gold-600 hover:bg-gold-500 text-dark text-sm font-medium transition-all hover:scale-[1.02]"
+            >
+              <Camera size={14} />
+              Download
+            </button>
+            <button
+              onClick={shareViaWhatsApp}
+              className="flex items-center justify-center gap-2 py-3 rounded-lg bg-green-700 hover:bg-green-600 text-white text-sm transition-all hover:scale-[1.02]"
+            >
               <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
                 <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
               </svg>
-              Share via WhatsApp
+              WhatsApp
             </button>
-            <button onClick={shareViaEmail} className="flex items-center justify-center gap-2 py-3 rounded-lg bg-blue-700 hover:bg-blue-600 text-white text-sm transition-all hover:scale-[1.02] hover:shadow-lg hover:shadow-blue-500/20">
-              <Mail size={16} />
-              Share via Email
+            <button
+              onClick={shareViaEmail}
+              className="flex items-center justify-center gap-2 py-3 rounded-lg bg-blue-700 hover:bg-blue-600 text-white text-sm transition-all hover:scale-[1.02]"
+            >
+              <Mail size={14} />
+              Email
             </button>
           </div>
         </div>
@@ -463,8 +723,12 @@ function InvitationGenerator() {
             Back
           </button>
         )}
-        {step < 3 && (
-          <button onClick={() => setStep(step + 1)} className="btn-gold flex-1 text-sm hover:scale-[1.02] transition-transform">
+        {step < 4 && (
+          <button
+            onClick={() => setStep(step + 1)}
+            className="btn-gold flex-1 text-sm hover:scale-[1.02] transition-transform"
+            disabled={step === 1 && !selectedTemplate && !invitation.event}
+          >
             Next
           </button>
         )}

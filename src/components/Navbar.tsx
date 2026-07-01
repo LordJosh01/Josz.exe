@@ -1,17 +1,18 @@
 import { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Sparkles } from 'lucide-react';
 
-type Page = 'home' | 'services' | 'portfolio' | 'about' | 'faq' | 'contact' | 'premium';
+type Page = 'home' | 'services' | 'portfolio' | 'about' | 'faq' | 'contact' | 'premium' | 'eventai';
 
 interface NavbarProps {
   currentPage: Page;
   onNavigate: (page: Page) => void;
 }
 
-const links: { label: string; page: Page }[] = [
+const links: { label: string; page: Page; icon?: React.ComponentType<{ size?: number }> }[] = [
   { label: 'Services', page: 'services' },
   { label: 'Portfolio', page: 'portfolio' },
   { label: 'Premium', page: 'premium' },
+  { label: 'Event AI', page: 'eventai', icon: Sparkles },
   { label: 'About', page: 'about' },
   { label: 'FAQ', page: 'faq' },
   { label: 'Contact', page: 'contact' },
@@ -72,20 +73,21 @@ export default function Navbar({ currentPage, onNavigate }: NavbarProps) {
           </button>
 
           <div className="hidden md:flex items-center gap-7 lg:gap-9">
-            {links.map(({ label, page }, i) => (
+            {links.map(({ label, page, icon: Icon }, i) => (
               <button
                 key={page}
                 onClick={() => navigate(page)}
                 style={{ animationDelay: `${i * 80}ms` }}
-                className={`nav-link pb-0.5 ${currentPage === page ? 'active' : ''} ${mounted ? 'opacity-100' : 'opacity-0'}`}
+                className={`nav-link pb-0.5 flex items-center gap-1 ${currentPage === page ? 'active' : ''} ${mounted ? 'opacity-100' : 'opacity-0'}`}
               >
+                {Icon && <Icon size={12} className="text-gold-400" />}
                 {label}
               </button>
             ))}
             <button
               onClick={() => navigate('contact')}
               className={`btn-gold text-xs px-5 py-2.5 ml-2 ${mounted ? 'opacity-100' : 'opacity-0'}`}
-              style={{ animationDelay: '450ms' }}
+              style={{ animationDelay: '500ms' }}
             >
               Book Now
             </button>

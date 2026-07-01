@@ -9,8 +9,9 @@ import About from './pages/About';
 import FAQ from './pages/FAQ';
 import Contact from './pages/Contact';
 import PremiumFeatures from './pages/PremiumFeatures';
+import EventAI from './pages/EventAI';
 
-type Page = 'home' | 'services' | 'portfolio' | 'about' | 'faq' | 'contact' | 'premium';
+type Page = 'home' | 'services' | 'portfolio' | 'about' | 'faq' | 'contact' | 'premium' | 'eventai';
 
 function CustomCursor() {
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -78,6 +79,7 @@ function App() {
       case 'faq': return <FAQ onNavigate={navigate} />;
       case 'contact': return <Contact />;
       case 'premium': return <PremiumFeatures onNavigate={navigate} />;
+      case 'eventai': return <EventAI onNavigate={navigate} />;
     }
   };
 

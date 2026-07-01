@@ -51,23 +51,23 @@ export default function FloatingDots({
         @keyframes floating-dot {
           0%, 100% {
             transform: translate(0, 0) scale(1);
-            opacity: 0.2;
+            opacity: 0.15;
           }
           25% {
-            transform: translate(10px, -15px) scale(1.2);
-            opacity: 0.4;
-          }
-          50% {
-            transform: translate(-5px, 10px) scale(0.9);
+            transform: translate(15px, -20px) scale(1.3);
             opacity: 0.3;
           }
+          50% {
+            transform: translate(-8px, 15px) scale(0.85);
+            opacity: 0.2;
+          }
           75% {
-            transform: translate(8px, 5px) scale(1.1);
-            opacity: 0.35;
+            transform: translate(12px, 8px) scale(1.15);
+            opacity: 0.25;
           }
         }
         .animate-floating-dot {
-          animation: floating-dot 10s ease-in-out infinite;
+          animation: floating-dot 15s ease-in-out infinite;
         }
       `}</style>
     </div>
