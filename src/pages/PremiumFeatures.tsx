@@ -9,7 +9,7 @@ import {
 import Confetti from '../components/Confetti';
 import FloatingDots from '../components/FloatingDots';
 
-type Page = 'home' | 'services' | 'portfolio' | 'about' | 'faq' | 'contact' | 'premium';
+type Page = 'home' | 'services' | 'portfolio' | 'about' | 'faq' | 'contact' | 'premium' | 'eventai';
 
 interface PremiumFeaturesProps {
   onNavigate: (page: Page) => void;
