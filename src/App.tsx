@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import LoadingScreen from './components/LoadingScreen';
@@ -13,64 +13,19 @@ import EventAI from './pages/EventAI';
 
 type Page = 'home' | 'services' | 'portfolio' | 'about' | 'faq' | 'contact' | 'premium' | 'eventai';
 
-function CustomCursor() {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [hovering, setHovering] = useState(false);
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const updatePosition = (e: MouseEvent) => {
-      setPosition({ x: e.clientX, y: e.clientY });
-      if (!visible) setVisible(true);
-    };
-
-    const handleMouseEnter = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (target.tagName === 'A' || target.tagName === 'BUTTON' || target.closest('a') || target.closest('button') || target.closest('[role="button"]')) {
-        setHovering(true);
-      }
-    };
-
-    const handleMouseLeave = () => {
-      setHovering(false);
-    };
-
-    window.addEventListener('mousemove', updatePosition);
-    document.addEventListener('mouseover', handleMouseEnter);
-    document.addEventListener('mouseout', handleMouseLeave);
-
-    return () => {
-      window.removeEventListener('mousemove', updatePosition);
-      document.removeEventListener('mouseover', handleMouseEnter);
-      document.removeEventListener('mouseout', handleMouseLeave);
-    };
-  }, [visible]);
-
-  if (!visible) return null;
-
-  return (
-    <>
-      <div
-        className={`cursor-dot ${hovering ? 'hover' : ''}`}
-        style={{ left: position.x - 4, top: position.y - 4 }}
-      />
-      <div
-        className={`cursor-outline ${hovering ? 'hover' : ''}`}
-        style={{ left: position.x - 15, top: position.y - 15 }}
-      />
-    </>
-  );
-}
-
 function App() {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState<Page>('home');
 
-  const navigate = (page: Page) => {
+  const navigate = useCallback((page: Page) => {
     setCurrentPage(page);
-  };
+  }, []);
 
-  const renderPage = () => {
+  const handleLoadingComplete = useCallback(() => {
+    setLoading(false);
+  }, []);
+
+  const renderPage = useMemo(() => {
     switch (currentPage) {
       case 'home': return <Home onNavigate={navigate} />;
       case 'services': return <Services onNavigate={navigate} />;
@@ -80,15 +35,15 @@ function App() {
       case 'contact': return <Contact />;
       case 'premium': return <PremiumFeatures onNavigate={navigate} />;
       case 'eventai': return <EventAI onNavigate={navigate} />;
+      default: return <Home onNavigate={navigate} />;
     }
-  };
+  }, [currentPage, navigate]);
 
   return (
     <div className="min-h-screen bg-dark text-purple-100 overflow-x-hidden">
-      {loading && <LoadingScreen onComplete={() => setLoading(false)} />}
-      <CustomCursor />
+      {loading && <LoadingScreen onComplete={handleLoadingComplete} />}
       <Navbar currentPage={currentPage} onNavigate={navigate} />
-      <main>{renderPage()}</main>
+      <main>{renderPage}</main>
       <Footer onNavigate={navigate} />
     </div>
   );
