@@ -4,7 +4,7 @@ import {
   CheckCircle, Bell, Gift, Crown, Wand2,
   MessageCircle, Plus, Trash2, Mail, Phone,
   PartyPopper, UserCheck, GalleryVerticalEnd,
-  RefreshCw, Play, Image, Instagram, Upload, X
+  RefreshCw, Play, Image, Instagram, Upload, X, Star
 } from 'lucide-react';
 import Confetti from '../components/Confetti';
 import FloatingDots from '../components/FloatingDots';
