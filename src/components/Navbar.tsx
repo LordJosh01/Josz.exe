@@ -80,7 +80,7 @@ export default function Navbar({ currentPage, onNavigate }: NavbarProps) {
                 style={{ animationDelay: `${i * 80}ms` }}
                 className={`nav-link pb-0.5 flex items-center gap-1 ${currentPage === page ? 'active' : ''} ${mounted ? 'opacity-100' : 'opacity-0'}`}
               >
-                {Icon && <Icon size={12} className="text-gold-400" />}
+                {Icon && page === 'eventai' && <Icon size={12} className="text-gold-400 animate-pulse" />}
                 {label}
               </button>
             ))}

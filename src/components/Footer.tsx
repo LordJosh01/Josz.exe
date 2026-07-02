@@ -1,16 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
-import { Mail, Phone, Instagram, MapPin, ChevronRight } from 'lucide-react';
+import { Mail, Phone, Instagram, MapPin, ChevronRight, Sparkles } from 'lucide-react';
 
-type Page = 'home' | 'services' | 'portfolio' | 'about' | 'faq' | 'contact' | 'premium';
+type Page = 'home' | 'services' | 'portfolio' | 'about' | 'faq' | 'contact' | 'premium' | 'eventai';
 
 interface FooterProps {
   onNavigate: (page: Page) => void;
 }
 
-const quickLinks: { label: string; page: Page }[] = [
+const quickLinks: { label: string; page: Page; icon?: React.ComponentType<{ size?: number }> }[] = [
   { label: 'Our Services', page: 'services' },
   { label: 'Portfolio', page: 'portfolio' },
   { label: 'Premium', page: 'premium' },
+  { label: 'Event AI', page: 'eventai', icon: Sparkles },
   { label: 'About Us', page: 'about' },
   { label: 'FAQ', page: 'faq' },
   { label: 'Contact', page: 'contact' },
