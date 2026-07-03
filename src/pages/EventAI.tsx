@@ -15,6 +15,13 @@ interface Message {
   timestamp: Date;
 }
 
+interface EventContext {
+  eventType: string | null;
+  guestCount: number | null;
+  budget: string | null;
+  lastTopic: string | null;
+}
+
 const tips = [
   { icon: Calendar, title: 'Book Early', desc: 'Book your venue 6-12 months ahead for weddings' },
   { icon: Users, title: 'Guest List', desc: 'Create your guest list early and group by priority' },
@@ -28,6 +35,10 @@ const suggestedQuestions = [
   'How do I plan a birthday party on a budget?',
   'What should I consider when choosing a venue?',
   'How far in advance should I book vendors?',
+  'Can you help me create an event timeline?',
+  'What are the latest decoration trends?',
+  'Tell me about traditional Nigerian weddings',
+  'How much does a wedding cost in Kwara?',
 ];
 
 const initialMessage: Message = {
@@ -41,9 +52,31 @@ I can help you with:
 * Budget planning and vendor scheduling
 * Creating event timelines
 * Decoration and theme ideas
+* Traditional Nigerian ceremonies
 
 How may I help you today?`,
   timestamp: new Date(),
+};
+
+// Helper to extract numbers from text
+const extractNumber = (text: string): number | null => {
+  const match = text.match(/\d+/);
+  return match ? parseInt(match[0]) : null;
+};
+
+// Helper to detect event type
+const detectEventType = (text: string): string | null => {
+  const types: Record<string, string[]> = {
+    wedding: ['wedding', 'marriage', 'nuptial', 'engagement party'],
+    birthday: ['birthday', 'birthday party', 'celebration'],
+    corporate: ['corporate', 'business', 'conference', 'seminar', 'meeting', 'annual general'],
+    baby: ['baby shower', 'naming ceremony', 'child dedication', 'christening'],
+    traditional: ['traditional wedding', 'engagement ceremony', 'dowry', 'bride price', ' lobola', 'native law'],
+  };
+  for (const [type, keywords] of Object.entries(types)) {
+    if (keywords.some(k => text.includes(k))) return type;
+  }
+  return null;
 };
 
 export default function EventAI({ onNavigate }: EventAIProps) {
@@ -51,7 +84,12 @@ export default function EventAI({ onNavigate }: EventAIProps) {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [savedConversations, setSavedConversations] = useState<Message[][]>([]);
-  const [conversationContext, setConversationContext] = useState<string[]>([]);
+  const [eventContext, setEventContext] = useState<EventContext>({
+    eventType: null,
+    guestCount: null,
+    budget: null,
+    lastTopic: null,
+  });
   const chatRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -83,16 +121,44 @@ export default function EventAI({ onNavigate }: EventAIProps) {
 
   const clearCurrentChat = () => {
     setMessages([initialMessage]);
-    setConversationContext([]);
+    setEventContext({ eventType: null, guestCount: null, budget: null, lastTopic: null });
+  };
+
+  // Update context based on user input
+  const updateContext = (text: string) => {
+    const lowerText = text.toLowerCase();
+    const eventType = detectEventType(lowerText);
+    const guestCount = extractNumber(lowerText);
+
+    let budget = eventContext.budget;
+    if (lowerText.includes('million') || lowerText.includes('thousand') || lowerText.match(/n?\d+k/i) || lowerText.match(/n\d+/i)) {
+      budget = text;
+    }
+
+    setEventContext(prev => ({
+      eventType: eventType || prev.eventType,
+      guestCount: guestCount || prev.guestCount,
+      budget: budget,
+      lastTopic: eventType || prev.lastTopic,
+    }));
   };
 
   const generateAIResponse = (userInput: string): string => {
     const lowerInput = userInput.toLowerCase();
-    const context = [...conversationContext, lowerInput].slice(-5);
-    setConversationContext(context);
+    updateContext(userInput);
+    const guests = eventContext.guestCount || 100;
 
-    // Greetings
+    // Greetings with context awareness
     if (lowerInput.match(/^(hi|hello|hey|good morning|good afternoon|good evening)/)) {
+      if (eventContext.eventType) {
+        return `Hello again! I remember we're planning a ${eventContext.eventType}. What would you like to explore next?
+
+I can help with:
+- Budget breakdown tailored to your event
+- Vendor recommendations
+- Timeline creation
+- Decoration ideas`;
+      }
       return `Hello! Great to meet you!
 
 I'm here to help you plan your perfect event. To give you the best advice, could you tell me:
@@ -104,9 +170,200 @@ I'm here to help you plan your perfect event. To give you the best advice, could
 Once I know these details, I can give you personalized recommendations!`;
     }
 
-    // Budget related
-    if (lowerInput.includes('budget') || lowerInput.includes('cost') || lowerInput.includes('price') || lowerInput.includes('how much')) {
-      return `Great question about budgeting! Here's a typical cost breakdown for events in Kwara State:
+    // Corporate events
+    if (lowerInput.includes('corporate') || lowerInput.includes('business event') || lowerInput.includes('conference') || lowerInput.includes('seminar') || lowerInput.includes('annual general')) {
+      return `Corporate events require professional execution! Here's a comprehensive guide:
+
+**Corporate Event Types**
+1. **Conferences**: Keynote speakers, breakout sessions, networking
+2. **Product Launches**: Media coverage, live demos, VIP guests
+3. **Annual General Meetings**: Formal, shareholder-focused
+4. **Team Building**: Outdoor activities, workshops, retreats
+5. **Award Ceremonies**: Gala dinner, employee recognition
+
+**Planning Timeline**
+- 6 months: Define objectives, budget, guest list
+- 4 months: Book venue, speakers, caterers
+- 2 months: AV setup, branding materials
+- 1 month: Registration, final confirmations
+
+**Budget Allocation for Corporate**
+- Venue (25-30%): Includes AV, furniture
+- Catering (20-25%): Coffee breaks, lunch, dinner
+- Technology (15-20%): Sound, visuals, livestream
+- Speakers/Entertainment (10-15%)
+- Branding & Materials (10%)
+- Contingency (5-10%)
+
+What type of corporate event are you planning?`;
+    }
+
+    // Traditional/Native engagement
+    if (lowerInput.includes('traditional') || lowerInput.includes('engagement ceremony') || lowerInput.includes('dowry') || lowerInput.includes('bride price') || lowerInput.includes('native law') || lowerInput.includes(' lobola')) {
+      return `Traditional ceremonies are beautiful and culturally rich! Here's guidance for Nigerian traditional engagements:
+
+**Major Nigerian Traditional Weddings**
+
+**Yoruba Tradition**
+1. Introduction (Mo mi mo o): Formal request to bride's family
+2. Engagement (Idana): Date set, items presented
+3. Items: Kola nuts, bitter kola, alligator pepper, honey, sugar, salt, tubers of yam, bags of rice, palm oil, drinks, clothes, jewelry
+
+**Igbo Tradition**
+1. Introduction (Iju Aju): Initial inquiry
+2. Knocking (Iku Aka): Formal proposal
+3. Bride price (Ime Ego): Negotiation with Umunna
+4. Items: Kola nuts, palm wine, goat, rice, yam, clothes, jewelry
+
+**Hausa/Fulani Tradition**
+1. Gayar Aures: Introduction
+2. Sadaki: Bride price payment
+3. Kamun Aures: Wedding fatiha
+4. Items: Money, jewelry, clothes, household items
+
+**Typical Budget: N500,000 - N3,000,000**
+(depending on family requirements)
+
+Which culture's traditional wedding are you planning? I can give you a detailed item list!`;
+    }
+
+    // Naming ceremony/Child dedication
+    if (lowerInput.includes('naming') || lowerInput.includes('dedication') || (lowerInput.includes('child') && lowerInput.includes('ceremony')) || lowerInput.includes('baby shower') || lowerInput.includes('christening')) {
+      return `Congratulations on the little one! Naming ceremonies are joyous occasions:
+
+**Naming Ceremony Guide (Yoruba Style)**
+- Day: 8th day after birth
+- Items symbolizing life virtues:
+  - Water (purity)
+  - Salt (wisdom)
+  - Honey (sweet life)
+  - Kola nut (long life)
+  - Palm oil (smooth life)
+  - Sugar (joy)
+  - Dry fish (wealth)
+
+**Dedication Party Options**
+1. **Church-based**: Special service, then reception
+2. **Home celebration**: Intimate, budget-friendly
+3. **Hall party**: Larger guest count, more formal
+
+**Budget Breakdown: N150,000 - N800,000**
+- Venue: N50,000 - N200,000
+- Catering: N60,000 - N300,000
+- Decorations: N30,000 - N150,000
+- Photography: N20,000 - N100,000
+- Cake: N15,000 - N50,000
+
+**Typical Guest Count: 50-150 people**
+
+Will this be religious (church/mosque) or strictly traditional?`;
+    }
+
+    // Trends
+    if (lowerInput.includes('trend') || lowerInput.includes('latest') || lowerInput.includes('modern') || lowerInput.includes('2024') || lowerInput.includes('2025') || lowerInput.includes("what's new")) {
+      return `Here are the hottest event trends right now:
+
+**Color Trends 2024-2025**
+1. **Monochromatic**: Single color in varying shades
+2. **Earthy Tones**: Terracotta, sage green, dusty rose
+3. **Bold Jewel**: Emerald, ruby, sapphire, deep purple
+4. **Gold + White**: Classic, always elegant
+5. **Blush + Champagne**: Soft, romantic
+
+**Decoration Styles**
+- Grand entrance arches with fresh flowers
+- Hanging installations (florals, lanterns, crystals)
+- Neon signs with couple names or hashtags
+- Photo walls with mixed frames
+- Statement ceiling drapes
+- Hanging rattan chairs for photos
+- Balloon garlands in organic shapes
+
+**Event Tech Trends**
+- Digital invitations with RSVP tracking
+- QR codes for menus and programs
+- Instagram-worthy photo spots
+- Live streaming for remote guests
+- Interactive guest books (audio/video messages)
+
+**Food Trends**
+- Food stations (suya bar, small chops, pasta station)
+- Live cooking stations
+- Miniature versions of traditional dishes
+- Artisan cakes with watercolor or marble designs
+- Dessert tables with variety
+
+Which trend interests you most?`;
+    }
+
+    // Music/Entertainment
+    if (lowerInput.includes('dj') || lowerInput.includes('music') || lowerInput.includes('band') || lowerInput.includes('entertainment') || lowerInput.includes('mc') || lowerInput.includes('live performance')) {
+      return `Entertainment makes or breaks the party! Here's your complete guide:
+
+**DJ vs Live Band Comparison**
+| Factor | DJ | Live Band |
+|--------|-----|-----------|
+| Song variety | Unlimited | Limited repertoire |
+| Cost | N80K - N300K | N150K - N500K |
+| Non-stop music | Yes | Breaks between sets |
+| Guest interaction | Moderate | High energy |
+| Best for | All events | Weddings, galas |
+
+**MC Selection - Questions to Ask**
+1. Experience with your event type?
+2. Sample videos of past events?
+3. Voice quality and crowd engagement?
+4. Backup plan if unavailable?
+5. Cost: N50K - N300K
+
+**Music Timeline for Wedding Reception**
+- Guest arrival: Soft Afrobeats, R&B
+- Entrance: High energy, upbeat
+- First dance: Romantic slow song
+- Dinner: Smooth jazz, soft Afrobeats
+- Party time: Latest hits, throwbacks, Afrobeats
+- Last dance: Romantic, memorable
+
+**Live Band Options in Kwara**
+- Juju/Highlife bands (King Sunny Ade style)
+- Gospel bands
+- Contemporary Pop bands
+- Traditional drummers (talking drum)
+
+What's your entertainment vision?`;
+    }
+
+    // Budget with context awareness
+    if (lowerInput.includes('budget') || lowerInput.includes('cost') || lowerInput.includes('price') || lowerInput.includes('how much') || lowerInput.includes('afford') || lowerInput.includes('expensive')) {
+      if (eventContext.eventType === 'wedding' || lowerInput.includes('wedding')) {
+        return `Here's a detailed wedding budget breakdown for Kwara State:
+
+**Wedding Budget Tiers**
+
+**Intimate (50-80 guests): N800K - N1.5M**
+- Venue: N150K | Catering: N400K | Decor: N150K
+- Photo/Video: N150K | Outfits: N200K | Others: N250K
+
+**Standard (100-200 guests): N2M - N5M**
+- Venue: N500K | Catering: N1.2M | Decor: N600K
+- Photo/Video: N400K | Entertainment: N300K | Outfits: N500K
+
+**Grand (300+ guests): N6M - N15M+**
+- Venue: N1.5M | Catering: N4M | Decor: N2M
+- Photo/Video: N800K | Entertainment: N500K | Outfits: N1M
+
+**Budget-Saving Pro Tips:**
+1. Allocate 5-10% contingency for unexpected costs
+2. Get at least 3 quotes per vendor category
+3. Book off-season (July-August) for discounts
+4. Combine ceremony + reception at one venue
+5. Use silk flowers mixed with fresh
+6. Negotiate package deals with vendors
+
+What's your target budget range? I can suggest how to maximize every naira!`;
+      }
+
+      return `Great question about budgeting! Here's a typical cost breakdown:
 
 **Wedding Budget Ranges**
 - Intimate (50 guests): N500,000 - N1,000,000
@@ -122,220 +379,574 @@ Once I know these details, I can give you personalized recommendations!`;
 - Outfits: 10-15%
 - Miscellaneous: 5%
 
-What's your approximate budget range? I can suggest how to allocate it best!`;
+What's your approximate budget? I can suggest allocation strategies!`;
     }
 
     // Decor/Theme
-    if (lowerInput.includes('decor') || lowerInput.includes('decoration') || lowerInput.includes('theme') || lowerInput.includes('color')) {
+    if (lowerInput.includes('decor') || lowerInput.includes('decoration') || lowerInput.includes('theme') || lowerInput.includes('color') || lowerInput.includes('design') || lowerInput.includes('style')) {
       return `Excellent! Decoration sets the mood for your entire event.
 
 **Popular Color Schemes in Kwara**
-- Gold & White (Classic, elegant)
-- Purple & Gold (Royal feel)
-- Navy Blue & Silver (Modern)
-- Coral & Peach (Romantic)
+- **Gold & White**: Classic, elegant, timeless
+- **Purple & Gold**: Royal, sophisticated
+- **Navy Blue & Silver**: Modern, refined
+- **Coral & Peach**: Romantic, soft
+- **Burgundy & Gold**: Rich, luxurious
 
 **Theme Ideas**
-1. Garden Romance: Florals, fairy lights, pastels
-2. Royal Affair: Deep colors, gold accents
-3. Modern Minimal: Clean lines, statement pieces
-4. Traditional Nigerian: Ankara patterns, cultural elements
+1. **Garden Romance**: Florals, fairy lights, pastels, greenery
+2. **Royal Affair**: Deep colors, gold accents, chandeliers
+3. **Modern Minimal**: Clean lines, statement pieces, monochrome
+4. **Traditional Nigerian**: Ankara patterns, cultural elements
+5. **Bohemian**: Macrame, pampas grass, earthy tones
 
-Which color scheme resonates with you?`;
+**Essential Decoration Elements**
+- Entrance arch/Photo backdrop (N50K - N200K)
+- Centerpieces: ${Math.ceil(guests/8)} tables needed (N8K - N25K each)
+- Chair covers & sashes (N500 - N1,500 each)
+- Table runners and overlays
+- Stage/Head table decor
+- Lighting (uplights, fairy lights, chandeliers)
+- Aisle decor (if ceremony on-site)
+
+**Estimated Decor Cost for ${guests} guests**
+${guests <= 80 ? 'N150,000 - N300,000' : guests <= 150 ? 'N300,000 - N600,000' : guests <= 300 ? 'N500,000 - N1,200,000' : 'N800,000 - N2,000,000'}
+
+Which color scheme or theme resonates with you?`;
     }
 
     // Food/Catering
-    if (lowerInput.includes('food') || lowerInput.includes('cater') || lowerInput.includes('menu') || lowerInput.includes('meal')) {
+    if (lowerInput.includes('food') || lowerInput.includes('cater') || lowerInput.includes('menu') || lowerInput.includes('meal') || lowerInput.includes('rice') || lowerInput.includes('jollof')) {
       return `Food is one of the most memorable parts of any event!
 
 **Popular Menu Options**
-1. Traditional: Jollof rice, fried rice, moin moin, assorted meats
-2. Continental: Pasta bar, salad station, grilled proteins
-3. Hybrid: Mix of both for diverse guests
+1. **Traditional Nigerian**
+   - Jollof rice, fried rice, coconut rice
+   - Moin moin, efo riro, egusi
+   - Assorted meats: beef, chicken, goat, fish
+   - Plantain (dodo, boli), salad
+
+2. **Continental**
+   - Pasta bar (spaghetti, macaroni)
+   - Salad station, grilled proteins
+   - Rice dishes, bread selection
+
+3. **Hybrid (Best of Both)**
+   - Mix traditional + continental
+   - Options for diverse guests
+
+4. **Small Chops & Finger Foods**
+   - Spring rolls, samosa, puff puff
+   - Chicken wings, gizzard, snail
+   - Cocktail sausages, sliders
 
 **Planning Tips**
-- Plan 1.2 servings per person for main dishes
-- Include vegetarian options (10-15% of guests)
-- Consider cultural preferences
+- Main dishes: 1.2 servings per person
+- Small chops: 3-4 pieces per person
+- Drinks: 2-3 bottles per person
+- Dessert: 1 serving per person
+
+**Cost Per Guest (Kwara State)**
+- Budget: N1,500 - N2,500/guest
+- Standard: N3,000 - N5,000/guest
+- Premium: N6,000 - N10,000/guest
+
+**Estimated Catering for ${guests} guests**
+${guests <= 50 ? 'N150,000 - N400,000' : guests <= 100 ? 'N300,000 - N800,000' : guests <= 200 ? 'N600,000 - N1,500,000' : 'N1,000,000 - N3,000,000'}
 
 What type of cuisine are you considering?`;
     }
 
     // Vendors
-    if (lowerInput.includes('vendor') || lowerInput.includes('photographer') || lowerInput.includes('dj') || lowerInput.includes('mc')) {
-      return `Here's guidance on booking vendors in Kwara:
+    if (lowerInput.includes('vendor') || lowerInput.includes('photographer') || lowerInput.includes('videographer') || lowerInput.includes('makeup') || lowerInput.includes('florist')) {
+      return `Here's comprehensive vendor guidance for Kwara State:
 
-**Booking Timeline**
-- Photographer: 6-9 months ahead
-- Videographer: 6-9 months ahead
-- DJ/Band: 4-6 months ahead
-- MC: 3-4 months ahead
-- Florist/Decorator: 3-4 months ahead
+**Vendor Booking Timeline**
+| Vendor | Book Ahead |
+|--------|------------|
+| Venue | 9-12 months |
+| Photographer | 6-9 months |
+| Videographer | 6-9 months |
+| DJ/Band | 4-6 months |
+| MC | 3-4 months |
+| Florist/Decorator | 3-4 months |
+| Makeup Artist | 2-3 months |
+| Caterer | 2-3 months |
 
-**Questions to Ask**
+**Questions to Ask Every Vendor**
 1. What's included in your package?
-2. How many hours of coverage?
-3. Do you bring backup equipment?
-4. Can I see your portfolio?
+2. Hours of coverage/service?
+3. Payment terms (deposit %, balance due)?
+4. Backup plan if you're unavailable?
+5. Portfolio or references to contact?
+6. Insurance or guarantees?
+7. Setup/breakdown time needed?
+8. Additional fees (travel, overtime)?
 
 **Red Flags to Avoid**
 - No contract or written agreement
-- Demanding full payment upfront
+- Demanding 100% payment upfront
 - No portfolio or references
+- Unwilling to meet in person
+- Unusually cheap (too good to be true)
+- Vague about what's included
+
+**Pro Tips**
+- Book vendors who've worked at your venue
+- Get itemized quotes, not just totals
+- Read contracts thoroughly before signing
+- Maintain regular contact after booking
 
 What type of vendor are you looking for?`;
     }
 
     // Outfit/Attire
-    if (lowerInput.includes('outfit') || lowerInput.includes('dress') || lowerInput.includes('attire') || lowerInput.includes('aso ebi')) {
-      return `Looking your best is essential!
+    if (lowerInput.includes('outfit') || lowerInput.includes('dress') || lowerInput.includes('attire') || lowerInput.includes('aso ebi') || lowerInput.includes('aso oke') || lowerInput.includes('fashion') || lowerInput.includes('wear')) {
+      return `Looking your best is essential! Here's your complete attire guide:
 
-**Traditional Options**
-- Aso Ebi: Coordinate colors with guests
-- Agbada: Grand for grooms
-- Iro & Buba: Classic for brides
-- Ankara: Vibrant, customizable
+**Traditional Nigerian Options**
+- **Aso Ebi**: Coordinated family/friend uniforms (N15K - N150K/set)
+- **Aso Oke**: Premium Yoruba handwoven fabric (N30K - N150K/set)
+- **Agbada**: Grand, flowing for grooms (N40K - N200K)
+- **Iro & Buba + Gele**: Classic Yoruba women's set
+- **Ankara**: Vibrant, affordable, customizable (N15K - N50K/set)
+- **George/Lace**: Elegant, formal events (N40K - N150K/set)
+- **Senator/Kaftan**: Modern Nigerian men's wear
 
-**Planning Tips**
-- Order Aso Ebi 2-3 months ahead
-- Schedule fittings 3 weeks before event
-- Consider venue weather (AC/outdoor)
+**Bride's Attire Journey**
+1. Traditional outfit (2-3 outfit changes)
+2. White wedding gown (rent N50K - N200K, buy N150K - N1M+)
+3. Reception dress (comfortable for dancing)
+4. Honeymoon outfits
+
+**Groom's Attire Journey**
+1. Traditional agbada or senator
+2. Suit/tuxedo for white wedding
+3. Reception outfit (senator, kaftan)
+
+**Planning Timeline**
+- 3 months: Choose designs, order fabrics
+- 6 weeks: Begin sewing/fittings
+- 3 weeks: Final fitting
+- 1 week: Pickup and steam
+
+**Aso Ebi Tips**
+- Order 10% extra for latecomers
+- Consider different styles for body types
+- Provide color swatches to all tailors
+- Collect money upfront!
 
 What style are you considering? Traditional, modern, or a mix?`;
     }
 
     // Guest list
-    if (lowerInput.includes('guest') || lowerInput.includes('invite') || lowerInput.includes('attend')) {
-      return `Guest list management is crucial!
+    if (lowerInput.includes('guest') || lowerInput.includes('invite') || lowerInput.includes('attend') || lowerInput.includes('capacity') || lowerInput.includes('people')) {
+      return `Guest list management is crucial! Here's a strategic approach:
 
-**Guest List Strategy**
-1. Start with must-have guests (family, close friends)
-2. Add would like to have (extended family, colleagues)
-3. Create a B-list for overflow spots
+**Guest List Tiers**
+- **Tier A (Must-have)**: Immediate family, best friends, close relatives
+- **Tier B (Would like)**: Extended family, colleagues, neighbors
+- **Tier C (Overflow)**: Acquaintances, distant relatives
 
-**Venue Capacity Guide**
-- 50 guests: Small hall, restaurant private room
-- 100-150: Medium hall, outdoor garden
-- 200-300: Large hall, hotel ballroom
-- 300+: Event center, open field
+**Venue Capacity vs Guest Count**
+| Guests | Venue Type |
+|--------|------------|
+| 30-50 | Restaurant private room, small hall, home |
+| 50-100 | Medium hall, church hall, garden |
+| 100-200 | Large hall, hotel ballroom, event center |
+| 200-400 | Event center, large hotel |
+| 400+ | Open field, stadium, large event center |
 
 **Invitation Timeline**
 - Save-the-dates: 3-4 months ahead
+- Traditional list sharing: Both families early
 - Formal invites: 6-8 weeks ahead
 - RSVP deadline: 2-3 weeks before event
+- Final headcount to caterers: 1 week before
+
+**RSVP Tracking Methods**
+- WhatsApp broadcast with reply tracking
+- Google Form link on invitation
+- Dedicated phone number for RSVPs
+- Event website with RSVP feature
+
+**Pro Tips**
+- Plan for 10-15% no-shows
+- Have backup seats for unexpected guests
+- Create a "VIP" list for reserved seating
 
 How many guests are you thinking?`;
     }
 
-    // Wedding
-    if (lowerInput.includes('wedding')) {
+    // Wedding specific
+    if (lowerInput.includes('wedding') || lowerInput.includes('marriage')) {
       return `How exciting - a wedding! Let's make it unforgettable.
 
-**Planning Checklist**
-12 months: Set date, budget, guest count
-10 months: Book venue, photographer, caterer
-8 months: Choose attire, book DJ/band
-6 months: Send save-the-dates, book florist
-4 months: Order cake, finalize menu
-2 months: Final fitting, confirm vendors
-1 month: Final headcount, seating chart
+**Complete Wedding Planning Timeline**
 
-**Key Questions**
+**12+ Months Before**
+- Set date (consider weather, holidays, family availability)
+- Set overall budget
+- Create guest list draft
+- Research and book venue
+- Book photographer and videographer
+
+**8-10 Months Before**
+- Choose wedding theme and colors
+- Book DJ/band and MC
+- Order invitations and Aso Ebi
+- Book caterer
+- Schedule dress fittings
+
+**6 Months Before**
+- Send save-the-dates
+- Book florist/decorator
+- Order wedding cake
+- Plan honeymoon
+- Book makeup artist
+
+**3-4 Months Before**
+- Send formal invitations
+- Confirm all vendors
+- Finalize menu with caterer
+- Order souvenirs/favors
+
+**1-2 Months Before**
+- Final headcount
+- Seating chart
+- Final dress fitting
+- Vendor run-through meeting
+- Print programs
+
+**1 Week Before**
+- Confirm final details with all vendors
+- Prepare vendor payments
+- Pack for honeymoon
+
+**Key Decisions**
 1. Traditional + White wedding, or just one?
 2. Indoor or outdoor preference?
-3. Small/intimate or grand celebration?
+3. Intimate or grand celebration?
 
 What stage of planning are you at?`;
     }
 
-    // Birthday
+    // Birthday specific
     if (lowerInput.includes('birthday')) {
       return `Birthday celebrations should be fun and memorable!
 
-**Birthday Types & Ideas**
-- Kids (1-10): Bounce house, games, character themes
-- Teens (11-17): Gaming stations, photo booth
-- Young Adults (18-30): Party vibe, DJ, Instagram moments
-- Milestone (40/50/60+): Elegant dinner, memory lane
+**Birthday Types & Ideas by Age**
+
+**Kids (1-10 years): N100K - N500K**
+- Bounce house, face painting, games
+- Character themes (Frozen, Spider-Man, Cocomelon)
+- Activity-based (art, baking, treasure hunt)
+- Balloon decoration, cake cutting
+
+**Teens (11-17 years): N150K - N600K**
+- Gaming stations, foosball, video games
+- Karaoke, photo booth
+- Pool party, movie night
+- Sleepover with activities
+
+**Young Adults (18-35 years): N200K - N1M**
+- Party vibe, DJ, Instagram moments
+- Dinner party, lounge setting
+- Themed costume party
+- Outdoor barbecue, pool party
+
+**Milestone (40/50/60+ years): N300K - N1.5M**
+- Elegant dinner setting
+- Memory lane display (photos through the years)
+- Tribute video, speeches from loved ones
+- Family gathering, reunion feel
 
 **Budget-Friendly Ideas**
-- Host at home or public park
+- Host at home or public park (free venue!)
 - Potluck food sharing
 - Digital invitations (free!)
 - DIY decorations
+- Homemade or semi-homemade cake
+- Spotify playlist instead of DJ
 
-What age group are we celebrating?`;
+What age group and party style are you thinking?`;
     }
 
-    // Timeline
-    if (lowerInput.includes('timeline') || lowerInput.includes('schedule') || lowerInput.includes('program')) {
+    // Timeline/Program
+    if (lowerInput.includes('timeline') || lowerInput.includes('schedule') || lowerInput.includes('program') || lowerInput.includes('run of show') || lowerInput.includes('itinerary')) {
       return `A good timeline keeps everything running smoothly!
 
-**Wedding Day Timeline (5 hours)**
-12:00 PM - Vendor arrivals
-1:00 PM - Bridal party photos
-2:00 PM - Guest arrival
-2:30 PM - Ceremony
-3:00 PM - Cocktail hour
-4:00 PM - Reception entrance
-4:15 PM - First dance
-4:30 PM - Dinner
-5:30 PM - Toasts & cake
-6:00 PM - Dancing
-8:00 PM - Last dance & departure
+**Wedding Day Timeline (5-hour celebration)**
+10:00 AM - Vendor arrivals, setup begins
+11:00 AM - Bridal party photos
+12:00 PM - Guest arrival, ushers seat guests
+12:30 PM - Processional, ceremony begins
+  1:00 PM - Recessional, congratulations
+  1:15 PM - Cocktail hour, group photos
+  2:00 PM - Grand entrance (couple)
+  2:15 PM - First dance
+  2:30 PM - Welcome speech, prayers
+  2:45 PM - Cake cutting ceremony
+  3:00 PM - Food service begins
+  3:30 PM - Toast/speeches (parents, friends)
+  4:00 PM - Dance floor opens
+  5:00 PM - Games/activities
+  5:30 PM - Bouquet toss, garter toss
+  6:00 PM - More dancing
+  6:30 PM - Last dance
+  7:00 PM - Farewell/sendoff
 
-**Tips**
-- Add 15 min buffer between activities
-- Have a designated timekeeper
-- Share timeline with all vendors
+**Tips for Smooth Flow**
+- Build in 15-minute buffers between key moments
+- Appoint a day-of coordinator or timekeeper
+- Share timeline with all vendors in advance
+- Have a run-through the week before
 
-Would you like me to customize a timeline for your event?`;
+**Birthday Party (3 hours)**
+- 0:00: Guest arrival, mingling, music
+- 0:30: Games/activities begin
+- 1:00: Food service
+- 1:30: Cake cutting, "Happy Birthday"
+- 2:00: Gift opening, photos
+- 2:30: More fun/dancing
+- 3:00: Wrap up, party favors
+
+Would you like me to customize a timeline for your specific event?`;
     }
 
     // Venue
-    if (lowerInput.includes('venue') || lowerInput.includes('location') || lowerInput.includes('place') || lowerInput.includes('hall')) {
-      return `Venue selection is critical! Here's guidance for Kwara State:
+    if (lowerInput.includes('venue') || lowerInput.includes('location') || lowerInput.includes('place') || lowerInput.includes('hall') || lowerInput.includes('event center') || lowerInput.includes('hotel')) {
+      return `Venue selection is critical! Here's comprehensive guidance for Kwara State:
 
-**Venue Types**
-1. Hotel Ballrooms: All-inclusive, AC, parking
-2. Event Centers: Large capacity, flexible
-3. Outdoor Gardens: Beautiful, weather-dependent
-4. Church Halls: Budget-friendly
-5. Restaurants: Private rooms for intimate events
+**Popular Venue Types in Kwara**
 
-**What to Ask**
-- Maximum capacity?
-- What's included? (tables, chairs, linens?)
-- Power backup?
+**1. Hotel Ballrooms**
+- Examples: Kwara Hotel, Sobi Hill, other major hotels
+- Features: AC, parking, all-inclusive packages
+- Range: N300K - N1.5M
+
+**2. Event Centers**
+- Examples: Banex, Crystore, De-Peace, Multipurpose
+- Features: Large capacity, flexible layout
+- Range: N200K - N800K
+
+**3. Churches/Mosques Halls**
+- Features: Budget-friendly, familiar environment
+- Range: N100K - N300K
+
+**4. Restaurants/Private Dining**
+- Features: Intimate, food on-site
+- Range: N150K - N500K
+
+**5. Outdoor Gardens/Fields**
+- Features: Beautiful scenery, weather-dependent
+- Range: N100K - N400K
+
+**Critical Questions to Ask**
+- Maximum capacity (seated vs standing)?
+- What's included? (tables, chairs, linens, sound?)
+- Power backup? (Essential in Nigeria!)
 - Parking capacity?
-- Catering restrictions?
+- Catering restrictions or in-house catering only?
+- Noise regulations/curfew?
+- AC or fans?
+- Setup/breakdown time included?
+- Cleaning fee?
 
-**Quick Size Guide**
-- 50 guests: Small hall or restaurant
-- 100 guests: Medium hall
-- 200+ guests: Large hall or event center
+**Venue Size Quick Guide**
+| Guests | Venue Size |
+|--------|------------|
+| 50 | Small hall |
+| 100 | Medium hall |
+| 200 | Large hall/hotel |
+| 300+ | Event center |
 
 What type of venue are you considering?`;
     }
 
-    // Thanks
-    if (lowerInput.includes('thank') || lowerInput.includes('thanks') || lowerInput.includes('helpful')) {
-      return `You're welcome! I'm glad I could help.
+    // Flowers/Florist
+    if (lowerInput.includes('flower') || lowerInput.includes('bouquet') || lowerInput.includes('floral') || lowerInput.includes('florist')) {
+      return `Flowers add beauty, fragrance, and elegance to any event!
 
-Is there anything else you'd like to know about:
-- Specific vendor recommendations
-- Budget planning
+**Popular Flowers Available in Nigeria**
+- **Roses**: N2,000 - N5,000 per stem (classic, romantic)
+- **Lilies**: N3,000 - N6,000 per stem (elegant, fragrant)
+- **Carnations**: N1,500 - N3,000 per stem (long-lasting)
+- **Baby's breath**: N1,000 - N2,000 per bunch (filler)
+- **Orchids**: N4,000 - N8,000 per stem (luxury)
+- **Local flowers**: N500 - N1,500 per bunch (budget-friendly)
+
+**Essential Floral Elements for Wedding**
+- Bridal bouquet: N15,000 - N50,000
+- Bridesmaids' bouquets (each): N10,000 - N25,000
+- Boutonnieres (each): N2,000 - N5,000
+- Centerpieces (each): N8,000 - N25,000
+- Entrance arch: N50,000 - N200,000
+- Aisle markers: N20,000 - N60,000
+- Stage florals: N50,000 - N150,000
+
+**Budget-Saving Tips**
+1. Choose in-season flowers
+2. Mix fresh flowers with quality silk flowers
+3. Repurpose ceremony flowers for reception
+4. Use more greenery than flowers
+5. Consider potted plants as centerpieces
+6. Order from local markets directly
+
+**Typical Total Flower Budget: N150,000 - N500,000**
+
+What floral style do you prefer? Romantic, modern, or traditional?`;
+    }
+
+    // Souvenirs/Party Favors
+    if (lowerInput.includes('souvenir') || lowerInput.includes('favors') || lowerInput.includes('gift for guests') || lowerInput.includes('party favors') || lowerInput.includes('takeaway')) {
+      return `Souvenirs show appreciation to your guests! Here are popular Nigerian options:
+
+**Traditional Nigerian Souvenirs**
+- Customized plastic food packs: N200 - N500 each
+- Glass cups/mugs with print: N300 - N800 each
+- Ankara fabric pieces (2 yards): N500 - N2,000 each
+- Customized hand fans: N200 - N600 each
+- Scented soaps: N300 - N800 each
+- Key holders/bottle openers: N150 - N400 each
+- Tote bags: N400 - N1,000 each
+
+**Modern/Premium Options**
+- Mini perfumes (10ml): N800 - N2,000 each
+- Customized water bottles: N600 - N1,500 each
+- Phone accessories (pouches, chargers): N300 - N800 each
+- Scented candles: N500 - N1,500 each
+- Chocolate boxes: N500 - N1,500 each
+- Face towels: N400 - N1,000 each
+
+**Planning Tips**
+1. Order 10% extra for unexpected guests
+2. Consider different tiers (VIP vs regular guests)
+3. Package beautifully (presentation matters!)
+4. Include a thank-you note/card
+5. Label with guest names for place setting
+
+**Typical Budget**
+- 100 guests: N50K - N150K
+- 200 guests: N100K - N300K
+- 300+ guests: N150K - N500K
+
+What type of souvenirs interest you?`;
+    }
+
+    // Photography/Video
+    if (lowerInput.includes('photo') || lowerInput.includes('video') || lowerInput.includes('camera') || lowerInput.includes('pictures')) {
+      return `Photography and videography capture memories that last forever!
+
+**Photography Packages in Kwara**
+
+**Basic Package: N80K - N150K**
+- 4-6 hours coverage
+- 200-300 edited photos
+- Online gallery
+- USB delivery
+
+**Standard Package: N150K - N300K**
+- 8-10 hours coverage
+- 400-600 edited photos
+- Pre-wedding shoot included
+- Photo album (20-30 pages)
+- Online gallery
+
+**Premium Package: N300K - N600K**
+- Full day coverage (getting ready to end)
+- 800+ edited photos
+- Pre-wedding + engagement shoots
+- Premium photo albums (2 copies)
+- Same-day edit slideshow
+- Drone footage
+
+**Videography Packages: N100K - N500K**
+- Highlights reel (3-5 minutes)
+- Full ceremony video
+- Interviews with guests
+- Cinematic editing
+
+**Questions to Ask**
+1. How many photographers on the day?
+2. Editing style (candid, posed, artistic)?
+3. Turnaround time for photos?
+4. Backup equipment?
+5. Album quality and pages included?
+6. Raw footage available?
+
+Do you need photography recommendations?`;
+    }
+
+    // Makeup/Beauty
+    if (lowerInput.includes('makeup') || lowerInput.includes('beauty') || lowerInput.includes('gele') || lowerInput.includes('hair')) {
+      return `Looking stunning on your big day is essential!
+
+**Makeup Services in Kwara**
+
+**Bridal Makeup: N30K - N100K**
+- Trial session included
+- HD/airbrush makeup
+- False lashes
+- Touch-up kit
+- Gele tying (2-3 styles)
+
+**Bridesmaids (each): N10K - N30K**
+- Full face makeup
+- Gele/headgear
+
+**Guest Makeup: N5K - N20K**
+
+**Popular Makeup Artists in Kwara**
+- Book 2-3 months ahead for top artists
+- Always do a trial session first
+- Share inspiration photos
+
+**Gele Styles**
+- Fan style (popular)
+- Auto-gele (pre-made, easy)
+- Scorpion style
+- Turban style
+- Rose style
+
+**Questions to Ask Makeup Artist**
+1. Brand of products used?
+2. Trial session included?
+3. How many people can you handle?
+4. Touch-up assistance during event?
+5. Travel to venue or studio only?
+
+**Pre-Event Beauty Timeline**
+- 1 month: Facials, skin care routine
+- 1 week: Manicure, pedicure, body scrub
+- 2 days: Eyebrow shaping
+- Day of: Arrive with clean, moisturized face
+
+What look are you going for?`;
+    }
+
+    // Thanks
+    if (lowerInput.includes('thank') || lowerInput.includes('thanks') || lowerInput.includes('helpful') || lowerInput.includes('appreciate')) {
+      return `You're most welcome! I'm glad I could help.
+
+I'm here for you throughout your planning journey!
+
+**What else can I help with?**
+- Vendor recommendations
+- Detailed budget planning
 - Timeline creation
 - Theme/decoration ideas
 - Guest list management
+- Traditional ceremony guidance
+- Troubleshooting planning challenges
 
-I'm here to guide you through every step!
+Remember: BELSH Events offers professional planning services to bring your vision to life. Would you like to book a free consultation?
 
-Remember: BELSH Events offers full planning services. Would you like to book a consultation?`;
+Just ask me anything!`;
     }
 
     // Contact/booking
-    if (lowerInput.includes('book') || lowerInput.includes('consultation') || lowerInput.includes('contact') || lowerInput.includes('service')) {
+    if (lowerInput.includes('book') || lowerInput.includes('consultation') || lowerInput.includes('contact') || lowerInput.includes('hire') || lowerInput.includes('your service') || lowerInput.includes('speak to someone')) {
       return `I'd love to connect you with the BELSH Events team!
 
 **Ways to Reach Us**
@@ -347,26 +958,92 @@ Remember: BELSH Events offers full planning services. Would you like to book a c
 - Free 30-minute consultation
 - Personalized planning advice
 - Transparent pricing
+- Portfolio review
 - No pressure, just guidance
+
+**Services We Offer**
+1. **Full Planning**: Start to finish management
+2. **Day-of Coordination**: Ensure smooth execution
+3. **Vendor Sourcing**: Find the best within budget
+4. **Decor Setup**: Transform your venue
+5. **Event Styling**: Curated aesthetic design
+
+**What to Prepare for Consultation**
+- Event date (or potential dates)
+- Approximate guest count
+- Budget range
+- Vision/theme ideas
+- Any specific requirements
 
 Would you like help preparing questions for your consultation?`;
     }
 
-    // Default response
-    return `That's an interesting question! Let me help you think through this.
+    // Problem/complaint handling
+    if (lowerInput.includes('problem') || lowerInput.includes('issue') || lowerInput.includes('help') || lowerInput.includes('worried') || lowerInput.includes('stressed') || lowerInput.includes('overwhelmed')) {
+      return `I hear you - event planning can feel overwhelming! Let me help.
+
+**Common Challenges & Solutions**
+
+**Budget Constraints?**
+- Prioritize what matters most to you
+- DIY where possible (favors, some decor)
+- Book off-season for vendor discounts
+- Negotiate package deals
+
+**Short Timeline?**
+- Focus on essentials only
+- Consider package deals (all-in-one)
+- Ask vendors about expedited options
+- Be flexible with dates
+
+**Family Disagreements?**
+- Create a shared vision board
+- List non-negotiables separately
+- Compromise on lower-priority items
+- Consider a mediator/planner
+
+**Vendor Ghosting?**
+- Always have a written contract
+- Follow up regularly
+- Keep backup vendor contacts
+- Consider booking platforms with guarantees
+
+**Weather Concerns?**
+- Always have Plan B (indoor backup)
+- Rent tents/canopies for outdoor events
+- Check seasonal weather patterns
+
+Tell me your specific challenge - I'll help you find solutions!`;
+    }
+
+    // Default response with context
+    const contextPrefix = eventContext.eventType
+      ? `Since you're planning a ${eventContext.eventType}, `
+      : '';
+
+    return `That's an interesting question! ${contextPrefix}let me help you think through this.
 
 **Based on your question, here are considerations:**
 
-1. Event Type Matters: Different events need different approaches
-2. Budget is Key: Everything flows from your budget
-3. Location: In Kwara State, Ilorin has the most venues
+1. **Event Type Matters**: Different events have different requirements
+2. **Budget is Key**: Everything flows from your budget
+3. **Location**: Kwara State (Ilorin) has many venue options
+4. **Time**: Book early for best vendors
 
-**To give you the best advice, please tell me:**
+**To give you the best personalized advice, please tell me:**
 - What type of event are you planning?
 - How many guests are you expecting?
 - Do you have a date in mind?
+- What's your approximate budget?
 
-I can give you a detailed plan once I know these details!`;
+I'll provide a detailed, customized plan once I know these details!
+
+You can also ask me about:
+- Traditional ceremonies
+- Vendor booking
+- Decoration trends
+- Budget breakdowns
+- Event timelines`;
   };
 
   const sendMessage = async (e?: React.FormEvent) => {
@@ -384,7 +1061,7 @@ I can give you a detailed plan once I know these details!`;
     setInput('');
     setLoading(true);
 
-    await new Promise((resolve) => setTimeout(resolve, 800 + Math.random() * 800));
+    await new Promise((resolve) => setTimeout(resolve, 600 + Math.random() * 600));
 
     const responseContent = generateAIResponse(input);
 

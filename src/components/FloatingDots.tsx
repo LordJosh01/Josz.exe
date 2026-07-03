@@ -8,7 +8,7 @@ interface FloatingDotsProps {
 
 export default function FloatingDots({
   color = 'mixed',
-  count = 20,
+  count = 50,
   size = 'sm'
 }: FloatingDotsProps) {
   const sizeConfig = {
@@ -29,7 +29,7 @@ export default function FloatingDots({
 
   // Pre-generate dots with memoization to prevent recalculation
   const dots = useMemo(() =>
-    Array.from({ length: Math.min(count, 25) }).map((_, i) => ({
+    Array.from({ length: Math.min(count, 50) }).map((_, i) => ({
       size: min + Math.random() * (max - min),
       color: colors[Math.floor(Math.random() * colors.length)],
       left: Math.random() * 100,
