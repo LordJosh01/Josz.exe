@@ -205,9 +205,9 @@ export default function Services({ onNavigate }: ServicesProps) {
         <FloatingDots color="mixed" count={35} size="md" />
         <div className="relative z-10 max-w-3xl mx-auto px-6">
           <p className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-4 opacity-0 animate-fade-in-up">What We Offer</p>
-          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-purple-50 mb-4 opacity-0 animate-fade-in-up-2">Our Services</h1>
+          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-white mb-4 opacity-0 animate-fade-in-up-2">Our Services</h1>
           <div className="section-divider" />
-          <p className="text-purple-300/80 text-lg max-w-xl mx-auto mt-4">
+          <p className="text-white/80 text-lg max-w-xl mx-auto mt-4">
             Every celebration is unique. We offer bespoke planning packages tailored to your occasion, budget and vision — from intimate gatherings to grand celebrations.
           </p>
         </div>
@@ -238,9 +238,9 @@ export default function Services({ onNavigate }: ServicesProps) {
                     <Icon size={22} className="text-gold-400" />
                   </div>
                   <p className="text-gold-400 text-xs tracking-widest uppercase mb-2">{tagline}</p>
-                  <h2 className="font-serif text-3xl md:text-4xl text-purple-50 mb-5">{title}</h2>
-                  <p className="text-purple-300/80 leading-relaxed mb-4">{description}</p>
-                  <p className="text-purple-300/60 leading-relaxed text-sm">{detailedDescription}</p>
+                  <h2 className="font-serif text-3xl md:text-4xl text-white mb-5">{title}</h2>
+                  <p className="text-white/80 leading-relaxed mb-4">{description}</p>
+                  <p className="text-white/60 leading-relaxed text-sm">{detailedDescription}</p>
                 </div>
               </div>
 
@@ -251,7 +251,7 @@ export default function Services({ onNavigate }: ServicesProps) {
                   {includes.map((item) => (
                     <div key={item} className="glass-card rounded-lg px-4 py-3 flex items-start gap-2">
                       <span className="w-1.5 h-1.5 rounded-full bg-gold-400 shrink-0 mt-1.5" />
-                      <span className="text-sm text-purple-200/80">{item}</span>
+                      <span className="text-sm text-white/80">{item}</span>
                     </div>
                   ))}
                 </div>
@@ -266,8 +266,8 @@ export default function Services({ onNavigate }: ServicesProps) {
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
           <div className="text-center mb-16 scroll-reveal">
             <p className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-4">More Ways We Celebrate</p>
-            <h2 className="font-serif text-3xl md:text-4xl text-purple-50">Additional Services</h2>
-            <p className="text-purple-300/70 mt-4 max-w-xl mx-auto">Beyond our core offerings, we also specialize in these beautiful celebrations.</p>
+            <h2 className="font-serif text-3xl md:text-4xl text-white">Additional Services</h2>
+            <p className="text-white/70 mt-4 max-w-xl mx-auto">Beyond our core offerings, we also specialize in these beautiful celebrations.</p>
             <div className="section-divider" />
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -276,8 +276,8 @@ export default function Services({ onNavigate }: ServicesProps) {
                 <div className="w-10 h-10 rounded-lg bg-gold-900/40 border border-gold-600/30 flex items-center justify-center mb-4">
                   <Icon size={18} className="text-gold-400" />
                 </div>
-                <h3 className="font-serif text-lg text-purple-50 mb-2">{title}</h3>
-                <p className="text-purple-300/70 text-sm leading-relaxed">{desc}</p>
+                <h3 className="font-serif text-lg text-white mb-2">{title}</h3>
+                <p className="text-white/70 text-sm leading-relaxed">{desc}</p>
               </div>
             ))}
           </div>
@@ -289,8 +289,8 @@ export default function Services({ onNavigate }: ServicesProps) {
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
           <div className="text-center mb-16 scroll-reveal">
             <p className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-4">How We Work</p>
-            <h2 className="font-serif text-3xl md:text-4xl text-purple-50">Our Process</h2>
-            <p className="text-purple-300/70 mt-4 max-w-xl mx-auto">A transparent, collaborative approach that keeps you informed every step of the way.</p>
+            <h2 className="font-serif text-3xl md:text-4xl text-white">Our Process</h2>
+            <p className="text-white/70 mt-4 max-w-xl mx-auto">A transparent, collaborative approach that keeps you informed every step of the way.</p>
             <div className="section-divider" />
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -303,8 +303,8 @@ export default function Services({ onNavigate }: ServicesProps) {
                       <Icon size={18} className="text-gold-400" />
                     </div>
                   </div>
-                  <h3 className="font-serif text-lg text-purple-50 mb-2">{title}</h3>
-                  <p className="text-purple-300/70 text-sm leading-relaxed">{desc}</p>
+                  <h3 className="font-serif text-lg text-white mb-2">{title}</h3>
+                  <p className="text-white/70 text-sm leading-relaxed">{desc}</p>
                 </div>
               </div>
             ))}
@@ -316,7 +316,7 @@ export default function Services({ onNavigate }: ServicesProps) {
       <section className="py-16 bg-purple-900/50 border-y border-dark-border" ref={addonsRef}>
         <div className="max-w-5xl mx-auto px-6 text-center scroll-reveal">
           <p className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-4">Enhance Your Event</p>
-          <h3 className="font-serif text-2xl md:text-3xl text-purple-50 mb-10">Optional Add-ons</h3>
+          <h3 className="font-serif text-2xl md:text-3xl text-white mb-10">Optional Add-ons</h3>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {addons.map(({ icon: Icon, label, desc }, i) => (
               <div key={label} className={`glass-card gold-border rounded-xl px-6 py-5 flex items-start gap-4 scroll-reveal delay-${i + 1}`}>
@@ -324,8 +324,8 @@ export default function Services({ onNavigate }: ServicesProps) {
                   <Icon size={16} className="text-gold-400" />
                 </div>
                 <div className="text-left">
-                  <span className="text-purple-100 text-sm font-medium block">{label}</span>
-                  <span className="text-purple-400 text-xs">{desc}</span>
+                  <span className="text-white text-sm font-medium block">{label}</span>
+                  <span className="text-white/70 text-xs">{desc}</span>
                 </div>
               </div>
             ))}
@@ -338,14 +338,14 @@ export default function Services({ onNavigate }: ServicesProps) {
         <div className="max-w-5xl mx-auto px-6">
           <div className="text-center mb-12 scroll-reveal">
             <p className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-4">The BELSH Difference</p>
-            <h2 className="font-serif text-3xl md:text-4xl text-purple-50">Why Choose Us</h2>
+            <h2 className="font-serif text-3xl md:text-4xl text-white">Why Choose Us</h2>
             <div className="section-divider" />
           </div>
           <div className="grid md:grid-cols-2 gap-4">
             {whyChooseUs.map((item, i) => (
               <div key={i} className={`flex items-center gap-3 glass-card rounded-lg px-5 py-4 scroll-reveal delay-${i + 1}`}>
                 <span className="w-2 h-2 rounded-full bg-gold-400 shrink-0" />
-                <span className="text-purple-200/80 text-sm">{item}</span>
+                <span className="text-white/80 text-sm">{item}</span>
               </div>
             ))}
           </div>
@@ -355,8 +355,8 @@ export default function Services({ onNavigate }: ServicesProps) {
       {/* CTA */}
       <section className="py-24 text-center bg-purple-900/30 border-t border-dark-border" ref={ctaRef}>
         <div className="max-w-2xl mx-auto px-6 scroll-reveal">
-          <h2 className="font-serif text-3xl md:text-4xl text-purple-50 mb-4">Not sure which package is right?</h2>
-          <p className="text-purple-300/80 mb-10">A free consultation call is the best place to start. We will help you find the perfect fit for your celebration.</p>
+          <h2 className="font-serif text-3xl md:text-4xl text-white mb-4">Not sure which package is right?</h2>
+          <p className="text-white/80 mb-10">A free consultation call is the best place to start. We will help you find the perfect fit for your celebration.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button onClick={() => navigate('contact')} className="btn-gold">
               Book a Free Consultation
