@@ -121,6 +121,11 @@ export default function About({ onNavigate }: AboutProps) {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(85,33,160,0.4)_0%,transparent_70%)]" />
         <FloatingDots color="gold" count={30} size="md" />
         <div className="relative z-10 max-w-3xl mx-auto px-6">
+          <div className="flex justify-center mb-5 opacity-0 animate-fade-in-up">
+            <div className="w-14 h-14 rounded-full bg-purple-600/40 border border-gold-500/30 flex items-center justify-center">
+              <Users size={24} className="text-gold-400" />
+            </div>
+          </div>
           <p className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-4 opacity-0 animate-fade-in-up">Our Story</p>
           <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-white mb-4 opacity-0 animate-fade-in-up-2">About BELSH</h1>
           <div className="section-divider" />
@@ -264,9 +269,12 @@ export default function About({ onNavigate }: AboutProps) {
 
       {/* Philosophy Quote */}
       <section className="py-24 bg-purple-900/50 border-y border-dark-border">
-        <div className="max-w-3xl mx-auto px-6 text-center">
+        <div className="max-w-4xl mx-auto px-6 text-center">
           <blockquote className="relative">
             <span className="absolute -top-8 -left-4 text-8xl text-gold-400/10 font-serif">"</span>
+            <p className="font-serif text-2xl md:text-3xl text-white leading-relaxed italic mb-4">
+              Every celebration tells a story. Our job is to make sure yours is unforgettable.
+            </p>
             <p className="font-serif text-2xl md:text-3xl text-white leading-relaxed italic">
               Every celebration tells a story. Our job is to make sure yours is unforgettable.
             </p>

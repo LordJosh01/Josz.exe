@@ -148,6 +148,77 @@ export default function EventAI({ onNavigate }: EventAIProps) {
     updateContext(userInput);
     const guests = eventContext.guestCount || 100;
 
+    // Non-event question detection - AI only answers event-related questions
+    const eventKeywords = [
+      'wedding', 'marriage', 'engagement', 'bride', 'groom', 'ceremony', 'nuptial',
+      'birthday', 'party', 'celebration', 'anniversary', 'graduation',
+      'corporate', 'conference', 'seminar', 'meeting', 'business event', 'annual general',
+      'baby shower', 'naming', 'dedication', 'christening', 'child',
+      'venue', 'hall', 'hotel', 'location', 'place', 'event center',
+      'cater', 'food', 'menu', 'jollof', 'rice', 'meal', 'drink',
+      'decor', 'decoration', 'theme', 'color', 'design', 'style', 'flower', 'floral',
+      'vendor', 'photographer', 'videographer', 'dj', 'mc', 'band', 'makeup', 'florist',
+      'budget', 'cost', 'price', 'how much', 'naira', 'million', 'thousand',
+      'guest', 'invite', 'attend', 'people', 'capacity',
+      'outfit', 'dress', 'attire', 'aso ebi', 'aso oke', 'agbada', 'gele', 'kaftan',
+      'timeline', 'schedule', 'program', 'itinerary', 'run of show',
+      'souvenir', 'favors', 'gift',
+      'traditional', 'dowry', 'bride price', 'native', 'yoruba', 'igbo', 'hausa',
+      'planner', 'planning', 'organize', 'event', 'organise',
+      ' Kwara', 'ilorin', 'nigeria', 'nigerian',
+      'help', 'advice', 'suggest', 'recommend', 'tip', 'idea', 'question',
+      'what', 'how', 'when', 'where', 'which', 'can you', 'tell me',
+      'lighting', 'sound', 'music', 'entertainment', 'cake', 'bakery',
+      'rental', 'chair', 'table', 'tent', 'canopy',
+      'weather', 'season', 'date',
+    ];
+
+    const isEventRelated = eventKeywords.some(keyword => lowerInput.includes(keyword));
+
+    // Check for completely unrelated topics (math, science, geography, politics, sports, etc.)
+    const unrelatedTopics = [
+      'president', 'politics', 'election', 'government', 'war', 'country capital',
+      'math', 'calculate', 'equation', 'formula', 'algebra', 'geometry',
+      'science', 'chemistry', 'physics', 'biology', 'atom', 'molecule',
+      'programming', 'code', 'javascript', 'python', 'computer', 'software',
+      'sports', 'football', 'basketball', 'soccer', 'tennis', 'athlete',
+      'movie', 'film', 'actor', 'actress', 'celebrity', 'music artist', 'song',
+      'game', 'video game', 'play', 'gaming',
+      'weather forecast', 'temperature', 'climate change',
+      'what is the meaning of life', 'who are you', 'what are you',
+      'recipe', 'cook', 'how to cook',
+    ];
+
+    const isUnrelated = unrelatedTopics.some(topic => lowerInput.includes(topic));
+
+    if (isUnrelated || (!isEventRelated && !lowerInput.match(/^(hi|hello|hey|good|thank|please)/))) {
+      return `I appreciate your question! However, I'm specifically designed to help with event planning and celebrations only.
+
+Event planning questions I can answer:
+**Weddings & Ceremonies**
+- Traditional and white wedding planning
+- Venue selection and booking
+- Vendor recommendations (photographers, DJs, caterers)
+
+**Other Celebrations**
+- Birthday parties, baby showers, naming ceremonies
+- Corporate events, conferences, private dinners
+
+**Planning Topics**
+- Budget breakdown and cost estimates
+- Timelines and schedules
+- Decoration and theme ideas
+- Guest list management
+- Vendor booking guidance
+
+**Nigerian Traditions**
+- Traditional engagement ceremonies
+- Cultural requirements (Yoruba, Igbo, Hausa)
+- Aso Ebi coordination
+
+How can I help you plan your upcoming event?`;
+    }
+
     // Greetings with context awareness
     if (lowerInput.match(/^(hi|hello|hey|good morning|good afternoon|good evening)/)) {
       if (eventContext.eventType) {

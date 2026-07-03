@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { MapPin, Send, CheckCircle, Instagram, Clock, Heart, Sparkles, Calendar } from 'lucide-react';
+import { MapPin, Send, CheckCircle, Instagram, Clock, Heart, Sparkles, Calendar, Mail } from 'lucide-react';
 import Confetti from '../components/Confetti';
 import FloatingDots from '../components/FloatingDots';
 
@@ -105,6 +105,11 @@ export default function Contact() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(85,33,160,0.4)_0%,transparent_70%)]" />
         <FloatingDots color="rainbow" count={35} size="md" />
         <div className="relative z-10 max-w-3xl mx-auto px-6">
+          <div className="flex justify-center mb-5 opacity-0 animate-fade-in-up">
+            <div className="w-14 h-14 rounded-full bg-purple-600/40 border border-gold-500/30 flex items-center justify-center">
+              <Mail size={24} className="text-gold-400" />
+            </div>
+          </div>
           <p className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-4 opacity-0 animate-fade-in-up">Let us Connect</p>
           <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-white mb-4 opacity-0 animate-fade-in-up-2">Contact Us</h1>
           <div className="section-divider" />
@@ -114,20 +119,53 @@ export default function Contact() {
         </div>
       </section>
 
-      {/* Reasons */}
+      {/* Reasons & What to Expect */}
       <section className="py-16 bg-purple-800/30 border-y border-dark-border relative overflow-hidden">
         <FloatingDots color="gold" count={20} size="sm" />
         <div className="max-w-5xl mx-auto px-6 relative z-10">
-          <div className="grid md:grid-cols-3 gap-6">
-            {reasons.map(({ icon: Icon, title, desc }, i) => (
-              <div key={title} className={`text-center scroll-reveal delay-${i + 1}`}>
-                <div className="w-12 h-12 rounded-full bg-gold-900/30 border border-gold-600/30 flex items-center justify-center mx-auto mb-4">
-                  <Icon size={20} className="text-gold-400" />
-                </div>
-                <h3 className="text-white font-medium mb-2">{title}</h3>
-                <p className="text-white/70 text-sm">{desc}</p>
+          <div className="grid md:grid-cols-2 gap-10">
+            {/* Reasons */}
+            <div>
+              <h3 className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-6 text-center md:text-left">Why Choose BELSH</h3>
+              <div className="grid gap-4">
+                {reasons.map(({ icon: Icon, title, desc }, i) => (
+                  <div key={title} className={`flex items-start gap-4 scroll-reveal delay-${i + 1}`}>
+                    <div className="w-10 h-10 rounded-lg bg-gold-900/30 border border-gold-600/30 flex items-center justify-center shrink-0">
+                      <Icon size={18} className="text-gold-400" />
+                    </div>
+                    <div>
+                      <h3 className="text-white font-medium">{title}</h3>
+                      <p className="text-white/70 text-sm">{desc}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
+
+            {/* What to Expect */}
+            <div className="glass-card gold-border rounded-xl p-6 animate-fade-in-up">
+              <h3 className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-5 flex items-center gap-2">
+                <CheckCircle size={14} />
+                What to Expect
+              </h3>
+              <ul className="space-y-3">
+                {[
+                  { text: 'Free 30-minute discovery call', delay: '0.1s' },
+                  { text: 'No-obligation consultation', delay: '0.2s' },
+                  { text: 'Transparent pricing and packages', delay: '0.3s' },
+                  { text: 'Personalized proposal within 48 hours', delay: '0.4s' },
+                ].map((item, i) => (
+                  <li
+                    key={i}
+                    className="flex items-center gap-3 text-white text-sm animate-slide-in-right"
+                    style={{ animationDelay: item.delay }}
+                  >
+                    <span className="w-2 h-2 rounded-full bg-gold-400 shrink-0" />
+                    {item.text}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
       </section>
@@ -224,29 +262,6 @@ export default function Contact() {
                   <p className="text-white/50 text-xs mt-1">Usually faster on WhatsApp</p>
                 </div>
               </div>
-            </div>
-
-            {/* Quick Info */}
-            <div className="pt-6 border-t border-dark-border">
-              <p className="text-white/70 text-xs uppercase tracking-widest mb-4">What to Expect</p>
-              <ul className="space-y-2 text-sm text-white/80">
-                <li className="flex items-start gap-2">
-                  <span className="w-1 h-1 rounded-full bg-gold-400 shrink-0 mt-2" />
-                  Free 30-minute discovery call
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="w-1 h-1 rounded-full bg-gold-400 shrink-0 mt-2" />
-                  No-obligation consultation
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="w-1 h-1 rounded-full bg-gold-400 shrink-0 mt-2" />
-                  Transparent pricing and packages
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="w-1 h-1 rounded-full bg-gold-400 shrink-0 mt-2" />
-                  Personalized proposal within 48 hours
-                </li>
-              </ul>
             </div>
           </div>
 

@@ -201,6 +201,11 @@ export default function Portfolio({ onNavigate }: PortfolioProps) {
         <FloatingDots color="rainbow" count={40} size="md" />
         <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-dark to-transparent" />
         <div className="relative z-10 max-w-3xl mx-auto px-6">
+          <div className="flex justify-center mb-5 opacity-0 animate-fade-in-up">
+            <div className="w-14 h-14 rounded-full bg-purple-600/40 border border-gold-500/30 flex items-center justify-center">
+              <Camera size={24} className="text-gold-400" />
+            </div>
+          </div>
           <p className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-4 opacity-0 animate-fade-in-up">Our Work</p>
           <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white mb-4 opacity-0 animate-fade-in-up-2 leading-tight">
             Our <span className="italic gold-text">Portfolio</span>

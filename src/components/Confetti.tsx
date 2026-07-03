@@ -44,22 +44,37 @@ export default function Confetti({ style = 'celebration', active = true }: Confe
     shape: string;
     size: number;
   }>>([]);
+  const [fadeOut, setFadeOut] = useState(false);
+  const [visible, setVisible] = useState(active);
 
   useEffect(() => {
-    const config = confettiStyles[style];
-    const newParticles = Array.from({ length: 80 }).map((_, i) => ({
-      id: i,
-      left: Math.random() * 100,
-      delay: Math.random() * 3,
-      duration: 3 + Math.random() * 4,
-      color: config.colors[Math.floor(Math.random() * config.colors.length)],
-      shape: config.shapes[Math.floor(Math.random() * config.shapes.length)],
-      size: 6 + Math.random() * 10,
-    }));
-    setParticles(newParticles);
-  }, [style]);
+    if (active) {
+      const config = confettiStyles[style];
+      const newParticles = Array.from({ length: 60 }).map((_, i) => ({
+        id: i,
+        left: Math.random() * 100,
+        delay: Math.random() * 2,
+        duration: 4 + Math.random() * 3,
+        color: config.colors[Math.floor(Math.random() * config.colors.length)],
+        shape: config.shapes[Math.floor(Math.random() * config.shapes.length)],
+        size: 6 + Math.random() * 8,
+      }));
+      setParticles(newParticles);
+      setFadeOut(false);
+      setVisible(true);
 
-  if (!active) return null;
+      // Start fade out after 6 seconds, complete at 8 seconds
+      const fadeTimer = setTimeout(() => setFadeOut(true), 6000);
+      const hideTimer = setTimeout(() => setVisible(false), 8000);
+
+      return () => {
+        clearTimeout(fadeTimer);
+        clearTimeout(hideTimer);
+      };
+    }
+  }, [active, style]);
+
+  if (!visible) return null;
 
   const renderShape = (shape: string, size: number, color: string) => {
     switch (shape) {
@@ -127,7 +142,7 @@ export default function Confetti({ style = 'celebration', active = true }: Confe
             }}
           />
         );
-      default: // circle
+      default:
         return (
           <div
             className="rounded-full"
@@ -143,7 +158,11 @@ export default function Confetti({ style = 'celebration', active = true }: Confe
   };
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-50 overflow-hidden">
+    <div
+      className={`fixed inset-0 pointer-events-none z-50 overflow-hidden transition-opacity duration-2000 ${
+        fadeOut ? 'opacity-0' : 'opacity-100'
+      }`}
+    >
       {particles.map((p) => (
         <div
           key={p.id}
@@ -165,12 +184,12 @@ export default function Confetti({ style = 'celebration', active = true }: Confe
             opacity: 1;
           }
           100% {
-            transform: translateY(100vh) rotate(720deg);
+            transform: translateY(105vh) rotate(720deg);
             opacity: 0;
           }
         }
         .animate-page-confetti {
-          animation: page-confetti 4s linear forwards;
+          animation: page-confetti 6s linear forwards;
         }
       `}</style>
     </div>
