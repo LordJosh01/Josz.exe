@@ -57,8 +57,17 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
         background: 'radial-gradient(ellipse at center, #1a0a30 0%, #0a0118 70%)',
       }}
     >
-      {/* Animated background */}
+      {/* Animated gradient background */}
       <div className="absolute inset-0 overflow-hidden">
+        {/* Pulsing gradient orbs */}
+        <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-purple-600/20 rounded-full blur-[100px] animate-pulse-slow" style={{ animationDuration: '4s' }} />
+        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-yellow-500/15 rounded-full blur-[100px] animate-pulse-slow" style={{ animationDuration: '5s', animationDelay: '1s' }} />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-gold-500/10 rounded-full blur-[80px] animate-pulse-slow" style={{ animationDuration: '3s', animationDelay: '0.5s' }} />
+
+        {/* Wave effect */}
+        <div className="absolute inset-0 opacity-30">
+          <div className="absolute w-[200%] h-[200%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-wave" style={{ background: 'conic-gradient(from 0deg, transparent, rgba(212,160,23,0.1), transparent, rgba(168,85,247,0.1), transparent)' }} />
+        </div>
         {/* 50 Moving dots */}
         {animatedElements.dots.map((dot, i) => (
           <div
@@ -146,9 +155,19 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
           33% { transform: translate(30px, -30px) scale(1.1); }
           66% { transform: translate(-20px, 20px) scale(0.9); }
         }
+        @keyframes pulse-slow {
+          0%, 100% { opacity: 0.3; transform: scale(1); }
+          50% { opacity: 0.6; transform: scale(1.1); }
+        }
+        @keyframes wave {
+          0% { transform: translate(-50%, -50%) rotate(0deg); }
+          100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
         .animate-loading-dot { animation: loading-dot 8s ease-in-out infinite; }
         .animate-loading-float { animation: loading-float 10s ease-in-out infinite; }
         .animate-spin-slow { animation: spin 20s linear infinite; }
+        .animate-pulse-slow { animation: pulse-slow 4s ease-in-out infinite; }
+        .animate-wave { animation: wave 30s linear infinite; }
       `}</style>
     </div>
   );
