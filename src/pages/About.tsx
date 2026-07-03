@@ -122,9 +122,9 @@ export default function About({ onNavigate }: AboutProps) {
         <FloatingDots color="gold" count={30} size="md" />
         <div className="relative z-10 max-w-3xl mx-auto px-6">
           <p className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-4 opacity-0 animate-fade-in-up">Our Story</p>
-          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-purple-50 mb-4 opacity-0 animate-fade-in-up-2">About BELSH</h1>
+          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-white mb-4 opacity-0 animate-fade-in-up-2">About BELSH</h1>
           <div className="section-divider" />
-          <p className="text-purple-300/80 text-lg max-w-xl mx-auto mt-4 opacity-0 animate-fade-in-up-3">
+          <p className="text-white/80 text-lg max-w-xl mx-auto mt-4 opacity-0 animate-fade-in-up-3">
             Born from a love of people, celebration, and the beauty of well-curated spaces.
           </p>
         </div>
@@ -148,11 +148,11 @@ export default function About({ onNavigate }: AboutProps) {
 
           <div className="scroll-reveal-right">
             <p className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-4">How It Began</p>
-            <h2 className="font-serif text-3xl md:text-4xl text-purple-50 mb-6">
+            <h2 className="font-serif text-3xl md:text-4xl text-white mb-6">
               Celebrations that feel{' '}
               <span className="italic text-gold-300">like coming home.</span>
             </h2>
-            <div className="space-y-5 text-purple-300/80 leading-relaxed">
+            <div className="space-y-5 text-white/80 leading-relaxed">
               <p>
                 Events By BELSH began with a simple belief: that every celebration, no matter its size,
                 deserves to be extraordinary. Founded in Kwara State by a team passionate about bringing
@@ -183,7 +183,7 @@ export default function About({ onNavigate }: AboutProps) {
                 {highlights.map((item) => (
                   <div key={item} className="flex items-center gap-3">
                     <CheckCircle size={16} className="text-gold-400 shrink-0" />
-                    <span className="text-purple-200 text-sm">{item}</span>
+                    <span className="text-white/90 text-sm">{item}</span>
                   </div>
                 ))}
               </div>
@@ -199,8 +199,8 @@ export default function About({ onNavigate }: AboutProps) {
             {stats.map(({ number, label, desc }, i) => (
               <div key={label} className={`text-center scroll-reveal delay-${i + 1}`}>
                 <p className="font-serif text-4xl md:text-5xl text-gold-400 mb-2">{number}</p>
-                <p className="text-purple-100 font-medium mb-1">{label}</p>
-                <p className="text-purple-400 text-sm">{desc}</p>
+                <p className="text-white font-medium mb-1">{label}</p>
+                <p className="text-white/70 text-sm">{desc}</p>
               </div>
             ))}
           </div>
@@ -212,8 +212,8 @@ export default function About({ onNavigate }: AboutProps) {
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
           <div className="text-center mb-16 scroll-reveal">
             <p className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-4">What Drives Us</p>
-            <h2 className="font-serif text-3xl md:text-4xl text-purple-50">Our Values</h2>
-            <p className="text-purple-300/70 mt-4 max-w-xl mx-auto">
+            <h2 className="font-serif text-3xl md:text-4xl text-white">Our Values</h2>
+            <p className="text-white/70 mt-4 max-w-xl mx-auto">
               These principles guide every decision we make, every event we plan, and every relationship we build.
             </p>
             <div className="section-divider" />
@@ -225,7 +225,7 @@ export default function About({ onNavigate }: AboutProps) {
                   <Icon size={18} className="text-gold-400" />
                 </div>
                 <h3 className="font-serif text-xl text-gold-300 mb-3">{title}</h3>
-                <p className="text-purple-300/80 text-sm leading-relaxed">{desc}</p>
+                <p className="text-white/80 text-sm leading-relaxed">{desc}</p>
               </div>
             ))}
           </div>
@@ -238,8 +238,8 @@ export default function About({ onNavigate }: AboutProps) {
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
           <div className="text-center mb-16 scroll-reveal">
             <p className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-4">The BELSH Difference</p>
-            <h2 className="font-serif text-3xl md:text-4xl text-purple-50">What Sets Us Apart</h2>
-            <p className="text-purple-300/70 mt-4 max-w-xl mx-auto">
+            <h2 className="font-serif text-3xl md:text-4xl text-white">What Sets Us Apart</h2>
+            <p className="text-white/70 mt-4 max-w-xl mx-auto">
               In a world of event planners, we stand out by putting you first.
             </p>
             <div className="section-divider" />
@@ -252,8 +252,8 @@ export default function About({ onNavigate }: AboutProps) {
                     <Icon size={22} className="text-gold-400" />
                   </div>
                   <div>
-                    <h3 className="font-serif text-xl text-purple-50 mb-2">{title}</h3>
-                    <p className="text-purple-300/80 leading-relaxed">{desc}</p>
+                    <h3 className="font-serif text-xl text-white mb-2">{title}</h3>
+                    <p className="text-white/80 leading-relaxed">{desc}</p>
                   </div>
                 </div>
               </div>
@@ -267,7 +267,7 @@ export default function About({ onNavigate }: AboutProps) {
         <div className="max-w-3xl mx-auto px-6 text-center">
           <blockquote className="relative">
             <span className="absolute -top-8 -left-4 text-8xl text-gold-400/10 font-serif">"</span>
-            <p className="font-serif text-2xl md:text-3xl text-purple-100 leading-relaxed italic">
+            <p className="font-serif text-2xl md:text-3xl text-white leading-relaxed italic">
               Every celebration tells a story. Our job is to make sure yours is unforgettable.
             </p>
             <footer className="mt-8">
@@ -280,10 +280,10 @@ export default function About({ onNavigate }: AboutProps) {
       {/* CTA */}
       <section className="py-20 text-center" ref={ctaRef}>
         <div className="max-w-2xl mx-auto px-6 scroll-reveal">
-          <h2 className="font-serif text-3xl md:text-4xl text-purple-50 mb-4">
+          <h2 className="font-serif text-3xl md:text-4xl text-white mb-4">
             Let us create something beautiful together.
           </h2>
-          <p className="text-purple-300/80 mb-10">
+          <p className="text-white/80 mb-10">
             We would love to be part of your next celebration. Reach out today and let's start planning something extraordinary.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

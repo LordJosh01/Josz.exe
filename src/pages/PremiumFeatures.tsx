@@ -133,8 +133,8 @@ function CountdownTimer() {
             <Clock size={20} className="text-gold-400" />
           </div>
           <div>
-            <h3 className="font-serif text-xl text-purple-100">Event Countdown</h3>
-            <p className="text-purple-400 text-sm">Count down to your special day</p>
+            <h3 className="font-serif text-xl text-white">Event Countdown</h3>
+            <p className="text-white/70 text-sm">Count down to your special day</p>
           </div>
         </div>
         {notificationPermission !== 'granted' && (
@@ -155,13 +155,13 @@ function CountdownTimer() {
             value={eventName}
             onChange={(e) => setEventName(e.target.value)}
             placeholder="Event Name"
-            className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-purple-100 placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-all"
+            className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-white placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-all"
           />
           <input
             type="datetime-local"
             value={eventDate}
             onChange={(e) => setEventDate(e.target.value)}
-            className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-purple-100 text-sm focus:outline-none focus:border-gold-500/50 transition-all"
+            className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-gold-500/50 transition-all"
           />
           <button onClick={saveEvent} className="btn-gold w-full text-sm hover:scale-[1.02] transition-transform">
             Start Countdown
@@ -176,8 +176,8 @@ function CountdownTimer() {
               <div className="w-16 h-16 rounded-full bg-gold-900/40 border border-gold-500/50 flex items-center justify-center mx-auto mb-4 animate-bounce">
                 <PartyPopper size={32} className="text-gold-400" />
               </div>
-              <p className="font-serif text-2xl text-purple-100 mb-2">The Day Has Arrived!</p>
-              <p className="text-purple-400 text-sm">Congratulations on your special event!</p>
+              <p className="font-serif text-2xl text-white mb-2">The Day Has Arrived!</p>
+              <p className="text-white/70 text-sm">Congratulations on your special event!</p>
             </div>
           ) : (
             <div className="grid grid-cols-4 gap-2">
@@ -185,14 +185,14 @@ function CountdownTimer() {
                 <div key={label} className="text-center animate-pop-in" style={{ animationDelay: `${i * 100}ms` }}>
                   <div className="glass-dark rounded-xl p-3 border border-gold-500/20 hover:border-gold-500/40 transition-all hover:scale-105 hover:shadow-lg hover:shadow-gold-500/10">
                     <p className="font-serif text-2xl md:text-3xl text-gold-400 mb-1">{value.toString().padStart(2, '0')}</p>
-                    <p className="text-purple-400 text-[10px] uppercase tracking-widest">{label}</p>
+                    <p className="text-white/70 text-[10px] uppercase tracking-widest">{label}</p>
                   </div>
                 </div>
               ))}
             </div>
           )}
 
-          <button onClick={() => { setCountdown(null); setEventDate(''); }} className="text-sm text-purple-400 hover:text-gold-300 transition-colors w-full text-center">
+          <button onClick={() => { setCountdown(null); setEventDate(''); }} className="text-sm text-white/70 hover:text-gold-300 transition-colors w-full text-center">
             Reset Countdown
           </button>
         </div>
@@ -200,19 +200,19 @@ function CountdownTimer() {
 
       {savedEvents.length > 0 && (
         <div className="mt-6 pt-6 border-t border-dark-border relative z-10">
-          <p className="text-purple-400 text-xs uppercase tracking-widest mb-3">My Events</p>
+          <p className="text-white/70 text-xs uppercase tracking-widest mb-3">My Events</p>
           <div className="space-y-2">
             {savedEvents.map((event, i) => (
               <div key={i} className="flex items-center justify-between glass-dark rounded-lg p-3 hover:border-gold-500/30 transition-all group">
                 <div>
-                  <p className="text-purple-100 text-sm">{event.name}</p>
-                  <p className="text-purple-400 text-xs">{new Date(event.date).toLocaleDateString()}</p>
+                  <p className="text-white text-sm">{event.name}</p>
+                  <p className="text-white/70 text-xs">{new Date(event.date).toLocaleDateString()}</p>
                 </div>
                 <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <button onClick={() => { setEventName(event.name); setEventDate(event.date); }} className="text-purple-400 hover:text-gold-400">
+                  <button onClick={() => { setEventName(event.name); setEventDate(event.date); }} className="text-white/70 hover:text-gold-400">
                     <Play size={14} />
                   </button>
-                  <button onClick={() => removeEvent(i)} className="text-purple-400 hover:text-red-400">
+                  <button onClick={() => removeEvent(i)} className="text-white/70 hover:text-red-400">
                     <Trash2 size={14} />
                   </button>
                 </div>
@@ -429,8 +429,8 @@ function InvitationGenerator() {
           <Mail size={20} className="text-gold-400" />
         </div>
         <div>
-          <h3 className="font-serif text-xl text-purple-100">Invitation Generator</h3>
-          <p className="text-purple-400 text-sm">Create, customize & download invitations</p>
+          <h3 className="font-serif text-xl text-white">Invitation Generator</h3>
+          <p className="text-white/70 text-sm">Create, customize & download invitations</p>
         </div>
       </div>
 
@@ -446,7 +446,7 @@ function InvitationGenerator() {
 
       {step === 1 && (
         <div className="space-y-4 relative z-10 animate-slide-in-right">
-          <p className="text-xs text-purple-400 mb-2">Choose a Template</p>
+          <p className="text-xs text-white/70 mb-2">Choose a Template</p>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
             {templates.map(({ id, name, icon: Icon, preview }) => (
               <button
@@ -458,9 +458,9 @@ function InvitationGenerator() {
                     : 'border-dark-border bg-dark-card hover:border-gold-500/40'
                 }`}
               >
-                <Icon size={24} className={`mb-2 ${selectedTemplate === id ? 'text-gold-400' : 'text-purple-400'}`} />
-                <p className="text-sm text-purple-100 font-medium">{name}</p>
-                <p className="text-[10px] text-purple-400 mt-1">{preview}</p>
+                <Icon size={24} className={`mb-2 ${selectedTemplate === id ? 'text-gold-400' : 'text-white/70'}`} />
+                <p className="text-sm text-white font-medium">{name}</p>
+                <p className="text-[10px] text-white/70 mt-1">{preview}</p>
               </button>
             ))}
           </div>
@@ -470,7 +470,7 @@ function InvitationGenerator() {
             placeholder="Event Title (e.g., Adeola Wedding Ceremony)"
             value={invitation.event}
             onChange={(e) => setInvitation({ ...invitation, event: e.target.value })}
-            className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-purple-100 placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-all mt-4"
+            className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-white placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-all mt-4"
           />
         </div>
       )}
@@ -482,13 +482,13 @@ function InvitationGenerator() {
               type="date"
               value={invitation.date}
               onChange={(e) => setInvitation({ ...invitation, date: e.target.value })}
-              className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-purple-100 text-sm focus:outline-none focus:border-gold-500/50 transition-all"
+              className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-gold-500/50 transition-all"
             />
             <input
               type="time"
               value={invitation.time}
               onChange={(e) => setInvitation({ ...invitation, time: e.target.value })}
-              className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-purple-100 text-sm focus:outline-none focus:border-gold-500/50 transition-all"
+              className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-gold-500/50 transition-all"
             />
           </div>
           <input
@@ -496,21 +496,21 @@ function InvitationGenerator() {
             placeholder="Venue"
             value={invitation.venue}
             onChange={(e) => setInvitation({ ...invitation, venue: e.target.value })}
-            className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-purple-100 placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-all"
+            className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-white placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-all"
           />
           <input
             type="text"
             placeholder="Host Name(s)"
             value={invitation.host}
             onChange={(e) => setInvitation({ ...invitation, host: e.target.value })}
-            className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-purple-100 placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-all"
+            className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-white placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-all"
           />
           <textarea
             placeholder="Personal Message (Optional)"
             value={invitation.message}
             onChange={(e) => setInvitation({ ...invitation, message: e.target.value })}
             rows={2}
-            className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-purple-100 placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 resize-none transition-all"
+            className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-white placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 resize-none transition-all"
           />
         </div>
       )}
@@ -519,7 +519,7 @@ function InvitationGenerator() {
         <div className="space-y-4 relative z-10 animate-slide-in-right">
           {/* Style */}
           <div>
-            <p className="text-xs text-purple-400 mb-2">Layout Style</p>
+            <p className="text-xs text-white/70 mb-2">Layout Style</p>
             <div className="space-y-2">
               {styles.map((s) => (
                 <button
@@ -531,8 +531,8 @@ function InvitationGenerator() {
                       : 'border-dark-border bg-dark-card hover:border-gold-500/30'
                   }`}
                 >
-                  <p className="text-sm text-purple-100">{s.name}</p>
-                  <p className="text-[10px] text-purple-400">{s.desc}</p>
+                  <p className="text-sm text-white">{s.name}</p>
+                  <p className="text-[10px] text-white/70">{s.desc}</p>
                 </button>
               ))}
             </div>
@@ -540,7 +540,7 @@ function InvitationGenerator() {
 
           {/* Theme */}
           <div>
-            <p className="text-xs text-purple-400 mb-2">Color Theme</p>
+            <p className="text-xs text-white/70 mb-2">Color Theme</p>
             <div className="grid grid-cols-5 gap-2">
               {themes.map((t) => (
                 <button
@@ -549,7 +549,7 @@ function InvitationGenerator() {
                   className={`p-2 rounded-lg border transition-all hover:scale-105 ${invitation.theme === t.id ? 'border-gold-500 ring-2 ring-gold-500/30' : 'border-dark-border'}`}
                 >
                   <div className="w-full h-6 rounded" style={{ background: t.colors[0] }} />
-                  <p className="text-[10px] text-purple-400 mt-1 truncate">{t.name}</p>
+                  <p className="text-[10px] text-white/70 mt-1 truncate">{t.name}</p>
                 </button>
               ))}
             </div>
@@ -557,13 +557,13 @@ function InvitationGenerator() {
 
           {/* Background */}
           <div>
-            <p className="text-xs text-purple-400 mb-2">Background Photo</p>
+            <p className="text-xs text-white/70 mb-2">Background Photo</p>
             <button
               onClick={() => fileInputRef.current?.click()}
               className="w-full glass-dark rounded-lg p-4 border-2 border-dashed border-gold-500/30 hover:border-gold-500/60 transition-all flex flex-col items-center justify-center gap-2 mb-3 hover:bg-gold-500/5"
             >
               <Upload size={24} className="text-gold-400" />
-              <p className="text-purple-300 text-xs">Upload Your Own Background</p>
+              <p className="text-white/80 text-xs">Upload Your Own Background</p>
             </button>
             <input
               ref={fileInputRef}
@@ -583,7 +583,7 @@ function InvitationGenerator() {
                 </button>
               </div>
             )}
-            <p className="text-[10px] text-purple-500 text-center mb-2">Or choose preset:</p>
+            <p className="text-[10px] text-white0 text-center mb-2">Or choose preset:</p>
             <div className="grid grid-cols-4 gap-2">
               {photoOptions.map((photo, i) => (
                 <button
@@ -774,8 +774,8 @@ function PlanMyEvent() {
           <Wand2 size={20} className="text-gold-400" />
         </div>
         <div>
-          <h3 className="font-serif text-xl text-purple-100">Plan My Event</h3>
-          <p className="text-purple-400 text-sm">Personalized event planning wizard</p>
+          <h3 className="font-serif text-xl text-white">Plan My Event</h3>
+          <p className="text-white/70 text-sm">Personalized event planning wizard</p>
         </div>
       </div>
 
@@ -783,7 +783,7 @@ function PlanMyEvent() {
       <div className="flex items-center gap-2 mb-6 relative z-10">
         {Array.from({ length: totalSteps }).map((_, i) => (
           <div key={i} className="flex items-center flex-1">
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium transition-all duration-300 ${i + 1 <= step ? 'bg-gold-500 text-dark scale-110' : 'bg-dark-card text-purple-400'}`}>
+            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium transition-all duration-300 ${i + 1 <= step ? 'bg-gold-500 text-dark scale-110' : 'bg-dark-card text-white/70'}`}>
               {i + 1}
             </div>
             {i < totalSteps - 1 && <div className={`flex-1 h-0.5 transition-all duration-500 ${i + 1 < step ? 'bg-gold-500' : 'bg-dark-card'}`} />}
@@ -795,13 +795,13 @@ function PlanMyEvent() {
         <div className="space-y-6 relative z-10">
           {step === 1 && (
             <div className="space-y-4 animate-slide-in-right">
-              <p className="text-sm text-purple-300">What type of event are you planning?</p>
+              <p className="text-sm text-white/80">What type of event are you planning?</p>
               <div className="grid grid-cols-2 gap-3">
                 {['Wedding', 'Birthday', 'Corporate', 'Anniversary', 'Baby Shower', 'Naming Ceremony'].map((type) => (
                   <button
                     key={type}
                     onClick={() => setPlan({ ...plan, eventType: type })}
-                    className={`py-3 px-4 rounded-lg text-sm transition-all hover:scale-[1.02] ${plan.eventType === type ? 'bg-gold-500/20 border border-gold-500 text-gold-400 shadow-lg shadow-gold-500/10' : 'bg-dark-card border border-dark-border text-purple-300 hover:border-gold-500/40'}`}
+                    className={`py-3 px-4 rounded-lg text-sm transition-all hover:scale-[1.02] ${plan.eventType === type ? 'bg-gold-500/20 border border-gold-500 text-gold-400 shadow-lg shadow-gold-500/10' : 'bg-dark-card border border-dark-border text-white/80 hover:border-gold-500/40'}`}
                   >
                     {type}
                   </button>
@@ -813,22 +813,22 @@ function PlanMyEvent() {
           {step === 2 && (
             <div className="space-y-4 animate-slide-in-right">
               <div>
-                <p className="text-sm text-purple-300 mb-2">How many guests do you expect?</p>
+                <p className="text-sm text-white/80 mb-2">How many guests do you expect?</p>
                 <input
                   type="number"
                   value={plan.guestCount}
                   onChange={(e) => setPlan({ ...plan, guestCount: e.target.value })}
                   placeholder="e.g., 150"
-                  className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-purple-100 placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-all"
+                  className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-white placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-all"
                 />
               </div>
               <div>
-                <p className="text-sm text-purple-300 mb-2">When is your event?</p>
+                <p className="text-sm text-white/80 mb-2">When is your event?</p>
                 <input
                   type="date"
                   value={plan.date}
                   onChange={(e) => setPlan({ ...plan, date: e.target.value })}
-                  className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-purple-100 text-sm focus:outline-none focus:border-gold-500/50 transition-all"
+                  className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-gold-500/50 transition-all"
                 />
               </div>
             </div>
@@ -836,13 +836,13 @@ function PlanMyEvent() {
 
           {step === 3 && (
             <div className="space-y-4 animate-slide-in-right">
-              <p className="text-sm text-purple-300">What's your preferred venue type?</p>
+              <p className="text-sm text-white/80">What's your preferred venue type?</p>
               <div className="grid grid-cols-2 gap-3">
                 {['Indoor Hall', 'Outdoor Garden', 'Hotel Ballroom', 'Traditional Setting', 'Beach/Lakeside', 'Private Residence'].map((venue) => (
                   <button
                     key={venue}
                     onClick={() => setPlan({ ...plan, venue })}
-                    className={`py-3 px-4 rounded-lg text-sm transition-all hover:scale-[1.02] ${plan.venue === venue ? 'bg-gold-500/20 border border-gold-500 text-gold-400 shadow-lg shadow-gold-500/10' : 'bg-dark-card border border-dark-border text-purple-300 hover:border-gold-500/40'}`}
+                    className={`py-3 px-4 rounded-lg text-sm transition-all hover:scale-[1.02] ${plan.venue === venue ? 'bg-gold-500/20 border border-gold-500 text-gold-400 shadow-lg shadow-gold-500/10' : 'bg-dark-card border border-dark-border text-white/80 hover:border-gold-500/40'}`}
                   >
                     {venue}
                   </button>
@@ -853,13 +853,13 @@ function PlanMyEvent() {
 
           {step === 4 && (
             <div className="space-y-4 animate-slide-in-right">
-              <p className="text-sm text-purple-300">What style do you prefer?</p>
+              <p className="text-sm text-white/80">What style do you prefer?</p>
               <div className="grid grid-cols-2 gap-3">
                 {['Classic Elegant', 'Modern Minimalist', 'Traditional Nigerian', 'Bohemian', 'Luxury Glam', 'Rustic Charm'].map((style) => (
                   <button
                     key={style}
                     onClick={() => setPlan({ ...plan, style })}
-                    className={`py-3 px-4 rounded-lg text-sm transition-all hover:scale-[1.02] ${plan.style === style ? 'bg-gold-500/20 border border-gold-500 text-gold-400 shadow-lg shadow-gold-500/10' : 'bg-dark-card border border-dark-border text-purple-300 hover:border-gold-500/40'}`}
+                    className={`py-3 px-4 rounded-lg text-sm transition-all hover:scale-[1.02] ${plan.style === style ? 'bg-gold-500/20 border border-gold-500 text-gold-400 shadow-lg shadow-gold-500/10' : 'bg-dark-card border border-dark-border text-white/80 hover:border-gold-500/40'}`}
                   >
                     {style}
                   </button>
@@ -871,13 +871,13 @@ function PlanMyEvent() {
           {step === 5 && (
             <div className="space-y-4 animate-slide-in-right">
               <div>
-                <p className="text-sm text-purple-300 mb-2">Do you need entertainment?</p>
+                <p className="text-sm text-white/80 mb-2">Do you need entertainment?</p>
                 <div className="grid grid-cols-2 gap-3">
                   {['Live Band', 'DJ', 'Cultural Performers', 'Comedian/MC'].map((ent) => (
                     <button
                       key={ent}
                       onClick={() => setPlan({ ...plan, entertainment: ent })}
-                      className={`py-3 px-4 rounded-lg text-sm transition-all hover:scale-[1.02] ${plan.entertainment === ent ? 'bg-gold-500/20 border border-gold-500 text-gold-400 shadow-lg shadow-gold-500/10' : 'bg-dark-card border border-dark-border text-purple-300 hover:border-gold-500/40'}`}
+                      className={`py-3 px-4 rounded-lg text-sm transition-all hover:scale-[1.02] ${plan.entertainment === ent ? 'bg-gold-500/20 border border-gold-500 text-gold-400 shadow-lg shadow-gold-500/10' : 'bg-dark-card border border-dark-border text-white/80 hover:border-gold-500/40'}`}
                     >
                       {ent}
                     </button>
@@ -885,13 +885,13 @@ function PlanMyEvent() {
                 </div>
               </div>
               <div>
-                <p className="text-sm text-purple-300 mb-2">Meal service preference?</p>
+                <p className="text-sm text-white/80 mb-2">Meal service preference?</p>
                 <div className="grid grid-cols-3 gap-3">
                   {['Buffet', 'Plated', 'Cocktail'].map((meal) => (
                     <button
                       key={meal}
                       onClick={() => setPlan({ ...plan, meals: meal })}
-                      className={`py-3 px-4 rounded-lg text-sm transition-all hover:scale-[1.02] ${plan.meals === meal ? 'bg-gold-500/20 border border-gold-500 text-gold-400 shadow-lg shadow-gold-500/10' : 'bg-dark-card border border-dark-border text-purple-300 hover:border-gold-500/40'}`}
+                      className={`py-3 px-4 rounded-lg text-sm transition-all hover:scale-[1.02] ${plan.meals === meal ? 'bg-gold-500/20 border border-gold-500 text-gold-400 shadow-lg shadow-gold-500/10' : 'bg-dark-card border border-dark-border text-white/80 hover:border-gold-500/40'}`}
                     >
                       {meal}
                     </button>
@@ -923,7 +923,7 @@ function PlanMyEvent() {
           {loading ? (
             <div className="text-center py-12 animate-pulse">
               <RefreshCw size={32} className="text-gold-400 animate-spin mx-auto mb-4" />
-              <p className="text-purple-300">Creating your personalized plan...</p>
+              <p className="text-white/80">Creating your personalized plan...</p>
             </div>
           ) : (
             <>
@@ -939,7 +939,7 @@ function PlanMyEvent() {
                 ].map((item, i) => (
                   <div key={item.label} className="flex items-center gap-2 animate-slide-in-left" style={{ animationDelay: `${i * 100}ms` }}>
                     <CheckCircle size={16} className="text-gold-400" />
-                    <span className="text-sm text-purple-300">{item.label}: <span className="text-purple-100">{item.value}</span></span>
+                    <span className="text-sm text-white/80">{item.label}: <span className="text-white">{item.value}</span></span>
                   </div>
                 ))}
               </div>
@@ -949,7 +949,7 @@ function PlanMyEvent() {
                 Book This Plan on WhatsApp
               </button>
 
-              <button onClick={() => { setStep(1); setGenerated(false); setPlan({ eventType: '', guestCount: '', date: '', venue: '', style: '', meals: '', entertainment: '' }); }} className="text-sm text-purple-400 hover:text-gold-300 w-full text-center transition-colors">
+              <button onClick={() => { setStep(1); setGenerated(false); setPlan({ eventType: '', guestCount: '', date: '', venue: '', style: '', meals: '', entertainment: '' }); }} className="text-sm text-white/70 hover:text-gold-300 w-full text-center transition-colors">
                 Start Over
               </button>
             </>
@@ -1004,8 +1004,8 @@ function RSVPManager() {
           <UserCheck size={20} className="text-gold-400" />
         </div>
         <div>
-          <h3 className="font-serif text-xl text-purple-100">RSVP Management</h3>
-          <p className="text-purple-400 text-sm">Track guest responses in real-time</p>
+          <h3 className="font-serif text-xl text-white">RSVP Management</h3>
+          <p className="text-white/70 text-sm">Track guest responses in real-time</p>
         </div>
       </div>
 
@@ -1018,7 +1018,7 @@ function RSVPManager() {
         ].map((stat, i) => (
           <div key={stat.label} className="text-center glass-dark rounded-lg p-3 animate-pop-in hover:scale-105 transition-transform" style={{ animationDelay: `${i * 100}ms` }}>
             <p className={`text-2xl font-serif ${stat.color}`}>{stat.value}</p>
-            <p className="text-xs text-purple-400">{stat.label}</p>
+            <p className="text-xs text-white/70">{stat.label}</p>
           </div>
         ))}
       </div>
@@ -1030,14 +1030,14 @@ function RSVPManager() {
           placeholder="Guest Name"
           value={newGuest.name}
           onChange={(e) => setNewGuest({ ...newGuest, name: e.target.value })}
-          className="bg-dark-card border border-dark-border rounded-lg px-3 py-2 text-purple-100 placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-all"
+          className="bg-dark-card border border-dark-border rounded-lg px-3 py-2 text-white placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-all"
         />
         <input
           type="tel"
           placeholder="Phone (e.g., +234...)"
           value={newGuest.phone}
           onChange={(e) => setNewGuest({ ...newGuest, phone: e.target.value })}
-          className="bg-dark-card border border-dark-border rounded-lg px-3 py-2 text-purple-100 placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-all"
+          className="bg-dark-card border border-dark-border rounded-lg px-3 py-2 text-white placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-all"
         />
       </div>
       <button onClick={addGuest} className="btn-gold w-full text-sm mb-6 relative z-10 hover:scale-[1.02] transition-transform">
@@ -1052,24 +1052,24 @@ function RSVPManager() {
             <div className="flex items-center gap-3">
               <div className={`w-2 h-2 rounded-full animate-pulse ${guest.status === 'attending' ? 'bg-green-400' : guest.status === 'declined' ? 'bg-red-400' : 'bg-yellow-400'}`} />
               <div>
-                <p className="text-purple-100 text-sm">{guest.name}</p>
-                <p className="text-purple-400 text-xs">{guest.phone}</p>
+                <p className="text-white text-sm">{guest.name}</p>
+                <p className="text-white/70 text-xs">{guest.phone}</p>
               </div>
             </div>
             <div className="flex items-center gap-2">
               <select
                 value={guest.status}
                 onChange={(e) => updateStatus(i, e.target.value as any)}
-                className="bg-dark-card border border-dark-border rounded px-2 py-1 text-xs text-purple-100 focus:outline-none"
+                className="bg-dark-card border border-dark-border rounded px-2 py-1 text-xs text-white focus:outline-none"
               >
                 <option value="pending">Pending</option>
                 <option value="attending">Attending</option>
                 <option value="declined">Declined</option>
               </select>
-              <button onClick={() => sendReminder(guest.phone, guest.name)} className="text-purple-400 hover:text-gold-400 transition-colors">
+              <button onClick={() => sendReminder(guest.phone, guest.name)} className="text-white/70 hover:text-gold-400 transition-colors">
                 <MessageCircle size={14} />
               </button>
-              <button onClick={() => removeGuest(i)} className="text-purple-400 hover:text-red-400 transition-colors opacity-0 group-hover:opacity-100">
+              <button onClick={() => removeGuest(i)} className="text-white/70 hover:text-red-400 transition-colors opacity-0 group-hover:opacity-100">
                 <Trash2 size={14} />
               </button>
             </div>
@@ -1138,8 +1138,8 @@ function MemoryWall() {
           <GalleryVerticalEnd size={20} className="text-gold-400" />
         </div>
         <div>
-          <h3 className="font-serif text-xl text-purple-100">Memory Wall</h3>
-          <p className="text-purple-400 text-sm">Share your event memories with everyone</p>
+          <h3 className="font-serif text-xl text-white">Memory Wall</h3>
+          <p className="text-white/70 text-sm">Share your event memories with everyone</p>
         </div>
       </div>
 
@@ -1150,14 +1150,14 @@ function MemoryWall() {
           placeholder="Your Name"
           value={newMemory.name}
           onChange={(e) => setNewMemory({ ...newMemory, name: e.target.value })}
-          className="w-full bg-dark-card border border-dark-border rounded-lg px-3 py-2 text-purple-100 placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-all"
+          className="w-full bg-dark-card border border-dark-border rounded-lg px-3 py-2 text-white placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-all"
         />
         <textarea
           placeholder="Share your memory..."
           value={newMemory.message}
           onChange={(e) => setNewMemory({ ...newMemory, message: e.target.value })}
           rows={2}
-          className="w-full bg-dark-card border border-dark-border rounded-lg px-3 py-2 text-purple-100 placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 resize-none transition-all"
+          className="w-full bg-dark-card border border-dark-border rounded-lg px-3 py-2 text-white placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 resize-none transition-all"
         />
 
         {/* Photo Upload */}
@@ -1166,7 +1166,7 @@ function MemoryWall() {
           className="w-full glass-dark rounded-lg p-3 border-2 border-dashed border-gold-500/30 hover:border-gold-500/60 transition-all flex items-center justify-center gap-2 hover:bg-gold-500/5"
         >
           <Upload size={16} className="text-gold-400" />
-          <span className="text-purple-300 text-xs">Add Photo (Optional)</span>
+          <span className="text-white/80 text-xs">Add Photo (Optional)</span>
         </button>
         <input
           ref={fileInputRef}
@@ -1204,10 +1204,10 @@ function MemoryWall() {
             {memory.photo && (
               <img src={memory.photo} alt="" className="w-full h-24 object-cover rounded-lg mb-2 opacity-80 group-hover:opacity-100 transition-opacity" />
             )}
-            <p className="text-purple-100 text-sm mb-1">{memory.name}</p>
-            <p className="text-purple-400 text-xs line-clamp-2">{memory.message}</p>
+            <p className="text-white text-sm mb-1">{memory.name}</p>
+            <p className="text-white/70 text-xs line-clamp-2">{memory.message}</p>
             <div className="flex items-center justify-between mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
-              <p className="text-purple-500 text-[10px]">{memory.date}</p>
+              <p className="text-white0 text-[10px]">{memory.date}</p>
               <button onClick={() => removeMemory(memory.id)} className="text-red-400 hover:text-red-300 transition-colors">
                 <Trash2 size={12} />
               </button>
@@ -1219,7 +1219,7 @@ function MemoryWall() {
       {memories.length === 0 && (
         <div className="text-center py-8 relative z-10">
           <Image size={40} className="text-purple-600 mx-auto mb-3 opacity-50" />
-          <p className="text-purple-400 text-sm">No memories yet. Be the first to share!</p>
+          <p className="text-white/70 text-sm">No memories yet. Be the first to share!</p>
         </div>
       )}
     </div>
@@ -1245,8 +1245,8 @@ function VIPPortal({ onNavigate }: { onNavigate: (page: Page) => void }) {
           <Crown size={20} className="text-gold-400" />
         </div>
         <div>
-          <h3 className="font-serif text-xl text-purple-100">VIP Client Portal</h3>
-          <p className="text-purple-400 text-sm">Exclusive benefits for premium clients</p>
+          <h3 className="font-serif text-xl text-white">VIP Client Portal</h3>
+          <p className="text-white/70 text-sm">Exclusive benefits for premium clients</p>
         </div>
       </div>
 
@@ -1255,7 +1255,7 @@ function VIPPortal({ onNavigate }: { onNavigate: (page: Page) => void }) {
           <div className="absolute inset-0 bg-gold-500/20 rounded-full blur-xl animate-pulse" />
           <Crown size={48} className="text-gold-400 relative z-10 animate-float" />
         </div>
-        <p className="text-purple-300 mb-4">Access exclusive tools and benefits</p>
+        <p className="text-white/80 mb-4">Access exclusive tools and benefits</p>
 
         <button
           onClick={() => onNavigate('contact')}
@@ -1264,7 +1264,7 @@ function VIPPortal({ onNavigate }: { onNavigate: (page: Page) => void }) {
           <Sparkles size={14} className="mr-2" />
           Get VIP Access
         </button>
-        <p className="text-purple-500 text-xs mt-3">Contact us to become a VIP client</p>
+        <p className="text-white0 text-xs mt-3">Contact us to become a VIP client</p>
       </div>
 
       <div className="grid grid-cols-2 gap-3 mt-6 relative z-10">
@@ -1275,8 +1275,8 @@ function VIPPortal({ onNavigate }: { onNavigate: (page: Page) => void }) {
             style={{ animationDelay: `${i * 100}ms` }}
           >
             <Icon size={20} className="text-gold-400 mb-2" />
-            <p className="text-purple-100 text-sm">{title}</p>
-            <p className="text-purple-400 text-xs">{desc}</p>
+            <p className="text-white text-sm">{title}</p>
+            <p className="text-white/70 text-xs">{desc}</p>
           </div>
         ))}
       </div>
@@ -1339,8 +1339,8 @@ Total Runtime: ~70 seconds`);
           <Sparkles size={20} className="text-gold-400" />
         </div>
         <div>
-          <h3 className="font-serif text-xl text-purple-100">AI Event Planner</h3>
-          <p className="text-purple-400 text-sm">Generate speeches, programs & concepts</p>
+          <h3 className="font-serif text-xl text-white">AI Event Planner</h3>
+          <p className="text-white/70 text-sm">Generate speeches, programs & concepts</p>
         </div>
       </div>
 
@@ -1350,7 +1350,7 @@ Total Runtime: ~70 seconds`);
           <button
             key={tab}
             onClick={() => { setActiveTab(tab); setGenerated(''); }}
-            className={`flex-1 py-2 rounded-lg text-xs uppercase tracking-widest transition-all animate-pop-in ${activeTab === tab ? 'bg-gold-500/20 border border-gold-500/40 text-gold-400 shadow-lg shadow-gold-500/10' : 'bg-dark-card border border-dark-border text-purple-400 hover:border-gold-500/30'}`}
+            className={`flex-1 py-2 rounded-lg text-xs uppercase tracking-widest transition-all animate-pop-in ${activeTab === tab ? 'bg-gold-500/20 border border-gold-500/40 text-gold-400 shadow-lg shadow-gold-500/10' : 'bg-dark-card border border-dark-border text-white/70 hover:border-gold-500/30'}`}
             style={{ animationDelay: `${i * 100}ms` }}
           >
             {tab}
@@ -1365,7 +1365,7 @@ Total Runtime: ~70 seconds`);
           placeholder="Event Type (e.g., Wedding, Birthday)"
           value={input.eventType}
           onChange={(e) => setInput({ ...input, eventType: e.target.value })}
-          className="w-full bg-dark-card border border-dark-border rounded-lg px-3 py-2 text-purple-100 placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-all"
+          className="w-full bg-dark-card border border-dark-border rounded-lg px-3 py-2 text-white placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-all"
         />
         {activeTab === 'speech' && (
           <input
@@ -1373,7 +1373,7 @@ Total Runtime: ~70 seconds`);
             placeholder="Names (e.g., Tunde & Funke)"
             value={input.names}
             onChange={(e) => setInput({ ...input, names: e.target.value })}
-            className="w-full bg-dark-card border border-dark-border rounded-lg px-3 py-2 text-purple-100 placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-all animate-slide-in-down"
+            className="w-full bg-dark-card border border-dark-border rounded-lg px-3 py-2 text-white placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-all animate-slide-in-down"
           />
         )}
       </div>
@@ -1395,7 +1395,7 @@ Total Runtime: ~70 seconds`);
       {/* Output */}
       {generated && (
         <div className="glass-dark rounded-lg p-4 relative z-10 animate-pop-in">
-          <pre className="text-purple-200 text-sm whitespace-pre-wrap font-sans">{generated}</pre>
+          <pre className="text-white/90 text-sm whitespace-pre-wrap font-sans">{generated}</pre>
           <div className="flex gap-2 mt-4">
             <button onClick={() => navigator.clipboard.writeText(generated)} className="flex-1 btn-outline-gold text-xs flex items-center justify-center gap-2 hover:scale-[1.02] transition-transform">
               <Plus size={12} className="rotate-45" />
@@ -1452,11 +1452,11 @@ export default function PremiumFeatures({ onNavigate }: PremiumFeaturesProps) {
 
         <div className="relative z-10 max-w-3xl mx-auto px-6">
           <p className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-4 opacity-0 animate-fade-in-up">Event Planning Suite</p>
-          <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-purple-100 mb-4 opacity-0 animate-fade-in-up-2 leading-tight">
+          <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white mb-4 opacity-0 animate-fade-in-up-2 leading-tight">
             Premium <span className="italic gold-text">Tools</span>
           </h1>
           <div className="section-divider" />
-          <p className="text-purple-300/80 text-base sm:text-lg max-w-xl mx-auto mt-4 opacity-0 animate-fade-in-up-3">
+          <p className="text-white/80/80 text-base sm:text-lg max-w-xl mx-auto mt-4 opacity-0 animate-fade-in-up-3">
             Your all-in-one event planning ecosystem. Count down, create invitations, plan events, and manage guests.
           </p>
         </div>
@@ -1472,7 +1472,7 @@ export default function PremiumFeatures({ onNavigate }: PremiumFeaturesProps) {
                 onClick={() => setActiveSection(id)}
                 className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium whitespace-nowrap transition-all animate-pop-in ${activeSection === id
                   ? 'bg-gold-500/20 border border-gold-500/40 text-gold-400 shadow-lg shadow-gold-500/10'
-                  : 'bg-dark-card border border-dark-border text-purple-300 hover:border-gold-500/30'
+                  : 'bg-dark-card border border-dark-border text-white/80 hover:border-gold-500/30'
                 }`}
                 style={{ animationDelay: `${i * 50}ms` }}
               >
@@ -1509,7 +1509,7 @@ export default function PremiumFeatures({ onNavigate }: PremiumFeaturesProps) {
       {/* Social CTA */}
       <section className="py-12 bg-purple-800/30 border-t border-dark-border text-center">
         <div className="max-w-xl mx-auto px-6">
-          <p className="text-purple-300 text-sm mb-4">Interested in our Ready-to-Wear services?</p>
+          <p className="text-white/80 text-sm mb-4">Interested in our Ready-to-Wear services?</p>
           <a
             href={INSTAGRAM_URL}
             target="_blank"
@@ -1519,7 +1519,7 @@ export default function PremiumFeatures({ onNavigate }: PremiumFeaturesProps) {
             <Instagram size={20} className="text-gold-400" />
             <div className="text-left">
               <p className="text-gold-400 text-sm font-medium">@rtw_by_belsh</p>
-              <p className="text-purple-400 text-xs">Follow us or contact on Instagram</p>
+              <p className="text-white/70 text-xs">Follow us or contact on Instagram</p>
             </div>
           </a>
         </div>

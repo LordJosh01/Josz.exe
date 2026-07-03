@@ -99,7 +99,7 @@ function App() {
   }, [currentPage, navigate]);
 
   return (
-    <div className="min-h-screen bg-dark text-purple-100 overflow-x-hidden">
+    <div className="min-h-screen bg-dark text-white overflow-x-hidden">
       {loading && <LoadingScreen onComplete={handleLoadingComplete} />}
       <CustomCursor />
       <Navbar currentPage={currentPage} onNavigate={navigate} />

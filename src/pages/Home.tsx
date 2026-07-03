@@ -141,14 +141,14 @@ export default function Home({ onNavigate }: HomeProps) {
           </div>
 
           {/* Headline */}
-          <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-light text-purple-50 mb-6 opacity-0 animate-fade-in-up-2 leading-[1.1]">
+          <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-light text-white mb-6 opacity-0 animate-fade-in-up-2 leading-[1.1]">
             The Art of Celebration{' '}
             <br className="hidden sm:block" />
             <span className="italic gold-text">Redefined.</span>
           </h1>
 
           {/* Subtitle */}
-          <p className="text-base sm:text-lg md:text-xl text-purple-300/90 max-w-2xl mx-auto mb-12 opacity-0 animate-fade-in-up-3 font-light leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl text-white/90 max-w-2xl mx-auto mb-12 opacity-0 animate-fade-in-up-3 font-light leading-relaxed">
             Weddings, birthdays and private celebrations crafted with intention — for families and individuals who believe their moments deserve to be extraordinary.
           </p>
 
@@ -189,14 +189,14 @@ export default function Home({ onNavigate }: HomeProps) {
         <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           <div className="scroll-reveal-left">
             <p className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-4">Who We Are</p>
-            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-purple-50 mb-6">
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-white mb-6">
               Quiet luxury,{' '}
               <span className="italic text-gold-300">warmly hosted.</span>
             </h2>
-            <p className="text-purple-300/80 leading-relaxed mb-4">
+            <p className="text-white/80 leading-relaxed mb-4">
               Events By BELSH is a boutique planning and design studio based in Kwara State. We create celebrations that feel deeply personal and visually extraordinary — for families and individuals who believe that every moment deserves to be remembered.
             </p>
-            <p className="text-purple-300/80 leading-relaxed mb-8">
+            <p className="text-white/80 leading-relaxed mb-8">
               From intimate dinners for 10 to grand wedding receptions for 500, we bring the same level of care, attention and artistry to every celebration we touch.
             </p>
             <div className="flex flex-col xs:flex-row gap-4">
@@ -242,7 +242,7 @@ export default function Home({ onNavigate }: HomeProps) {
             {/* Badge */}
             <div className="absolute -bottom-4 -right-4 glass-dark border border-gold-500/30 rounded-xl px-4 py-3 shadow-xl">
               <p className="text-gold-300 text-xs tracking-widest uppercase">Est. in Kwara</p>
-              <p className="font-serif text-xl text-purple-50">3+ Years</p>
+              <p className="font-serif text-xl text-white">3+ Years</p>
             </div>
           </div>
         </div>
@@ -254,9 +254,9 @@ export default function Home({ onNavigate }: HomeProps) {
         <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10 relative z-10">
           <div className="text-center mb-14 scroll-reveal">
             <p className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-4">What We Offer</p>
-            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-purple-50">Our Services</h2>
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-white">Our Services</h2>
             <div className="section-divider" />
-            <p className="text-purple-300/70 text-sm max-w-xl mx-auto mt-2">
+            <p className="text-white/70 text-sm max-w-xl mx-auto mt-2">
               From intimate gatherings to grand productions — we tailor every service to your occasion.
             </p>
           </div>
@@ -270,8 +270,8 @@ export default function Home({ onNavigate }: HomeProps) {
                 <div className="w-11 h-11 rounded-lg bg-gold-900/40 border border-gold-600/30 flex items-center justify-center mb-5 group-hover:border-gold-400/70 group-hover:bg-gold-800/40 group-hover:scale-110 transition-all duration-300">
                   <Icon size={20} className="text-gold-400" />
                 </div>
-                <h3 className="font-serif text-xl text-purple-50 mb-3">{title}</h3>
-                <p className="text-purple-300/80 text-sm leading-relaxed mb-4">{desc}</p>
+                <h3 className="font-serif text-xl text-white mb-3">{title}</h3>
+                <p className="text-white/80 text-sm leading-relaxed mb-4">{desc}</p>
                 <span className="text-gold-400 text-xs uppercase tracking-widest flex items-center gap-1 group-hover:gap-2 transition-all duration-300">
                   Learn more <ArrowRight size={12} />
                 </span>
@@ -292,9 +292,9 @@ export default function Home({ onNavigate }: HomeProps) {
         <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10">
           <div className="text-center mb-14 scroll-reveal">
             <p className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-4">How We Work</p>
-            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-purple-50">A Simple Three-Phase Process</h2>
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-white">A Simple Three-Phase Process</h2>
             <div className="section-divider" />
-            <p className="text-purple-300/70 text-sm max-w-xl mx-auto mt-2">
+            <p className="text-white/70 text-sm max-w-xl mx-auto mt-2">
               Clear from the first call through to the last guest leaving.
             </p>
           </div>
@@ -305,8 +305,8 @@ export default function Home({ onNavigate }: HomeProps) {
                 <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-gold-700/30 to-gold-500/10 border border-gold-600/30 flex items-center justify-center mb-5">
                   <Icon size={22} className="text-gold-400" />
                 </div>
-                <h3 className="font-serif text-2xl text-purple-50 mb-3">{title}</h3>
-                <p className="text-purple-300/80 text-sm leading-relaxed">{desc}</p>
+                <h3 className="font-serif text-2xl text-white mb-3">{title}</h3>
+                <p className="text-white/80 text-sm leading-relaxed">{desc}</p>
               </div>
             ))}
           </div>
@@ -319,11 +319,11 @@ export default function Home({ onNavigate }: HomeProps) {
         <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10 grid lg:grid-cols-2 gap-10 items-center relative z-10">
           <div className="scroll-reveal-left">
             <p className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-4">Why Choose Us</p>
-            <h2 className="font-serif text-3xl sm:text-4xl text-purple-50 mb-4">
+            <h2 className="font-serif text-3xl sm:text-4xl text-white mb-4">
               We show up, so you{' '}
               <span className="italic text-gold-300">don't have to worry.</span>
             </h2>
-            <p className="text-purple-300/80 leading-relaxed">
+            <p className="text-white/80 leading-relaxed">
               Our clients choose BELSH Events because they know they are in safe, experienced hands. From the first consultation to the final clean-up, we carry the weight of every logistical detail — so you can be fully present for the people and moments that matter.
             </p>
           </div>
@@ -331,7 +331,7 @@ export default function Home({ onNavigate }: HomeProps) {
             {whyUs.map((item, i) => (
               <div key={item} className={`flex items-start gap-3 glass-card gold-border rounded-lg p-4 scroll-reveal delay-${Math.min(i + 1, 6)}`}>
                 <CheckCircle size={16} className="text-gold-400 mt-0.5 shrink-0" />
-                <span className="text-purple-200 text-sm">{item}</span>
+                <span className="text-white/90 text-sm">{item}</span>
               </div>
             ))}
           </div>
@@ -348,11 +348,11 @@ export default function Home({ onNavigate }: HomeProps) {
           <div className="w-16 h-16 rounded-full bg-gold-500/10 border border-gold-500/30 flex items-center justify-center mx-auto mb-8">
             <Sparkles size={26} className="text-gold-400" />
           </div>
-          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-purple-50 mb-4 leading-tight">
+          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-white mb-4 leading-tight">
             Ready to create something{' '}
             <span className="italic text-gold-300">unforgettable?</span>
           </h2>
-          <p className="text-purple-300/80 mb-10 max-w-xl mx-auto text-sm sm:text-base">
+          <p className="text-white/80 mb-10 max-w-xl mx-auto text-sm sm:text-base">
             We would love to hear about your vision. Reach out for a free 30-minute consultation — no pressure, just a conversation.
           </p>
           <div className="flex flex-col xs:flex-row gap-4 justify-center">

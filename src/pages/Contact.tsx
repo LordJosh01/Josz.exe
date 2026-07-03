@@ -106,9 +106,9 @@ export default function Contact() {
         <FloatingDots color="rainbow" count={35} size="md" />
         <div className="relative z-10 max-w-3xl mx-auto px-6">
           <p className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-4 opacity-0 animate-fade-in-up">Let us Connect</p>
-          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-purple-100 mb-4 opacity-0 animate-fade-in-up-2">Contact Us</h1>
+          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-white mb-4 opacity-0 animate-fade-in-up-2">Contact Us</h1>
           <div className="section-divider" />
-          <p className="text-purple-300/80 text-lg max-w-xl mx-auto mt-4 opacity-0 animate-fade-in-up-3">
+          <p className="text-white/80 text-lg max-w-xl mx-auto mt-4 opacity-0 animate-fade-in-up-3">
             Ready to bring your celebration to life? Tell us about your vision — we will reply within 24 hours.
           </p>
         </div>
@@ -124,8 +124,8 @@ export default function Contact() {
                 <div className="w-12 h-12 rounded-full bg-gold-900/30 border border-gold-600/30 flex items-center justify-center mx-auto mb-4">
                   <Icon size={20} className="text-gold-400" />
                 </div>
-                <h3 className="text-purple-100 font-medium mb-2">{title}</h3>
-                <p className="text-purple-400 text-sm">{desc}</p>
+                <h3 className="text-white font-medium mb-2">{title}</h3>
+                <p className="text-white/70 text-sm">{desc}</p>
               </div>
             ))}
           </div>
@@ -138,8 +138,8 @@ export default function Contact() {
           {/* Info column */}
           <div className="lg:col-span-2 space-y-8 scroll-reveal-left">
             <div>
-              <h2 className="font-serif text-2xl md:text-3xl text-purple-100 mb-3">Ready to celebrate?</h2>
-              <p className="text-purple-300/80 text-sm leading-relaxed">
+              <h2 className="font-serif text-2xl md:text-3xl text-white mb-3">Ready to celebrate?</h2>
+              <p className="text-white/80 text-sm leading-relaxed">
                 Whether you have a full vision or just a feeling you want to create, we would love to hear from you.
                 Every great event begins with a conversation — let's start yours.
               </p>
@@ -159,9 +159,9 @@ export default function Contact() {
                   </svg>
                 </div>
                 <div>
-                  <p className="text-purple-400 text-xs uppercase tracking-widest mb-1">Email (Gmail)</p>
-                  <p className="text-purple-100 text-sm">aolagbaye@gmail.com</p>
-                  <p className="text-purple-500 text-xs mt-1">Click to compose</p>
+                  <p className="text-white/70 text-xs uppercase tracking-widest mb-1">Email (Gmail)</p>
+                  <p className="text-white text-sm">aolagbaye@gmail.com</p>
+                  <p className="text-white/50 text-xs mt-1">Click to compose</p>
                 </div>
               </a>
 
@@ -178,9 +178,9 @@ export default function Contact() {
                   </svg>
                 </div>
                 <div>
-                  <p className="text-purple-400 text-xs uppercase tracking-widest mb-1">WhatsApp</p>
-                  <p className="text-purple-100 text-sm">+234 803 567 2491</p>
-                  <p className="text-purple-500 text-xs mt-1">Click to chat</p>
+                  <p className="text-white/70 text-xs uppercase tracking-widest mb-1">WhatsApp</p>
+                  <p className="text-white text-sm">+234 803 567 2491</p>
+                  <p className="text-white/50 text-xs mt-1">Click to chat</p>
                 </div>
               </a>
 
@@ -195,9 +195,9 @@ export default function Contact() {
                   <Instagram size={18} className="text-gold-400" />
                 </div>
                 <div>
-                  <p className="text-purple-400 text-xs uppercase tracking-widest mb-1">Instagram</p>
-                  <p className="text-purple-100 text-sm">@events_by_belsh</p>
-                  <p className="text-purple-500 text-xs mt-1">See our recent work</p>
+                  <p className="text-white/70 text-xs uppercase tracking-widest mb-1">Instagram</p>
+                  <p className="text-white text-sm">@events_by_belsh</p>
+                  <p className="text-white/50 text-xs mt-1">See our recent work</p>
                 </div>
               </a>
 
@@ -207,9 +207,9 @@ export default function Contact() {
                   <MapPin size={18} className="text-gold-400" />
                 </div>
                 <div>
-                  <p className="text-purple-400 text-xs uppercase tracking-widest mb-1">Based In</p>
-                  <p className="text-purple-100 text-sm">Ilorin, Kwara State, Nigeria</p>
-                  <p className="text-purple-500 text-xs mt-1">Available for destination events</p>
+                  <p className="text-white/70 text-xs uppercase tracking-widest mb-1">Based In</p>
+                  <p className="text-white text-sm">Ilorin, Kwara State, Nigeria</p>
+                  <p className="text-white/50 text-xs mt-1">Available for destination events</p>
                 </div>
               </div>
 
@@ -219,17 +219,17 @@ export default function Contact() {
                   <Clock size={18} className="text-gold-400" />
                 </div>
                 <div>
-                  <p className="text-purple-400 text-xs uppercase tracking-widest mb-1">Response Time</p>
-                  <p className="text-purple-100 text-sm">Within 24 hours</p>
-                  <p className="text-purple-500 text-xs mt-1">Usually faster on WhatsApp</p>
+                  <p className="text-white/70 text-xs uppercase tracking-widest mb-1">Response Time</p>
+                  <p className="text-white text-sm">Within 24 hours</p>
+                  <p className="text-white/50 text-xs mt-1">Usually faster on WhatsApp</p>
                 </div>
               </div>
             </div>
 
             {/* Quick Info */}
             <div className="pt-6 border-t border-dark-border">
-              <p className="text-purple-400 text-xs uppercase tracking-widest mb-4">What to Expect</p>
-              <ul className="space-y-2 text-sm text-purple-300/80">
+              <p className="text-white/70 text-xs uppercase tracking-widest mb-4">What to Expect</p>
+              <ul className="space-y-2 text-sm text-white/80">
                 <li className="flex items-start gap-2">
                   <span className="w-1 h-1 rounded-full bg-gold-400 shrink-0 mt-2" />
                   Free 30-minute discovery call
@@ -259,8 +259,8 @@ export default function Contact() {
                     <CheckCircle size={32} className="text-gold-400" />
                   </div>
                   <div>
-                    <h3 className="font-serif text-2xl text-purple-100 mb-2">How would you like to send your message?</h3>
-                    <p className="text-purple-300/80 max-w-sm mb-6">
+                    <h3 className="font-serif text-2xl text-white mb-2">How would you like to send your message?</h3>
+                    <p className="text-white/80 max-w-sm mb-6">
                       Choose your preferred method below to send your enquiry.
                     </p>
                   </div>
@@ -298,43 +298,43 @@ export default function Contact() {
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div>
-                    <h3 className="font-serif text-2xl text-purple-100 mb-2">Tell Us About Your Event</h3>
-                    <p className="text-purple-400 text-sm">Fill in the details below and we will get back to you shortly.</p>
+                    <h3 className="font-serif text-2xl text-white mb-2">Tell Us About Your Event</h3>
+                    <p className="text-white/70 text-sm">Fill in the details below and we will get back to you shortly.</p>
                   </div>
 
                   <div className="grid md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs text-purple-400 uppercase tracking-widest mb-2">Full Name *</label>
+                      <label className="block text-xs text-white/70 uppercase tracking-widest mb-2">Full Name *</label>
                       <input
                         type="text" name="name" required value={form.name} onChange={handleChange}
                         placeholder="Your full name"
-                        className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-purple-100 placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-colors duration-300"
+                        className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-white placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-colors duration-300"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs text-purple-400 uppercase tracking-widest mb-2">Email *</label>
+                      <label className="block text-xs text-white/70 uppercase tracking-widest mb-2">Email *</label>
                       <input
                         type="email" name="email" required value={form.email} onChange={handleChange}
                         placeholder="your@email.com"
-                        className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-purple-100 placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-colors duration-300"
+                        className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-white placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-colors duration-300"
                       />
                     </div>
                   </div>
 
                   <div className="grid md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs text-purple-400 uppercase tracking-widest mb-2">Phone / WhatsApp</label>
+                      <label className="block text-xs text-white/70 uppercase tracking-widest mb-2">Phone / WhatsApp</label>
                       <input
                         type="tel" name="phone" value={form.phone} onChange={handleChange}
                         placeholder="+234 000 000 0000"
-                        className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-purple-100 placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-colors duration-300"
+                        className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-white placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-colors duration-300"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs text-purple-400 uppercase tracking-widest mb-2">Event Type *</label>
+                      <label className="block text-xs text-white/70 uppercase tracking-widest mb-2">Event Type *</label>
                       <select
                         name="eventType" required value={form.eventType} onChange={handleChange}
-                        className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-purple-100 text-sm focus:outline-none focus:border-gold-500/50 transition-colors duration-300"
+                        className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-gold-500/50 transition-colors duration-300"
                       >
                         <option value="" className="bg-dark-card">Select event type...</option>
                         {eventTypes.map(({ value, label }) => (
@@ -346,25 +346,25 @@ export default function Contact() {
 
                   <div className="grid md:grid-cols-3 gap-4">
                     <div>
-                      <label className="block text-xs text-purple-400 uppercase tracking-widest mb-2">Event Date</label>
+                      <label className="block text-xs text-white/70 uppercase tracking-widest mb-2">Event Date</label>
                       <input
                         type="date" name="date" value={form.date} onChange={handleChange}
-                        className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-purple-100 text-sm focus:outline-none focus:border-gold-500/50 transition-colors duration-300"
+                        className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-gold-500/50 transition-colors duration-300"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs text-purple-400 uppercase tracking-widest mb-2">Guest Count</label>
+                      <label className="block text-xs text-white/70 uppercase tracking-widest mb-2">Guest Count</label>
                       <input
                         type="text" name="guestCount" value={form.guestCount} onChange={handleChange}
                         placeholder="e.g. 50-100"
-                        className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-purple-100 placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-colors duration-300"
+                        className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-white placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-colors duration-300"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs text-purple-400 uppercase tracking-widest mb-2">Budget Range</label>
+                      <label className="block text-xs text-white/70 uppercase tracking-widest mb-2">Budget Range</label>
                       <select
                         name="budget" value={form.budget} onChange={handleChange}
-                        className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-purple-100 text-sm focus:outline-none focus:border-gold-500/50 transition-colors duration-300"
+                        className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-gold-500/50 transition-colors duration-300"
                       >
                         <option value="" className="bg-dark-card">Select budget...</option>
                         {budgetRanges.map(({ value, label }) => (
@@ -375,11 +375,11 @@ export default function Contact() {
                   </div>
 
                   <div>
-                    <label className="block text-xs text-purple-400 uppercase tracking-widest mb-2">Tell Us About Your Vision *</label>
+                    <label className="block text-xs text-white/70 uppercase tracking-widest mb-2">Tell Us About Your Vision *</label>
                     <textarea
                       name="message" required value={form.message} onChange={handleChange} rows={5}
                       placeholder="Describe your event, style preferences, venue ideas, and anything else you would like us to know..."
-                      className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-purple-100 placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-colors duration-300 resize-none"
+                      className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-white placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-colors duration-300 resize-none"
                     />
                   </div>
 
@@ -394,7 +394,7 @@ export default function Contact() {
                     )}
                   </button>
 
-                  <p className="text-purple-500 text-xs text-center">
+                  <p className="text-white/50 text-xs text-center">
                     By submitting, you agree to our team reaching out via email or WhatsApp.
                   </p>
                 </form>
@@ -408,15 +408,15 @@ export default function Contact() {
       <section className="py-16 bg-purple-800/30 border-t border-dark-border">
         <div className="max-w-5xl mx-auto px-6 text-center">
           <p className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-4">Our Location</p>
-          <h2 className="font-serif text-2xl md:text-3xl text-purple-100 mb-4">Based in Kwara, Serving Beyond</h2>
-          <p className="text-purple-300/70 max-w-xl mx-auto mb-8">
+          <h2 className="font-serif text-2xl md:text-3xl text-white mb-4">Based in Kwara, Serving Beyond</h2>
+          <p className="text-white/70 max-w-xl mx-auto mb-8">
             While we are proudly based in Ilorin, Kwara State, we plan events across Nigeria and are open to destination celebrations.
             Wherever your vision takes you, we are ready to follow.
           </p>
           <div className="glass-card gold-border rounded-xl p-8 max-w-md mx-auto">
             <MapPin size={32} className="text-gold-400 mx-auto mb-4" />
-            <p className="text-purple-100 font-medium mb-1">Ilorin, Kwara State</p>
-            <p className="text-purple-400 text-sm">Nigeria</p>
+            <p className="text-white font-medium mb-1">Ilorin, Kwara State</p>
+            <p className="text-white/70 text-sm">Nigeria</p>
           </div>
         </div>
       </section>

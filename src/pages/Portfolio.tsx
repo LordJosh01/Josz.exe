@@ -202,11 +202,11 @@ export default function Portfolio({ onNavigate }: PortfolioProps) {
         <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-dark to-transparent" />
         <div className="relative z-10 max-w-3xl mx-auto px-6">
           <p className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-4 opacity-0 animate-fade-in-up">Our Work</p>
-          <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-purple-100 mb-4 opacity-0 animate-fade-in-up-2 leading-tight">
+          <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white mb-4 opacity-0 animate-fade-in-up-2 leading-tight">
             Our <span className="italic gold-text">Portfolio</span>
           </h1>
           <div className="section-divider" />
-          <p className="text-purple-300/80 text-base sm:text-lg max-w-xl mx-auto mt-4 opacity-0 animate-fade-in-up-3">
+          <p className="text-white/80 text-base sm:text-lg max-w-xl mx-auto mt-4 opacity-0 animate-fade-in-up-3">
             A curated showcase of celebrations we have had the privilege of bringing to life — weddings, birthdays, private gatherings and more.
           </p>
           {/* Stats strip */}
@@ -214,7 +214,7 @@ export default function Portfolio({ onNavigate }: PortfolioProps) {
             {[['17+', 'Events Shown'], ['4', 'Event Types'], ['100%', 'In Kwara']].map(([val, label]) => (
               <div key={label} className="text-center">
                 <p className="font-serif text-2xl gold-text">{val}</p>
-                <p className="text-purple-400 text-xs uppercase tracking-widest">{label}</p>
+                <p className="text-white/70 text-xs uppercase tracking-widest">{label}</p>
               </div>
             ))}
           </div>
@@ -226,7 +226,7 @@ export default function Portfolio({ onNavigate }: PortfolioProps) {
         <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10">
 
           {/* Count */}
-          <p className="text-center text-purple-400 text-xs uppercase tracking-widest mb-12 scroll-reveal">
+          <p className="text-center text-white/70 text-xs uppercase tracking-widest mb-12 scroll-reveal">
             Showing {items.length} events
           </p>
 
@@ -273,8 +273,8 @@ export default function Portfolio({ onNavigate }: PortfolioProps) {
                 <div className="absolute inset-0 p-5 flex flex-col justify-end">
                   <div className="transition-transform duration-400 translate-y-2 group-hover:translate-y-0">
                     <p className="text-gold-400 text-[10px] uppercase tracking-widest mb-1">{item.location}</p>
-                    <h3 className="font-serif text-lg sm:text-xl text-purple-100 mb-2 leading-snug">{item.title}</h3>
-                    <p className="text-purple-300/80 text-xs sm:text-sm leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-400 line-clamp-2">
+                    <h3 className="font-serif text-lg sm:text-xl text-white mb-2 leading-snug">{item.title}</h3>
+                    <p className="text-white/80 text-xs sm:text-sm leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-400 line-clamp-2">
                       {item.desc}
                     </p>
                     {/* Tags */}
@@ -297,8 +297,8 @@ export default function Portfolio({ onNavigate }: PortfolioProps) {
       <section className="py-16 bg-purple-800/40 border-y border-dark-border">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <p className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-4">Behind Every Event</p>
-          <h2 className="font-serif text-2xl md:text-3xl text-purple-100 mb-4">Every photo tells a story of intentional design.</h2>
-          <p className="text-purple-300/70 text-sm max-w-2xl mx-auto leading-relaxed">
+          <h2 className="font-serif text-2xl md:text-3xl text-white mb-4">Every photo tells a story of intentional design.</h2>
+          <p className="text-white/70 text-sm max-w-2xl mx-auto leading-relaxed">
             Each event in our portfolio began with a single conversation. A couple, a family, a company — sharing a vision with us. What you see here is the result of hundreds of hours of planning, styling, vendor coordination and on-the-day precision. We are proud of every single one.
           </p>
         </div>
@@ -307,8 +307,8 @@ export default function Portfolio({ onNavigate }: PortfolioProps) {
       {/* CTA */}
       <section className="py-20 md:py-24 text-center" ref={ctaRef}>
         <div className="max-w-2xl mx-auto px-6 scroll-reveal">
-          <h2 className="font-serif text-3xl md:text-4xl text-purple-100 mb-4">Imagine your event here.</h2>
-          <p className="text-purple-300/80 mb-10">Every great celebration starts with a conversation. Reach out and let us build your vision.</p>
+          <h2 className="font-serif text-3xl md:text-4xl text-white mb-4">Imagine your event here.</h2>
+          <p className="text-white/80 mb-10">Every great celebration starts with a conversation. Reach out and let us build your vision.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button onClick={() => navigate('contact')} className="btn-gold">
               Start Planning

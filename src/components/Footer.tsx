@@ -87,7 +87,7 @@ export default function Footer({ onNavigate }: FooterProps) {
         <div className="marquee-wrapper">
           <div className="marquee-track">
             {[...marqueeItems, ...marqueeItems].map((item, i) => (
-              <span key={i} className="flex items-center gap-4 mx-6 text-xs uppercase tracking-[0.2em] text-purple-400/60 whitespace-nowrap">
+              <span key={i} className="flex items-center gap-4 mx-6 text-xs uppercase tracking-[0.2em] text-white/70/60 whitespace-nowrap">
                 <span className="w-1 h-1 rounded-full bg-gold-500/50 inline-block" />
                 {item}
               </span>
@@ -112,10 +112,10 @@ export default function Footer({ onNavigate }: FooterProps) {
               </div>
               <div>
                 <p className="font-serif text-xl text-gold-400 tracking-widest leading-none">BELSH EVENTS</p>
-                <p className="text-purple-400 text-[10px] tracking-[0.25em] uppercase mt-1">Planning &amp; Design</p>
+                <p className="text-white/70 text-[10px] tracking-[0.25em] uppercase mt-1">Planning &amp; Design</p>
               </div>
             </button>
-            <p className="text-purple-300/70 text-sm leading-relaxed mb-6">
+            <p className="text-white/70 text-sm leading-relaxed mb-6">
               Boutique event planning and design — weddings, birthdays and private celebrations crafted
               with care in Kwara and beyond.
             </p>
@@ -218,20 +218,20 @@ export default function Footer({ onNavigate }: FooterProps) {
             <ul className="space-y-4">
               <li>
                 <a href={GMAIL_URL} target="_blank" rel="noopener noreferrer"
-                  className="flex items-start gap-3 text-purple-300/80 hover:text-gold-300 transition-colors text-sm group">
+                  className="flex items-start gap-3 text-white/80 hover:text-gold-300 transition-colors text-sm group">
                   <Mail size={15} className="text-gold-500 mt-0.5 shrink-0 group-hover:text-gold-300 transition-colors" />
                   <span>aolagbaye@gmail.com</span>
                 </a>
               </li>
               <li>
                 <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer"
-                  className="flex items-start gap-3 text-purple-300/80 hover:text-gold-300 transition-colors text-sm group">
+                  className="flex items-start gap-3 text-white/80 hover:text-gold-300 transition-colors text-sm group">
                   <Phone size={15} className="text-gold-500 mt-0.5 shrink-0 group-hover:text-gold-300 transition-colors" />
                   <span>+234 803 567 2491</span>
                 </a>
               </li>
               <li>
-                <div className="flex items-start gap-3 text-purple-300/60 text-sm">
+                <div className="flex items-start gap-3 text-white/60 text-sm">
                   <MapPin size={15} className="text-gold-500/60 mt-0.5 shrink-0" />
                   <span>Ilorin, Kwara State, Nigeria</span>
                 </div>
@@ -239,8 +239,8 @@ export default function Footer({ onNavigate }: FooterProps) {
             </ul>
             {/* Social handle */}
             <div className="mt-4 pt-4 border-t border-dark-border/50">
-              <p className="text-purple-400 text-[10px] uppercase tracking-widest mb-2">Ready to Wear</p>
-              <p className="text-purple-300/70 text-xs mb-2">Follow us or contact us on Instagram & TikTok:</p>
+              <p className="text-white/70 text-[10px] uppercase tracking-widest mb-2">Ready to Wear</p>
+              <p className="text-white/70 text-xs mb-2">Follow us or contact us on Instagram & TikTok:</p>
               <div className="flex gap-4">
                 <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="text-gold-400 hover:text-gold-300 text-sm transition-colors flex items-center gap-1">
                   <Instagram size={12} />
@@ -268,7 +268,7 @@ export default function Footer({ onNavigate }: FooterProps) {
         </div>
 
         {/* Bottom bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-purple-500">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/60">
           <p>&copy; {new Date().getFullYear()} Events By BELSH. All rights reserved.</p>
           <div className="flex items-center gap-2">
             <span className="w-1 h-1 rounded-full bg-gold-500/40 inline-block" />

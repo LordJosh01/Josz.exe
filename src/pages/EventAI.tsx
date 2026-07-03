@@ -1104,11 +1104,11 @@ You can also ask me about:
             </div>
           </div>
           <p className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-3">AI-Powered Planning</p>
-          <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl text-purple-100 mb-3">
+          <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl text-white mb-3">
             Event <span className="italic gold-text">AI</span>
           </h1>
           <div className="section-divider" />
-          <p className="text-purple-300/80 text-sm max-w-xl mx-auto mt-3">
+          <p className="text-white/80/80 text-sm max-w-xl mx-auto mt-3">
             Your intelligent event planning assistant for personalized tips and advice.
           </p>
         </div>
@@ -1122,7 +1122,7 @@ You can also ask me about:
             <div className="lg:col-span-1 space-y-4">
               <div className="glass-card rounded-xl p-4">
                 <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-purple-100 text-sm font-medium">Saved Chats</h3>
+                  <h3 className="text-white text-sm font-medium">Saved Chats</h3>
                   {messages.length > 1 && (
                     <button onClick={saveConversation} className="text-gold-400 hover:text-gold-300 transition-colors text-xs flex items-center gap-1">
                       <Save size={12} />
@@ -1134,20 +1134,20 @@ You can also ask me about:
                   <div className="space-y-2 max-h-32 overflow-y-auto">
                     {savedConversations.map((conv, i) => (
                       <div key={i} className="glass-dark rounded-lg p-2 flex items-center justify-between group">
-                        <button onClick={() => loadConversation(conv)} className="text-purple-300 text-xs truncate flex-1 text-left hover:text-gold-400 transition-colors">
+                        <button onClick={() => loadConversation(conv)} className="text-white/80 text-xs truncate flex-1 text-left hover:text-gold-400 transition-colors">
                           {conv[1]?.content.substring(0, 25)}...
                         </button>
-                        <button onClick={() => deleteSavedConversation(i)} className="text-purple-500 hover:text-red-400 transition-colors opacity-0 group-hover:opacity-100">
+                        <button onClick={() => deleteSavedConversation(i)} className="text-white/60 hover:text-red-400 transition-colors opacity-0 group-hover:opacity-100">
                           <Trash2 size={12} />
                         </button>
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <p className="text-purple-500 text-xs">No saved chats yet</p>
+                  <p className="text-white/60 text-xs">No saved chats yet</p>
                 )}
                 {messages.length > 1 && (
-                  <button onClick={clearCurrentChat} className="w-full mt-3 text-xs text-purple-400 hover:text-red-400 transition-colors flex items-center justify-center gap-1">
+                  <button onClick={clearCurrentChat} className="w-full mt-3 text-xs text-white/70 hover:text-red-400 transition-colors flex items-center justify-center gap-1">
                     <Trash2 size={12} />
                     New Chat
                   </button>
@@ -1164,8 +1164,8 @@ You can also ask me about:
                     <div key={title} className="flex items-start gap-2">
                       <Icon size={14} className="text-gold-400 mt-0.5 shrink-0" />
                       <div>
-                        <p className="text-purple-200 text-xs font-medium">{title}</p>
-                        <p className="text-purple-400 text-[10px]">{desc}</p>
+                        <p className="text-white/90 text-xs font-medium">{title}</p>
+                        <p className="text-white/70 text-[10px]">{desc}</p>
                       </div>
                     </div>
                   ))}
@@ -1173,10 +1173,10 @@ You can also ask me about:
               </div>
 
               <div className="glass-card rounded-xl p-4">
-                <h3 className="text-purple-100 text-xs font-medium mb-3">Try Asking</h3>
+                <h3 className="text-white text-xs font-medium mb-3">Try Asking</h3>
                 <div className="space-y-2">
                   {suggestedQuestions.map((q) => (
-                    <button key={q} onClick={() => setInput(q)} className="w-full text-[11px] text-purple-300 hover:text-gold-400 transition-colors text-left py-1 border-b border-dark-border/50 last:border-0">
+                    <button key={q} onClick={() => setInput(q)} className="w-full text-[11px] text-white/80 hover:text-gold-400 transition-colors text-left py-1 border-b border-dark-border/50 last:border-0">
                       {q}
                     </button>
                   ))}
@@ -1193,8 +1193,8 @@ You can also ask me about:
                       <Sparkles size={16} className="text-gold-400" />
                     </div>
                     <div>
-                      <p className="text-purple-100 text-sm font-medium">BELSH Event AI</p>
-                      <p className="text-purple-400 text-[10px]">Your intelligent planning assistant</p>
+                      <p className="text-white text-sm font-medium">BELSH Event AI</p>
+                      <p className="text-white/70 text-[10px]">Your intelligent planning assistant</p>
                     </div>
                   </div>
                 </div>
@@ -1209,8 +1209,8 @@ You can also ask me about:
                         </div>
                       )}
                       <div className={`max-w-[85%] rounded-xl p-3 ${msg.role === 'user' ? 'bg-gold-500/20 border border-gold-500/30' : 'bg-purple-800/30 border border-purple-700/30'}`}>
-                        <p className="text-purple-100 text-sm whitespace-pre-wrap">{msg.content}</p>
-                        <p className="text-purple-500 text-[10px] mt-2">{msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+                        <p className="text-white text-sm whitespace-pre-wrap">{msg.content}</p>
+                        <p className="text-white/60 text-[10px] mt-2">{msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
                       </div>
                       {msg.role === 'user' && (
                         <div className="w-7 h-7 rounded-full bg-gold-600/30 flex items-center justify-center ml-2 shrink-0">
@@ -1227,7 +1227,7 @@ You can also ask me about:
                       <div className="bg-purple-800/30 rounded-xl p-3 border border-purple-700/30">
                         <div className="flex items-center gap-2">
                           <RefreshCw size={14} className="text-gold-400 animate-spin" />
-                          <span className="text-purple-300 text-sm">Thinking...</span>
+                          <span className="text-white/80 text-sm">Thinking...</span>
                         </div>
                       </div>
                     </div>
@@ -1242,7 +1242,7 @@ You can also ask me about:
                       value={input}
                       onChange={(e) => setInput(e.target.value)}
                       placeholder="Type your question here..."
-                      className="flex-1 bg-dark-card border border-dark-border rounded-lg px-4 py-2.5 text-purple-100 placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-all"
+                      className="flex-1 bg-dark-card border border-dark-border rounded-lg px-4 py-2.5 text-white placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-all"
                     />
                     <button type="submit" disabled={loading || !input.trim()} className="btn-gold px-4 py-2 disabled:opacity-50 disabled:cursor-not-allowed">
                       <Send size={16} />
@@ -1259,8 +1259,8 @@ You can also ask me about:
       <section className="py-10 bg-purple-900/40 border-y border-dark-border text-center">
         <div className="max-w-xl mx-auto px-6">
           <Crown size={24} className="text-gold-400 mx-auto mb-3" />
-          <h2 className="font-serif text-lg text-purple-100 mb-2">Ready to make it real?</h2>
-          <p className="text-purple-300/80 text-sm mb-4">Let the BELSH Events team bring your vision to life.</p>
+          <h2 className="font-serif text-lg text-white mb-2">Ready to make it real?</h2>
+          <p className="text-white/80/80 text-sm mb-4">Let the BELSH Events team bring your vision to life.</p>
           <button onClick={() => { navigate('contact'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="btn-gold text-sm">
             Book a Free Consultation
           </button>
