@@ -66,42 +66,22 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
         {/* Outer ring - follows mouse slightly */}
         <div
-          className="absolute rounded-full border-2 border-gold-500/20 animate-spin"
+          className="absolute rounded-full border-2 border-gold-500/30 animate-spin"
           style={{
-            width: 320,
-            height: 320,
+            width: 350,
+            height: 350,
             animationDuration: '20s',
             transform: `translate(${(mousePos.x - 50) * 0.1}px, ${(mousePos.y - 50) * 0.1}px)`,
           }}
         />
         {/* Second ring - opposite direction */}
         <div
-          className="absolute rounded-full border border-gold-400/30"
-          style={{
-            width: 260,
-            height: 260,
-            animation: 'spin 15s linear infinite reverse',
-            transform: `translate(${(mousePos.x - 50) * -0.08}px, ${(mousePos.y - 50) * -0.08}px)`,
-          }}
-        />
-        {/* Third ring */}
-        <div
-          className="absolute rounded-full border border-gold-500/25 animate-spin"
-          style={{
-            width: 200,
-            height: 200,
-            animationDuration: '12s',
-            transform: `translate(${(mousePos.x - 50) * 0.06}px, ${(mousePos.y - 50) * 0.06}px)`,
-          }}
-        />
-        {/* Fourth ring - inner */}
-        <div
           className="absolute rounded-full border-2 border-gold-400/40"
           style={{
-            width: 140,
-            height: 140,
-            animation: 'spin 8s linear infinite reverse',
-            transform: `translate(${(mousePos.x - 50) * -0.04}px, ${(mousePos.y - 50) * -0.04}px)`,
+            width: 280,
+            height: 280,
+            animation: 'spin 15s linear infinite reverse',
+            transform: `translate(${(mousePos.x - 50) * -0.08}px, ${(mousePos.y - 50) * -0.08}px)`,
           }}
         />
 
@@ -111,8 +91,8 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
             key={i}
             className="absolute w-2 h-2 rounded-full bg-gold-400"
             style={{
-              width: 6,
-              height: 6,
+              width: 8,
+              height: 8,
               animation: `orbit-${i % 2 === 0 ? 'cw' : 'ccw'} ${8 + i * 2}s linear infinite`,
               ['--start-deg' as string]: `${deg}deg`,
             }}

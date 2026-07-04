@@ -253,7 +253,11 @@ export default function Home({ onNavigate }: HomeProps) {
         <FloatingDots color="purple" count={25} size="sm" />
         <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10 relative z-10">
           <div className="text-center mb-14 scroll-reveal">
-            <p className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-4">What We Offer</p>
+            <p className="text-xs tracking-[0.3em] uppercase mb-4">
+              <span className="text-white">What </span>
+              <span className="text-gold-400">We</span>
+              <span className="text-white"> Offer</span>
+            </p>
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-white">Our Services</h2>
             <div className="section-divider" />
             <p className="text-white/70 text-sm max-w-xl mx-auto mt-2">
@@ -291,7 +295,11 @@ export default function Home({ onNavigate }: HomeProps) {
       <section className="py-20 md:py-28" ref={processRef}>
         <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10">
           <div className="text-center mb-14 scroll-reveal">
-            <p className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-4">How We Work</p>
+            <p className="text-xs tracking-[0.3em] uppercase mb-4">
+              <span className="text-white">How </span>
+              <span className="text-gold-400">We</span>
+              <span className="text-white"> Work</span>
+            </p>
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-white">A Simple Three-Phase Process</h2>
             <div className="section-divider" />
             <p className="text-white/70 text-sm max-w-xl mx-auto mt-2">
@@ -318,7 +326,11 @@ export default function Home({ onNavigate }: HomeProps) {
         <FloatingDots color="mixed" count={30} size="sm" />
         <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10 grid lg:grid-cols-2 gap-10 items-center relative z-10">
           <div className="scroll-reveal-left">
-            <p className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-4">Why Choose Us</p>
+            <p className="text-xs tracking-[0.3em] uppercase mb-4">
+              <span className="text-white">Why </span>
+              <span className="text-gold-400">Choose</span>
+              <span className="text-white"> Us</span>
+            </p>
             <h2 className="font-serif text-3xl sm:text-4xl text-white mb-4">
               We show up, so you{' '}
               <span className="italic text-gold-300">don't have to worry.</span>

@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Sparkles, Send, Trash2, Lightbulb, Calendar, Users, MapPin, Clock, Heart, Camera, Music, Gift, Crown, Utensils, Palette, RefreshCw, Save } from 'lucide-react';
 import FloatingDots from '../components/FloatingDots';
+import Confetti from '../components/Confetti';
 
 type Page = 'home' | 'services' | 'portfolio' | 'about' | 'faq' | 'contact' | 'premium' | 'eventai';
 
@@ -85,6 +86,7 @@ export default function EventAI({ onNavigate }: EventAIProps) {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [savedConversations, setSavedConversations] = useState<Message[][]>([]);
+  const [showConfetti, setShowConfetti] = useState(false);
   const [eventContext, setEventContext] = useState<EventContext>({
     eventType: null,
     guestCount: null,
@@ -92,6 +94,12 @@ export default function EventAI({ onNavigate }: EventAIProps) {
     lastTopic: null,
   });
   const chatRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setShowConfetti(true);
+    const timer = setTimeout(() => setShowConfetti(false), 5000);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     const saved = localStorage.getItem('belsh_ai_conversations');
@@ -1252,6 +1260,7 @@ You can also ask me about:
 
   return (
     <div>
+      <Confetti style="gold" active={showConfetti} />
       {/* Hero */}
       <section className="page-hero text-center relative overflow-hidden min-h-[45vh]">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(147,51,234,0.4)_0%,transparent_70%)]" />

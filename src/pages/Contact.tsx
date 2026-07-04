@@ -37,7 +37,7 @@ const reasons = [
   {
     icon: Heart,
     title: 'Personalized Approach',
-    desc: 'We listen to your unique vision and craft celebrations that authentically reflect your style and story.',
+    desc: 'We listen to your unique vision and craft celebrations that authentically reflect your style, culture, and story.',
   },
   {
     icon: Sparkles,
@@ -47,12 +47,22 @@ const reasons = [
   {
     icon: Calendar,
     title: 'Seamless Experience',
-    desc: 'We handle every logistics so you can be fully present and enjoy your celebration stress-free.',
+    desc: 'We handle all logistics, vendor coordination, and timeline management so you can enjoy stress-free.',
   },
   {
     icon: CheckCircle,
-    title: 'Trusted Network',
-    desc: 'Access to our curated list of reliable vendors across Kwara State and beyond.',
+    title: 'Trusted Vendor Network',
+    desc: 'Access our curated list of reliable photographers, caterers, decorators, DJs, and more across Kwara.',
+  },
+  {
+    icon: Clock,
+    title: '24-Hour Response',
+    desc: 'Quick response time on all inquiries. We respect your time and keep you informed every step.',
+  },
+  {
+    icon: Mail,
+    title: 'Transparent Pricing',
+    desc: 'No hidden fees, no surprises. Clear itemized proposals so you know exactly where your money goes.',
   },
 ];
 
@@ -132,7 +142,11 @@ export default function Contact() {
           <div className="grid md:grid-cols-2 gap-10">
             {/* Reasons */}
             <div>
-              <h3 className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-6 text-center md:text-left">Why Choose BELSH</h3>
+              <h3 className="text-xs tracking-[0.3em] uppercase mb-6 text-center md:text-left">
+                <span className="text-white">Why </span>
+                <span className="text-gold-400">Choose</span>
+                <span className="text-white"> BELSH</span>
+              </h3>
               <div className="grid gap-4">
                 {reasons.map(({ icon: Icon, title, desc }, i) => (
                   <div key={title} className={`flex items-start gap-4 scroll-reveal delay-${i + 1}`}>
@@ -156,10 +170,14 @@ export default function Contact() {
               </h3>
               <ul className="space-y-3">
                 {[
-                  { text: 'Free 30-minute discovery call', delay: '0.1s' },
-                  { text: 'No-obligation consultation', delay: '0.2s' },
-                  { text: 'Transparent pricing and packages', delay: '0.3s' },
-                  { text: 'Personalized proposal within 48 hours', delay: '0.4s' },
+                  { text: 'Free 30-minute discovery call to discuss your vision', delay: '0.1s' },
+                  { text: 'No-obligation consultation with detailed planning advice', delay: '0.2s' },
+                  { text: 'Transparent pricing with clear package breakdown', delay: '0.3s' },
+                  { text: 'Personalized proposal tailored to your budget within 48 hours', delay: '0.4s' },
+                  { text: 'Dedicated event coordinator assigned from day one', delay: '0.5s' },
+                  { text: 'Vendor recommendations from our trusted network', delay: '0.6s' },
+                  { text: 'Regular check-ins and timeline updates throughout planning', delay: '0.7s' },
+                  { text: 'On-site coordination team for your event day', delay: '0.8s' },
                 ].map((item, i) => (
                   <li
                     key={i}

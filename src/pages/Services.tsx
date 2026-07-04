@@ -275,7 +275,11 @@ export default function Services({ onNavigate }: ServicesProps) {
       <section className="py-24 bg-purple-900/50 border-y border-dark-border" ref={additionalRef}>
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
           <div className="text-center mb-16 scroll-reveal">
-            <p className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-4">More Ways We Celebrate</p>
+            <p className="text-xs tracking-[0.3em] uppercase mb-4">
+              <span className="text-white">More Ways </span>
+              <span className="text-gold-400">We</span>
+              <span className="text-white"> Celebrate</span>
+            </p>
             <h2 className="font-serif text-3xl md:text-4xl text-white">Additional Services</h2>
             <p className="text-white/70 mt-4 max-w-xl mx-auto">Beyond our core offerings, we also specialize in these beautiful celebrations.</p>
             <div className="section-divider" />
@@ -298,7 +302,11 @@ export default function Services({ onNavigate }: ServicesProps) {
       <section className="py-24 md:py-28" ref={processRef}>
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
           <div className="text-center mb-16 scroll-reveal">
-            <p className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-4">How We Work</p>
+            <p className="text-xs tracking-[0.3em] uppercase mb-4">
+              <span className="text-white">How </span>
+              <span className="text-gold-400">We</span>
+              <span className="text-white"> Work</span>
+            </p>
             <h2 className="font-serif text-3xl md:text-4xl text-white">Our Process</h2>
             <p className="text-white/70 mt-4 max-w-xl mx-auto">A transparent, collaborative approach that keeps you informed every step of the way.</p>
             <div className="section-divider" />

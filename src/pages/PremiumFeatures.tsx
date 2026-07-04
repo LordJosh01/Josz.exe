@@ -1468,14 +1468,14 @@ export default function PremiumFeatures({ onNavigate }: PremiumFeaturesProps) {
       </section>
 
       {/* Section Navigation */}
-      <section className="sticky top-16 md:top-20 z-40 bg-dark/90 backdrop-blur-md border-b border-dark-border py-3">
+      <section className="sticky top-16 md:top-20 z-40 bg-dark/90 backdrop-blur-md border-b border-dark-border py-4">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
+          <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
             {sections.map(({ id, label, icon: Icon }, i) => (
               <button
                 key={id}
                 onClick={() => setActiveSection(id)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium whitespace-nowrap transition-all animate-pop-in ${activeSection === id
+                className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-medium whitespace-nowrap transition-all animate-pop-in ${activeSection === id
                   ? 'bg-gold-500/20 border border-gold-500/40 text-gold-400 shadow-lg shadow-gold-500/10'
                   : 'bg-dark-card border border-dark-border text-white/80 hover:border-gold-500/30'
                 }`}
