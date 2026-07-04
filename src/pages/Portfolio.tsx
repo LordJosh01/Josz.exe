@@ -202,7 +202,7 @@ export default function Portfolio({ onNavigate }: PortfolioProps) {
         <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-dark to-transparent" />
         <div className="relative z-10 max-w-3xl mx-auto px-6">
           <div className="flex justify-center mb-5 opacity-0 animate-fade-in-up">
-            <div className="w-14 h-14 rounded-full bg-purple-600/40 border border-gold-500/30 flex items-center justify-center">
+            <div className="w-14 h-14 rounded-full bg-purple-600/40 border border-gold-500/30 flex items-center justify-center animate-icon-spin">
               <Camera size={24} className="text-gold-400" />
             </div>
           </div>

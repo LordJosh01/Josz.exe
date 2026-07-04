@@ -122,7 +122,7 @@ export default function About({ onNavigate }: AboutProps) {
         <FloatingDots color="gold" count={30} size="md" />
         <div className="relative z-10 max-w-3xl mx-auto px-6">
           <div className="flex justify-center mb-5 opacity-0 animate-fade-in-up">
-            <div className="w-14 h-14 rounded-full bg-purple-600/40 border border-gold-500/30 flex items-center justify-center">
+            <div className="w-14 h-14 rounded-full bg-purple-600/40 border border-gold-500/30 flex items-center justify-center animate-icon-float">
               <Users size={24} className="text-gold-400" />
             </div>
           </div>
@@ -272,9 +272,6 @@ export default function About({ onNavigate }: AboutProps) {
         <div className="max-w-4xl mx-auto px-6 text-center">
           <blockquote className="relative">
             <span className="absolute -top-8 -left-4 text-8xl text-gold-400/10 font-serif">"</span>
-            <p className="font-serif text-2xl md:text-3xl text-white leading-relaxed italic mb-4">
-              Every celebration tells a story. Our job is to make sure yours is unforgettable.
-            </p>
             <p className="font-serif text-2xl md:text-3xl text-white leading-relaxed italic">
               Every celebration tells a story. Our job is to make sure yours is unforgettable.
             </p>

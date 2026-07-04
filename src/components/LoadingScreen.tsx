@@ -1,26 +1,37 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 
 export default function LoadingScreen({ onComplete }: { onComplete: () => void }) {
   const [progress, setProgress] = useState(0);
   const [fadeOut, setFadeOut] = useState(false);
+  const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Handle mouse movement for interactive rings
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const rect = container.getBoundingClientRect();
+      setMousePos({
+        x: ((e.clientX - rect.left) / rect.width) * 100,
+        y: ((e.clientY - rect.top) / rect.height) * 100,
+      });
+    };
+
+    container.addEventListener('mousemove', handleMouseMove);
+    return () => container.removeEventListener('mousemove', handleMouseMove);
+  }, []);
 
   // Pre-generate minimal elements for performance
   const elements = useMemo(() => ({
-    // Smaller number of dots for performance
-    dots: Array.from({ length: 25 }).map((_, i) => ({
-      size: 2 + (i % 4),
+    dots: Array.from({ length: 20 }).map((_, i) => ({
+      size: 2 + (i % 3),
       color: i % 2 === 0 ? '#d4a017' : '#a855f7',
-      left: 10 + (i * 3.5),
-      top: 10 + (i % 5) * 20,
-      delay: i * 0.1,
+      left: 5 + (i * 4.5),
+      top: 15 + (i % 4) * 25,
+      delay: i * 0.08,
     })),
-    // 4 floating orbs instead of 8
-    orbs: [
-      { size: 300, color: 'rgba(168,85,247,0.15)', x: '20%', y: '30%', delay: 0 },
-      { size: 250, color: 'rgba(212,160,23,0.12)', x: '70%', y: '20%', delay: 1 },
-      { size: 200, color: 'rgba(168,85,247,0.1)', x: '60%', y: '70%', delay: 2 },
-      { size: 280, color: 'rgba(212,160,23,0.08)', x: '25%', y: '65%', delay: 0.5 },
-    ],
   }), []);
 
   useEffect(() => {
@@ -34,7 +45,7 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
           }, 300);
           return 100;
         }
-        return prev + 2;
+        return prev + 1.5;
       });
     }, 25);
 
@@ -43,36 +54,78 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
 
   return (
     <div
-      className={`fixed inset-0 z-[100] flex flex-col items-center justify-center transition-opacity duration-500 ${
+      ref={containerRef}
+      className={`fixed inset-0 z-[100] flex flex-col items-center justify-center transition-opacity duration-500 cursor-pointer ${
         fadeOut ? 'opacity-0' : 'opacity-100'
       }`}
       style={{
         background: 'radial-gradient(ellipse at center, #1a0a30 0%, #0a0118 80%)',
       }}
     >
-      {/* Animated background layer */}
-      <div className="absolute inset-0 overflow-hidden">
-        {/* Floating orbs */}
-        {elements.orbs.map((orb, i) => (
+      {/* Interactive gold rings around center */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        {/* Outer ring - follows mouse slightly */}
+        <div
+          className="absolute rounded-full border-2 border-gold-500/20 animate-spin"
+          style={{
+            width: 320,
+            height: 320,
+            animationDuration: '20s',
+            transform: `translate(${(mousePos.x - 50) * 0.1}px, ${(mousePos.y - 50) * 0.1}px)`,
+          }}
+        />
+        {/* Second ring - opposite direction */}
+        <div
+          className="absolute rounded-full border border-gold-400/30"
+          style={{
+            width: 260,
+            height: 260,
+            animation: 'spin 15s linear infinite reverse',
+            transform: `translate(${(mousePos.x - 50) * -0.08}px, ${(mousePos.y - 50) * -0.08}px)`,
+          }}
+        />
+        {/* Third ring */}
+        <div
+          className="absolute rounded-full border border-gold-500/25 animate-spin"
+          style={{
+            width: 200,
+            height: 200,
+            animationDuration: '12s',
+            transform: `translate(${(mousePos.x - 50) * 0.06}px, ${(mousePos.y - 50) * 0.06}px)`,
+          }}
+        />
+        {/* Fourth ring - inner */}
+        <div
+          className="absolute rounded-full border-2 border-gold-400/40"
+          style={{
+            width: 140,
+            height: 140,
+            animation: 'spin 8s linear infinite reverse',
+            transform: `translate(${(mousePos.x - 50) * -0.04}px, ${(mousePos.y - 50) * -0.04}px)`,
+          }}
+        />
+
+        {/* Animated particles on rings */}
+        {[0, 90, 180, 270].map((deg, i) => (
           <div
             key={i}
-            className="absolute rounded-full animate-float-orb"
+            className="absolute w-2 h-2 rounded-full bg-gold-400"
             style={{
-              width: orb.size,
-              height: orb.size,
-              background: `radial-gradient(circle, ${orb.color} 0%, transparent 70%)`,
-              left: orb.x,
-              top: orb.y,
-              animationDelay: `${orb.delay}s`,
+              width: 6,
+              height: 6,
+              animation: `orbit-${i % 2 === 0 ? 'cw' : 'ccw'} ${8 + i * 2}s linear infinite`,
+              ['--start-deg' as string]: `${deg}deg`,
             }}
           />
         ))}
+      </div>
 
-        {/* Animated dots grid */}
+      {/* Floating dots */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {elements.dots.map((dot, i) => (
           <div
             key={i}
-            className="absolute rounded-full animate-twine"
+            className="absolute rounded-full animate-pulse"
             style={{
               width: dot.size,
               height: dot.size,
@@ -80,74 +133,90 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
               left: `${dot.left}%`,
               top: `${dot.top}%`,
               animationDelay: `${dot.delay}s`,
+              animationDuration: '2s',
             }}
           />
         ))}
-
-        {/* Rotating rings */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="absolute w-[400px] h-[400px] border border-gold-500/8 rounded-full animate-spin" style={{ animationDuration: '25s' }} />
-          <div className="absolute w-[280px] h-[280px] border border-purple-500/8 rounded-full animate-spin" style={{ animationDuration: '18s', animationDirection: 'reverse' }} />
-          <div className="absolute w-[160px] h-[160px] border border-gold-400/8 rounded-full animate-spin" style={{ animationDuration: '12s' }} />
-        </div>
-
-        {/* Particle wave effect */}
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute inset-0 animate-gradient-shift" style={{ background: 'linear-gradient(45deg, transparent 30%, rgba(212,160,23,0.05) 50%, transparent 70%)' }} />
-        </div>
       </div>
 
       {/* Center content */}
       <div className="relative z-10 flex flex-col items-center">
-        {/* Logo with glow */}
+        {/* Logo with rings */}
         <div className="relative mb-6">
-          <div className="absolute inset-0 scale-150">
-            <div className="w-full h-full bg-yellow-500/20 rounded-full blur-2xl animate-pulse" />
+          {/* Rings around logo */}
+          <div className="absolute inset-0 scale-[2.5]">
+            <div className="absolute inset-0 rounded-full border border-gold-500/20" />
+            <div className="absolute inset-2 rounded-full border border-gold-400/15" />
+            <div className="absolute inset-4 rounded-full border border-gold-500/10" />
           </div>
+
+          {/* Glow effect */}
+          <div className="absolute inset-0 scale-150">
+            <div className="w-full h-full bg-gold-500/20 rounded-full blur-xl animate-pulse" />
+          </div>
+
+          {/* Logo */}
           <img
             src="/EVENT_BY_BELSH.jpg"
             alt="Events By BELSH"
-            className="relative h-20 w-20 object-contain rounded-full ring-2 ring-yellow-500/40"
+            className="relative h-20 w-20 object-cover rounded-full ring-2 ring-gold-500/50 shadow-lg shadow-gold-500/20"
           />
         </div>
 
         {/* Brand */}
-        <h1 className="font-serif text-2xl text-yellow-400 tracking-[0.2em] mb-1">BELSH EVENTS</h1>
-        <p className="text-purple-400/80 text-[11px] tracking-[0.3em] uppercase mb-8">Planning &amp; Design</p>
+        <h1 className="font-serif text-2xl text-gold-400 tracking-[0.2em] mb-1 drop-shadow-lg">BELSH EVENTS</h1>
+        <p className="text-purple-400/70 text-[10px] tracking-[0.35em] uppercase mb-10">Planning &amp; Design</p>
 
-        {/* Progress bar */}
-        <div className="w-52 h-1 bg-white/5 rounded-full overflow-hidden">
-          <div
-            className="h-full rounded-full transition-all duration-75"
-            style={{
-              width: `${progress}%`,
-              background: 'linear-gradient(90deg, #d4a017, #f2cc5a, #fcd34d)',
-            }}
-          />
+        {/* Professional progress bar */}
+        <div className="relative w-56">
+          {/* Background track */}
+          <div className="h-1.5 bg-white/5 rounded-full overflow-hidden backdrop-blur-sm border border-white/5">
+            {/* Progress fill */}
+            <div
+              className="h-full rounded-full relative overflow-hidden transition-all duration-100"
+              style={{
+                width: `${progress}%`,
+                background: 'linear-gradient(90deg, #b8860b, #d4a017, #f2cc5a, #d4a017)',
+              }}
+            >
+              {/* Shimmer effect */}
+              <div
+                className="absolute inset-0 animate-shimmer"
+                style={{
+                  background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)',
+                }}
+              />
+            </div>
+          </div>
+
+          {/* Percentage */}
+          <div className="flex justify-between mt-2">
+            <span className="text-purple-500/50 text-[9px] uppercase tracking-wider">Loading</span>
+            <span className="text-gold-400/80 text-[10px] font-medium tabular-nums">{Math.round(progress)}%</span>
+          </div>
         </div>
 
-        {/* Loading text */}
-        <p className="text-purple-500/60 text-[10px] mt-4 tracking-[0.2em] uppercase">
-          {progress < 30 ? 'Preparing...' : progress < 60 ? 'Loading...' : progress < 100 ? 'Almost ready...' : 'Welcome!'}
+        {/* Status text */}
+        <p className="text-purple-500/50 text-[9px] mt-4 tracking-[0.15em] uppercase">
+          {progress < 25 ? 'Initializing...' : progress < 50 ? 'Loading assets...' : progress < 75 ? 'Preparing...' : progress < 100 ? 'Almost ready...' : 'Welcome!'}
         </p>
       </div>
 
       <style>{`
-        @keyframes float-orb {
-          0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.5; }
-          50% { transform: translate(30px, -20px) scale(1.1); opacity: 0.8; }
-        }
-        @keyframes twine {
-          0%, 100% { opacity: 0.3; transform: scale(1); }
-          50% { opacity: 0.7; transform: scale(1.5); }
-        }
-        @keyframes gradient-shift {
+        @keyframes shimmer {
           0% { transform: translateX(-100%); }
-          100% { transform: translateX(100%); }
+          100% { transform: translateX(200%); }
         }
-        .animate-float-orb { animation: float-orb 6s ease-in-out infinite; }
-        .animate-twine { animation: twine 3s ease-in-out infinite; }
-        .animate-gradient-shift { animation: gradient-shift 3s ease-in-out infinite; }
+        .animate-shimmer { animation: shimmer 1.5s ease-in-out infinite; }
+
+        @keyframes orbit-cw {
+          from { transform: rotate(var(--start-deg)) translateX(160px) rotate(calc(-1 * var(--start-deg))); }
+          to { transform: rotate(calc(var(--start-deg) + 360deg)) translateX(160px) rotate(calc(-1 * (var(--start-deg) + 360deg))); }
+        }
+        @keyframes orbit-ccw {
+          from { transform: rotate(var(--start-deg)) translateX(130px) rotate(calc(-1 * var(--start-deg))); }
+          to { transform: rotate(calc(var(--start-deg) - 360deg)) translateX(130px) rotate(calc(-1 * (var(--start-deg) - 360deg))); }
+        }
       `}</style>
     </div>
   );

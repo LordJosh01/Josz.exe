@@ -195,7 +195,7 @@ export default function Footer({ onNavigate }: FooterProps) {
               Events We Plan
             </h4>
             <ul className="space-y-2">
-              {['Weddings', 'Traditional Ceremonies', 'Birthday Celebrations', 'Private Dinners', 'Corporate Events', 'Anniversaries', 'Bridal Showers', 'Baby Showers'].map((item) => (
+              {['Weddings', 'Traditional Ceremonies', 'Birthday Celebrations', 'Private Dinners', 'Corporate Events', 'Burials & Memorials', 'Anniversaries', 'Bridal Showers'].map((item) => (
                 <li key={item}>
                   <button
                     onClick={() => navigate('services')}

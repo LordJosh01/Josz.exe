@@ -72,6 +72,7 @@ const detectEventType = (text: string): string | null => {
     corporate: ['corporate', 'business', 'conference', 'seminar', 'meeting', 'annual general'],
     baby: ['baby shower', 'naming ceremony', 'child dedication', 'christening'],
     traditional: ['traditional wedding', 'engagement ceremony', 'dowry', 'bride price', ' lobola', 'native law'],
+    burial: ['burial', 'funeral', 'memorial', 'wake', 'lying in state', 'interment'],
   };
   for (const [type, keywords] of Object.entries(types)) {
     if (keywords.some(k => text.includes(k))) return type;
@@ -154,6 +155,7 @@ export default function EventAI({ onNavigate }: EventAIProps) {
       'birthday', 'party', 'celebration', 'anniversary', 'graduation',
       'corporate', 'conference', 'seminar', 'meeting', 'business event', 'annual general',
       'baby shower', 'naming', 'dedication', 'christening', 'child',
+      'burial', 'funeral', 'memorial', 'wake', 'interment',
       'venue', 'hall', 'hotel', 'location', 'place', 'event center',
       'cater', 'food', 'menu', 'jollof', 'rice', 'meal', 'drink',
       'decor', 'decoration', 'theme', 'color', 'design', 'style', 'flower', 'floral',
@@ -295,7 +297,106 @@ What type of corporate event are you planning?`;
 **Typical Budget: N500,000 - N3,000,000**
 (depending on family requirements)
 
-Which culture's traditional wedding are you planning? I can give you a detailed item list!`;
+Which culture's traditional wedding are you planning? I can give you a detailed item list!
+
+**yoruba**: Yoruba Traditional Wedding Details:
+The Yoruba engagement (Idana) is beautiful and symbolic. Required items typically include:
+- 24 Kola nuts (Obi)
+- Bitter kola (Orogbo)
+- Alligator pepper (Ataare)
+- Honey (Oyin) - for sweetness in marriage
+- Sugar (Iyo) - for a sweet life
+- Salt (Iyo) - wisdom in the home
+- Dried fish (Eja) - prosperity
+- Palm oil (Epo) - smooth life
+- Tubers of yam (10-20 pieces)
+- Bags of rice (2-5 bags)
+- Crates of drinks (malt, soft drinks)
+- Envelope with money (Owo Ori)
+- Complete outfit for bride (Aso Oke, Gele, Iro/Buba, Shoes, Jewelry)
+- Groom's outfit (Agbada, Fila, Shoes)
+- Traveling bag for bride's belongings
+- Engagement ring
+
+Budget for Yoruba Engagement: N500,000 - N2,500,000
+
+**igbo**: Igbo Traditional Wedding Details:
+The Igbo wine carrying (Iju ALO) ceremony requires:
+- Kola nuts (Oji) - essential for prayer
+- Palm wine (Nkwu Enu) - bride carries to groom
+- Goat (Ewu) - for sacrifice
+- Bags of rice
+- Tubers of yam
+- Palm oil
+- Salt
+- Stock fish and dry fish
+- Crates of drinks
+- Money for bride price (Ime Ego) - negotiated with Umunna
+- Bride's complete outfit (2-4 sets)
+- Jewelry, shoes, handbags
+- Engagement ring
+
+Budget for Igbo Traditional: N600,000 - N3,000,000
+
+**hausa**: Hausa Traditional Wedding Details:
+The Hausa wedding (Fatiha) includes:
+- Sadaki (Bride price) - amount set by bride's family
+- Kayan Daki (Dowry) - furniture, kitchen items for bride
+- Kayan Jana'iza - items for the wedding day
+- Clothing for bride (multiple sets)
+- Jewelry (gold)
+- Shoes and accessories
+- Perfumes
+- Food items (rice, oil, spices)
+- Mats and pillows
+- Money gifts (Kudin Salanka)
+
+Budget for Hausa Wedding: N700,000 - N5,000,000
+
+Let me know your culture and I'll provide a detailed item checklist!`;
+    }
+
+    // Burial/Funeral/Memorial
+    if (lowerInput.includes('burial') || lowerInput.includes('funeral') || lowerInput.includes('memorial') || lowerInput.includes('wake') || lowerInput.includes('interment')) {
+      return `Burial and memorial services require sensitivity, dignity, and careful planning. Here's comprehensive guidance:
+
+**Types of Burial Events**
+1. **Wake/Service of Songs**: Evening before burial
+2. **Funeral Service**: Church/mosque ceremony
+3. **Interment**: Graveside ceremony
+4. **Reception**: Gathering after burial
+
+**Planning Timeline**
+- **Immediately**: Notify family, secure death certificate
+- **1-2 days**: Book venue, engage undertakers, inform church/mosque
+- **3-5 days**: Order casket, flowers, program printing
+- **1 day before**: Wake/service of songs preparation
+- **Burial day**: Full coordination
+
+**Key Service Providers**
+- Undertakers/Mortuary: N100,000 - N500,000
+- Casket: N80,000 - N800,000
+- Venue (hall/church): N50,000 - N300,000
+- Catering: N1,500 - N3,000 per guest
+- Pallbearers: N20,000 - N50,000
+- Program printing: N50 - N150 per copy
+- Photographer: N50,000 - N200,000
+- Flowers: N30,000 - N150,000
+
+**Proper Guest Count Considerations**
+- Family only: 50-100
+- Community: 200-500
+- Dignitary/High-profile: 500-2000
+
+**Nigerian Burial Traditions**
+- **Yoruba**: Service of songs, lying-in-state, church service, procession
+- **Igbo**: Wake-keep, church service, burial at ancestral home
+- **Hausa**: Janazah prayers, burial same day or next
+
+**Budget Range: N500,000 - N10,000,000+**
+(depending on scale and family status)
+
+What type of burial service are you planning? I can help with specific cultural guidance.`;
     }
 
     // Naming ceremony/Child dedication

@@ -129,6 +129,11 @@ const additionalServices = [
     title: 'Graduation Parties',
     desc: 'Honor academic achievements with celebrations that recognize hard work and new beginnings.',
   },
+  {
+    icon: Heart,
+    title: 'Burial & Memorial Services',
+    desc: 'Dignified funeral planning, memorial services, and celebration of life ceremonies handled with respect and care.',
+  },
 ];
 
 const processSteps = [
@@ -205,7 +210,7 @@ export default function Services({ onNavigate }: ServicesProps) {
         <FloatingDots color="mixed" count={35} size="md" />
         <div className="relative z-10 max-w-3xl mx-auto px-6">
           <div className="flex justify-center mb-5 opacity-0 animate-fade-in-up">
-            <div className="w-14 h-14 rounded-full bg-purple-600/40 border border-gold-500/30 flex items-center justify-center">
+            <div className="w-14 h-14 rounded-full bg-purple-600/40 border border-gold-500/30 flex items-center justify-center animate-icon-pulse">
               <Heart size={24} className="text-gold-400" />
             </div>
           </div>

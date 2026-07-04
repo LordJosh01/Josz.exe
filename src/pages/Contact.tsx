@@ -15,6 +15,7 @@ const eventTypes = [
   { value: 'Birthday Celebration', label: 'Birthday Celebration' },
   { value: 'Private Dinner', label: 'Private Dinner' },
   { value: 'Corporate Event', label: 'Corporate Event' },
+  { value: 'Burial / Funeral', label: 'Burial / Funeral' },
   { value: 'Anniversary', label: 'Anniversary' },
   { value: 'Bridal Shower', label: 'Bridal Shower' },
   { value: 'Baby Shower', label: 'Baby Shower' },
@@ -47,6 +48,11 @@ const reasons = [
     icon: Calendar,
     title: 'Seamless Experience',
     desc: 'We handle every logistics so you can be fully present and enjoy your celebration stress-free.',
+  },
+  {
+    icon: CheckCircle,
+    title: 'Trusted Network',
+    desc: 'Access to our curated list of reliable vendors across Kwara State and beyond.',
   },
 ];
 
@@ -106,7 +112,7 @@ export default function Contact() {
         <FloatingDots color="rainbow" count={35} size="md" />
         <div className="relative z-10 max-w-3xl mx-auto px-6">
           <div className="flex justify-center mb-5 opacity-0 animate-fade-in-up">
-            <div className="w-14 h-14 rounded-full bg-purple-600/40 border border-gold-500/30 flex items-center justify-center">
+            <div className="w-14 h-14 rounded-full bg-purple-600/40 border border-gold-500/30 flex items-center justify-center animate-icon-wiggle">
               <Mail size={24} className="text-gold-400" />
             </div>
           </div>

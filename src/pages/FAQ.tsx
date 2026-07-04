@@ -223,7 +223,7 @@ export default function FAQ({ onNavigate }: FAQProps) {
         <FloatingDots color="purple" count={25} size="sm" />
         <div className="relative z-10 max-w-3xl mx-auto px-6">
           <div className="flex justify-center mb-5 opacity-0 animate-fade-in-up">
-            <div className="w-14 h-14 rounded-full bg-purple-600/40 border border-gold-500/30 flex items-center justify-center">
+            <div className="w-14 h-14 rounded-full bg-purple-600/40 border border-gold-500/30 flex items-center justify-center animate-icon-bounce">
               <HelpCircle size={24} className="text-gold-400" />
             </div>
           </div>
