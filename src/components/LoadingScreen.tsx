@@ -89,25 +89,43 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
 
       {/* Center content */}
       <div className="relative z-10 flex flex-col items-center">
-        {/* Logo with decorative rings */}
-        <div className="relative mb-6">
-          {/* Rings around logo */}
-          <div className="absolute inset-0 scale-[2.5]">
-            <div className="absolute inset-0 rounded-full border border-gold-500/20 animate-spin-slow-load" />
-            <div className="absolute inset-2 rounded-full border border-gold-400/15 animate-spin-slow-load-reverse" />
-            <div className="absolute inset-4 rounded-full border border-gold-500/10" />
+        {/* Logo with radiating light beams */}
+        <div className="relative mb-6 flex items-center justify-center">
+          {/* Pulsing aura glow */}
+          <div
+            className="absolute rounded-full blur-2xl animate-aura-pulse"
+            style={{
+              width: 140,
+              height: 140,
+              background: 'radial-gradient(circle, rgba(212,160,23,0.35) 0%, rgba(147,51,234,0.15) 50%, transparent 70%)',
+            }}
+          />
+
+          {/* Radiating light beams */}
+          <div className="absolute animate-beam-rotate" style={{ width: 160, height: 160 }}>
+            {[0, 45, 90, 135, 180, 225, 270, 315].map((deg, i) => (
+              <div
+                key={i}
+                className="absolute left-1/2 top-1/2 origin-left animate-beam-pulse"
+                style={{
+                  width: 70,
+                  height: 1.5,
+                  background: `linear-gradient(90deg, rgba(212,160,23,0.5), transparent)`,
+                  transform: `rotate(${deg}deg) translateY(-0.75px)`,
+                  animationDelay: `${i * 0.15}s`,
+                }}
+              />
+            ))}
           </div>
 
-          {/* Glow effect */}
-          <div className="absolute inset-0 scale-150">
-            <div className="w-full h-full bg-gold-500/20 rounded-full blur-xl animate-pulse" />
-          </div>
+          {/* Soft inner glow */}
+          <div className="absolute rounded-full blur-md animate-aura-pulse" style={{ width: 100, height: 100, background: 'rgba(212,160,23,0.15)', animationDelay: '0.5s' }} />
 
           {/* Logo */}
           <img
             src="/EVENT_BY_BELSH.jpg"
             alt="Events By BELSH"
-            className="relative h-20 w-20 object-cover rounded-full ring-2 ring-gold-500/50 shadow-lg shadow-gold-500/20"
+            className="relative h-20 w-20 object-cover rounded-full ring-2 ring-gold-500/50 shadow-lg shadow-gold-500/20 animate-logo-breathe z-10"
           />
         </div>
 
@@ -180,6 +198,30 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
           to { transform: rotate(-360deg); }
         }
         .animate-spin-slow-load-reverse { animation: spin-slow-load-reverse 20s linear infinite; }
+
+        @keyframes aura-pulse {
+          0%, 100% { transform: scale(1); opacity: 0.4; }
+          50% { transform: scale(1.25); opacity: 0.7; }
+        }
+        .animate-aura-pulse { animation: aura-pulse 3s ease-in-out infinite; }
+
+        @keyframes beam-rotate {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        .animate-beam-rotate { animation: beam-rotate 20s linear infinite; }
+
+        @keyframes beam-pulse {
+          0%, 100% { opacity: 0.2; }
+          50% { opacity: 0.8; }
+        }
+        .animate-beam-pulse { animation: beam-pulse 2s ease-in-out infinite; }
+
+        @keyframes logo-breathe {
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.06); }
+        }
+        .animate-logo-breathe { animation: logo-breathe 3.5s ease-in-out infinite; }
       `}</style>
     </div>
   );
