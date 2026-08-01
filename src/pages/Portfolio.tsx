@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { ChevronRight, Eye } from 'lucide-react';
+import { ChevronRight, Camera } from 'lucide-react';
 import Confetti from '../components/Confetti';
 import FloatingDots from '../components/FloatingDots';
 
