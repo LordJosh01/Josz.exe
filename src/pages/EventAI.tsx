@@ -20,7 +20,11 @@ interface EventContext {
   eventType: string | null;
   guestCount: number | null;
   budget: string | null;
+  date: string | null;
+  location: string | null;
+  style: string | null;
   lastTopic: string | null;
+  conversationHistory: string[];
 }
 
 const tips = [
@@ -41,6 +45,20 @@ const suggestedQuestions = [
   'Tell me about traditional Nigerian weddings',
   'How much does a wedding cost in Kwara?',
 ];
+
+const followUpSuggestions: Record<string, string[]> = {
+  wedding: ['How do I choose a venue?', 'What\'s a realistic budget?', 'Help me with a timeline', 'Decoration ideas?'],
+  birthday: ['Budget-friendly ideas?', 'Theme suggestions?', 'How many guests?', 'Entertainment options?'],
+  corporate: ['Venue recommendations?', 'AV requirements?', 'Catering options?', 'How to manage RSVPs?'],
+  budget: ['How to save on decor?', 'Vendor negotiation tips?', 'Cost per guest?', 'Hidden costs to avoid?'],
+  venue: ['What questions should I ask?', 'Indoor vs outdoor?', 'Capacity for 200 guests?', 'Parking considerations?'],
+  decor: ['Color scheme ideas?', 'Flower budget tips?', 'DIY decoration ideas?', 'Latest trends?'],
+  vendor: ['Photographer checklist?', 'DJ vs live band?', 'When to book vendors?', 'Red flags to avoid?'],
+  timeline: ['Wedding day timeline?', 'Birthday party schedule?', 'How early to start planning?', 'Day-of coordination?'],
+  traditional: ['Yoruba traditions?', 'Igbo traditions?', 'Hausa traditions?', 'Item checklist?'],
+  food: ['Menu suggestions?', 'Cost per guest?', 'Small chops options?', 'Dietary considerations?'],
+  default: ['Tell me about venues', 'Help with budgeting', 'Decoration ideas', 'Vendor tips', 'Create a timeline'],
+};
 
 const initialMessage: Message = {
   id: 'welcome',
@@ -91,8 +109,13 @@ export default function EventAI({ onNavigate }: EventAIProps) {
     eventType: null,
     guestCount: null,
     budget: null,
+    date: null,
+    location: null,
+    style: null,
     lastTopic: null,
+    conversationHistory: [],
   });
+  const [followUps, setFollowUps] = useState<string[]>(followUpSuggestions.default);
   const chatRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -130,7 +153,66 @@ export default function EventAI({ onNavigate }: EventAIProps) {
 
   const clearCurrentChat = () => {
     setMessages([initialMessage]);
-    setEventContext({ eventType: null, guestCount: null, budget: null, lastTopic: null });
+    setEventContext({ eventType: null, guestCount: null, budget: null, date: null, location: null, style: null, lastTopic: null, conversationHistory: [] });
+    setFollowUps(followUpSuggestions.default);
+  };
+
+  // Detect the topic category for follow-up suggestions
+  const detectTopic = (text: string): string => {
+    const t = text.toLowerCase();
+    if (t.includes('wedding') || t.includes('marriage') || t.includes('bride') || t.includes('groom')) return 'wedding';
+    if (t.includes('birthday') || t.includes('party')) return 'birthday';
+    if (t.includes('corporate') || t.includes('conference') || t.includes('business')) return 'corporate';
+    if (t.includes('budget') || t.includes('cost') || t.includes('price') || t.includes('how much') || t.includes('afford')) return 'budget';
+    if (t.includes('venue') || t.includes('hall') || t.includes('location') || t.includes('place')) return 'venue';
+    if (t.includes('decor') || t.includes('decoration') || t.includes('theme') || t.includes('color') || t.includes('style') || t.includes('design')) return 'decor';
+    if (t.includes('vendor') || t.includes('photographer') || t.includes('dj') || t.includes('band') || t.includes('mc') || t.includes('makeup') || t.includes('florist')) return 'vendor';
+    if (t.includes('timeline') || t.includes('schedule') || t.includes('program') || t.includes('itinerary')) return 'timeline';
+    if (t.includes('traditional') || t.includes('yoruba') || t.includes('igbo') || t.includes('hausa') || t.includes('dowry') || t.includes('bride price')) return 'traditional';
+    if (t.includes('food') || t.includes('cater') || t.includes('menu') || t.includes('meal') || t.includes('jollof')) return 'food';
+    return 'default';
+  };
+
+  // Extract date from text
+  const extractDate = (text: string): string | null => {
+    const months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
+    const lower = text.toLowerCase();
+    for (const month of months) {
+      if (lower.includes(month)) {
+        const match = lower.match(new RegExp(`${month}\\s+\\d{1,2}`, 'i'));
+        if (match) return match[0];
+        return month;
+      }
+    }
+    if (lower.match(/\bnext\s+(month|year|week)\b/)) return lower.match(/\bnext\s+(month|year|week)\b/)![0];
+    if (lower.match(/\bin\s+\d+\s+(days|weeks|months)\b/)) return lower.match(/\bin\s+\d+\s+(days|weeks|months)\b/)![0];
+    return null;
+  };
+
+  // Extract location from text
+  const extractLocation = (text: string): string | null => {
+    const locations = ['ilorin', 'kwara', 'lagos', 'abuja', 'ibadan', 'kano', 'port harcourt', 'nigeria'];
+    const lower = text.toLowerCase();
+    for (const loc of locations) {
+      if (lower.includes(loc)) return loc;
+    }
+    return null;
+  };
+
+  // Extract style preference from text
+  const extractStyle = (text: string): string | null => {
+    const styles: Record<string, string[]> = {
+      'classic elegant': ['classic', 'elegant', 'traditional'],
+      'modern minimalist': ['modern', 'minimal', 'minimalist', 'contemporary'],
+      'bohemian': ['boho', 'bohemian', 'rustic'],
+      'luxury glam': ['luxury', 'glam', 'glamorous', 'lavish', 'grand'],
+      'garden romance': ['garden', 'outdoor', 'romantic', 'floral'],
+    };
+    const lower = text.toLowerCase();
+    for (const [style, keywords] of Object.entries(styles)) {
+      if (keywords.some(kw => lower.includes(kw))) return style;
+    }
+    return null;
   };
 
   // Update context based on user input
@@ -138,24 +220,48 @@ export default function EventAI({ onNavigate }: EventAIProps) {
     const lowerText = text.toLowerCase();
     const eventType = detectEventType(lowerText);
     const guestCount = extractNumber(lowerText);
+    const detectedTopic = detectTopic(text);
 
     let budget = eventContext.budget;
     if (lowerText.includes('million') || lowerText.includes('thousand') || lowerText.match(/n?\d+k/i) || lowerText.match(/n\d+/i)) {
       budget = text;
     }
 
+    const date = extractDate(text);
+    const location = extractLocation(text);
+    const style = extractStyle(text);
+
     setEventContext(prev => ({
       eventType: eventType || prev.eventType,
       guestCount: guestCount || prev.guestCount,
       budget: budget,
-      lastTopic: eventType || prev.lastTopic,
+      date: date || prev.date,
+      location: location || prev.location,
+      style: style || prev.style,
+      lastTopic: detectedTopic !== 'default' ? detectedTopic : prev.lastTopic,
+      conversationHistory: [...prev.conversationHistory, text].slice(-8),
     }));
+
+    setFollowUps(followUpSuggestions[detectedTopic] || followUpSuggestions.default);
+  };
+
+  // Build context summary for personalized responses
+  const buildContextSummary = (): string => {
+    const parts: string[] = [];
+    if (eventContext.eventType) parts.push(eventContext.eventType);
+    if (eventContext.guestCount) parts.push(`${eventContext.guestCount} guests`);
+    if (eventContext.date) parts.push(`around ${eventContext.date}`);
+    if (eventContext.location) parts.push(`in ${eventContext.location}`);
+    if (eventContext.style) parts.push(`${eventContext.style} style`);
+    if (eventContext.budget) parts.push(`budget mentioned`);
+    return parts.length > 0 ? parts.join(', ') : '';
   };
 
   const generateAIResponse = (userInput: string): string => {
     const lowerInput = userInput.toLowerCase();
     updateContext(userInput);
     const guests = eventContext.guestCount || 100;
+    const contextSummary = buildContextSummary();
 
     // Non-event question detection - AI only answers event-related questions
     const eventKeywords = [
@@ -229,16 +335,17 @@ Event planning questions I can answer:
 How can I help you plan your upcoming event?`;
     }
 
-    // Greetings with context awareness
+    // Greetings with deep context awareness
     if (lowerInput.match(/^(hi|hello|hey|good morning|good afternoon|good evening)/)) {
-      if (eventContext.eventType) {
-        return `Hello again! I remember we're planning a ${eventContext.eventType}. What would you like to explore next?
+      if (contextSummary) {
+        return `Hello again! I remember we're discussing ${contextSummary}. What would you like to explore next?
 
 I can help with:
 - Budget breakdown tailored to your event
 - Vendor recommendations
 - Timeline creation
-- Decoration ideas`;
+- Decoration ideas
+- Traditional ceremony guidance`;
       }
       return `Hello! Great to meet you!
 
@@ -247,6 +354,7 @@ I'm here to help you plan your perfect event. To give you the best advice, could
 1. What type of event are you planning? (wedding, birthday, corporate, etc.)
 2. When is it happening?
 3. How many guests are you expecting?
+4. Do you have a location or style in mind?
 
 Once I know these details, I can give you personalized recommendations!`;
     }
@@ -1196,9 +1304,9 @@ Would you like help preparing questions for your consultation?`;
 Tell me your specific challenge - I'll help you find solutions!`;
     }
 
-    // Default response with context
-    const contextPrefix = eventContext.eventType
-      ? `Since you're planning a ${eventContext.eventType}, `
+    // Default response with deep context
+    const contextPrefix = contextSummary
+      ? `Since we're discussing ${contextSummary}, `
       : '';
 
     return `That's an interesting question! ${contextPrefix}let me help you think through this.
@@ -1210,12 +1318,7 @@ Tell me your specific challenge - I'll help you find solutions!`;
 3. **Location**: Kwara State (Ilorin) has many venue options
 4. **Time**: Book early for best vendors
 
-**To give you the best personalized advice, please tell me:**
-- What type of event are you planning?
-- How many guests are you expecting?
-- Do you have a date in mind?
-- What's your approximate budget?
-
+${contextSummary ? `**What I know about your event so far:**\n${contextSummary}\n` : '**To give you the best personalized advice, please tell me:**\n- What type of event are you planning?\n- How many guests are you expecting?\n- Do you have a date in mind?\n- What\'s your approximate budget?\n'}
 I'll provide a detailed, customized plan once I know these details!
 
 You can also ask me about:
@@ -1378,7 +1481,26 @@ You can also ask me about:
                       <p className="text-white/70 text-[10px]">Your intelligent planning assistant</p>
                     </div>
                   </div>
-                </div>
+                  {/* Context memory display */}
+                  {(eventContext.eventType || eventContext.guestCount || eventContext.date || eventContext.location || eventContext.style) && (
+                    <div className="flex flex-wrap gap-1.5 mt-3 animate-fade-in-up">
+                      {eventContext.eventType && (
+                        <span className="text-[9px] px-2 py-0.5 rounded-full bg-gold-500/15 border border-gold-500/30 text-gold-400 capitalize">{eventContext.eventType}</span>
+                      )}
+                      {eventContext.guestCount && (
+                        <span className="text-[9px] px-2 py-0.5 rounded-full bg-purple-500/15 border border-purple-500/30 text-white/80">{eventContext.guestCount} guests</span>
+                      )}
+                      {eventContext.date && (
+                        <span className="text-[9px] px-2 py-0.5 rounded-full bg-purple-500/15 border border-purple-500/30 text-white/80 capitalize">{eventContext.date}</span>
+                      )}
+                      {eventContext.location && (
+                        <span className="text-[9px] px-2 py-0.5 rounded-full bg-purple-500/15 border border-purple-500/30 text-white/80 capitalize">{eventContext.location}</span>
+                      )}
+                      {eventContext.style && (
+                        <span className="text-[9px] px-2 py-0.5 rounded-full bg-purple-500/15 border border-purple-500/30 text-white/80 capitalize">{eventContext.style}</span>
+                      )}
+                    </div>
+                  )}                </div>
 
                 {/* Messages */}
                 <div ref={chatRef} className="h-[420px] overflow-y-auto p-4 space-y-4">
@@ -1411,6 +1533,21 @@ You can also ask me about:
                           <span className="text-white/80 text-sm">Thinking...</span>
                         </div>
                       </div>
+                    </div>
+                  )}
+
+                  {/* Follow-up suggestions */}
+                  {!loading && followUps.length > 0 && (
+                    <div className="flex flex-wrap gap-2 pt-2 animate-fade-in-up">
+                      {followUps.slice(0, 4).map((q) => (
+                        <button
+                          key={q}
+                          onClick={() => handleSendMessage(q)}
+                          className="text-[11px] px-3 py-1.5 rounded-full bg-purple-800/30 border border-purple-700/30 text-white/80 hover:text-gold-400 hover:border-gold-500/40 transition-all hover:scale-105"
+                        >
+                          {q}
+                        </button>
+                      ))}
                     </div>
                   )}
                 </div>

@@ -135,61 +135,63 @@ export default function Contact() {
         </div>
       </section>
 
-      {/* Reasons & What to Expect */}
+      {/* Reasons */}
       <section className="py-16 bg-purple-800/30 border-y border-dark-border relative overflow-hidden">
         <FloatingDots color="gold" count={20} size="sm" />
         <div className="max-w-5xl mx-auto px-6 relative z-10">
-          <div className="grid md:grid-cols-2 gap-10">
-            {/* Reasons */}
-            <div>
-              <h3 className="text-xs tracking-[0.3em] uppercase mb-6 text-center md:text-left">
-                <span className="text-white">Why </span>
-                <span className="text-gold-400">Choose</span>
-                <span className="text-white"> BELSH</span>
-              </h3>
-              <div className="grid gap-4">
-                {reasons.map(({ icon: Icon, title, desc }, i) => (
-                  <div key={title} className={`flex items-start gap-4 scroll-reveal delay-${i + 1}`}>
-                    <div className="w-10 h-10 rounded-lg bg-gold-900/30 border border-gold-600/30 flex items-center justify-center shrink-0">
-                      <Icon size={18} className="text-gold-400" />
-                    </div>
-                    <div>
-                      <h3 className="text-white font-medium">{title}</h3>
-                      <p className="text-white/70 text-sm">{desc}</p>
-                    </div>
-                  </div>
-                ))}
+          <div className="text-center mb-10">
+            <h3 className="text-xs tracking-[0.3em] uppercase mb-2">
+              <span className="text-white">Why </span>
+              <span className="text-gold-400">Choose</span>
+              <span className="text-white"> BELSH</span>
+            </h3>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {reasons.map(({ icon: Icon, title, desc }, i) => (
+              <div key={title} className={`flex flex-col gap-3 glass-card rounded-xl p-5 scroll-reveal delay-${i + 1}`}>
+                <div className="w-10 h-10 rounded-lg bg-gold-900/30 border border-gold-600/30 flex items-center justify-center shrink-0">
+                  <Icon size={18} className="text-gold-400" />
+                </div>
+                <div>
+                  <h3 className="text-white font-medium mb-1">{title}</h3>
+                  <p className="text-white/70 text-sm leading-relaxed">{desc}</p>
+                </div>
               </div>
-            </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-            {/* What to Expect */}
-            <div className="glass-card gold-border rounded-xl p-6 animate-fade-in-up">
-              <h3 className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-5 flex items-center gap-2">
-                <CheckCircle size={14} />
-                What to Expect
-              </h3>
-              <ul className="space-y-3">
-                {[
-                  { text: 'Free 30-minute discovery call to discuss your vision', delay: '0.1s' },
-                  { text: 'No-obligation consultation with detailed planning advice', delay: '0.2s' },
-                  { text: 'Transparent pricing with clear package breakdown', delay: '0.3s' },
-                  { text: 'Personalized proposal tailored to your budget within 48 hours', delay: '0.4s' },
-                  { text: 'Dedicated event coordinator assigned from day one', delay: '0.5s' },
-                  { text: 'Vendor recommendations from our trusted network', delay: '0.6s' },
-                  { text: 'Regular check-ins and timeline updates throughout planning', delay: '0.7s' },
-                  { text: 'On-site coordination team for your event day', delay: '0.8s' },
-                ].map((item, i) => (
-                  <li
-                    key={i}
-                    className="flex items-center gap-3 text-white text-sm animate-slide-in-right"
-                    style={{ animationDelay: item.delay }}
-                  >
-                    <span className="w-2 h-2 rounded-full bg-gold-400 shrink-0" />
-                    {item.text}
-                  </li>
-                ))}
-              </ul>
-            </div>
+      {/* What to Expect - centered */}
+      <section className="py-16 relative overflow-hidden">
+        <FloatingDots color="purple" count={18} size="sm" />
+        <div className="max-w-2xl mx-auto px-6 relative z-10 text-center">
+          <div className="glass-card gold-border rounded-2xl p-8 md:p-10 animate-fade-in-up">
+            <h3 className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-6 flex items-center justify-center gap-2">
+              <CheckCircle size={14} />
+              What to Expect
+            </h3>
+            <ul className="space-y-3 text-left max-w-md mx-auto">
+              {[
+                { text: 'Free 30-minute discovery call to discuss your vision', delay: '0.1s' },
+                { text: 'No-obligation consultation with detailed planning advice', delay: '0.2s' },
+                { text: 'Transparent pricing with clear package breakdown', delay: '0.3s' },
+                { text: 'Personalized proposal tailored to your budget within 48 hours', delay: '0.4s' },
+                { text: 'Dedicated event coordinator assigned from day one', delay: '0.5s' },
+                { text: 'Vendor recommendations from our trusted network', delay: '0.6s' },
+                { text: 'Regular check-ins and timeline updates throughout planning', delay: '0.7s' },
+                { text: 'On-site coordination team for your event day', delay: '0.8s' },
+              ].map((item, i) => (
+                <li
+                  key={i}
+                  className="flex items-center gap-3 text-white text-sm animate-slide-in-right"
+                  style={{ animationDelay: item.delay }}
+                >
+                  <span className="w-2 h-2 rounded-full bg-gold-400 shrink-0" />
+                  {item.text}
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </section>

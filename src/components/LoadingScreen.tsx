@@ -1,36 +1,25 @@
-import { useState, useEffect, useMemo, useRef } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 
 export default function LoadingScreen({ onComplete }: { onComplete: () => void }) {
   const [progress, setProgress] = useState(0);
   const [fadeOut, setFadeOut] = useState(false);
-  const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
-  const containerRef = useRef<HTMLDivElement>(null);
 
-  // Handle mouse movement for interactive rings
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    const handleMouseMove = (e: MouseEvent) => {
-      const rect = container.getBoundingClientRect();
-      setMousePos({
-        x: ((e.clientX - rect.left) / rect.width) * 100,
-        y: ((e.clientY - rect.top) / rect.height) * 100,
-      });
-    };
-
-    container.addEventListener('mousemove', handleMouseMove);
-    return () => container.removeEventListener('mousemove', handleMouseMove);
-  }, []);
-
-  // Pre-generate minimal elements for performance
+  // Pre-generate animated background elements
   const elements = useMemo(() => ({
-    dots: Array.from({ length: 20 }).map((_, i) => ({
-      size: 2 + (i % 3),
+    dots: Array.from({ length: 30 }).map((_, i) => ({
+      size: 2 + (i % 4),
       color: i % 2 === 0 ? '#d4a017' : '#a855f7',
-      left: 5 + (i * 4.5),
-      top: 15 + (i % 4) * 25,
-      delay: i * 0.08,
+      left: 3 + (i * 3.3) % 94,
+      top: 5 + (i % 6) * 16,
+      delay: i * 0.1,
+      duration: 3 + (i % 4),
+    })),
+    orbs: Array.from({ length: 4 }).map((_, i) => ({
+      size: 200 + i * 80,
+      left: 15 + i * 22,
+      top: 20 + (i % 2) * 40,
+      delay: i * 2,
+      color: i % 2 === 0 ? 'rgba(147,51,234,0.12)' : 'rgba(212,160,23,0.10)',
     })),
   }), []);
 
@@ -54,7 +43,6 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
 
   return (
     <div
-      ref={containerRef}
       className={`fixed inset-0 z-[100] flex flex-col items-center justify-center transition-opacity duration-500 cursor-pointer ${
         fadeOut ? 'opacity-0' : 'opacity-100'
       }`}
@@ -62,39 +50,19 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
         background: 'radial-gradient(ellipse at center, #1a0a30 0%, #0a0118 80%)',
       }}
     >
-      {/* Interactive gold rings around center */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        {/* Outer ring - follows mouse slightly */}
-        <div
-          className="absolute rounded-full border-2 border-gold-500/30 animate-spin"
-          style={{
-            width: 350,
-            height: 350,
-            animationDuration: '20s',
-            transform: `translate(${(mousePos.x - 50) * 0.1}px, ${(mousePos.y - 50) * 0.1}px)`,
-          }}
-        />
-        {/* Second ring - opposite direction */}
-        <div
-          className="absolute rounded-full border-2 border-gold-400/40"
-          style={{
-            width: 280,
-            height: 280,
-            animation: 'spin 15s linear infinite reverse',
-            transform: `translate(${(mousePos.x - 50) * -0.08}px, ${(mousePos.y - 50) * -0.08}px)`,
-          }}
-        />
-
-        {/* Animated particles on rings */}
-        {[0, 90, 180, 270].map((deg, i) => (
+      {/* Drifting gradient orbs */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {elements.orbs.map((orb, i) => (
           <div
-            key={i}
-            className="absolute w-2 h-2 rounded-full bg-gold-400"
+            key={`orb-${i}`}
+            className="absolute rounded-full blur-[80px] animate-load-drift"
             style={{
-              width: 8,
-              height: 8,
-              animation: `orbit-${i % 2 === 0 ? 'cw' : 'ccw'} ${8 + i * 2}s linear infinite`,
-              ['--start-deg' as string]: `${deg}deg`,
+              width: orb.size,
+              height: orb.size,
+              left: `${orb.left}%`,
+              top: `${orb.top}%`,
+              background: orb.color,
+              animationDelay: `${orb.delay}s`,
             }}
           />
         ))}
@@ -105,7 +73,7 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
         {elements.dots.map((dot, i) => (
           <div
             key={i}
-            className="absolute rounded-full animate-pulse"
+            className="absolute rounded-full animate-load-float"
             style={{
               width: dot.size,
               height: dot.size,
@@ -113,7 +81,7 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
               left: `${dot.left}%`,
               top: `${dot.top}%`,
               animationDelay: `${dot.delay}s`,
-              animationDuration: '2s',
+              animationDuration: `${dot.duration}s`,
             }}
           />
         ))}
@@ -121,12 +89,12 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
 
       {/* Center content */}
       <div className="relative z-10 flex flex-col items-center">
-        {/* Logo with rings */}
+        {/* Logo with decorative rings */}
         <div className="relative mb-6">
           {/* Rings around logo */}
           <div className="absolute inset-0 scale-[2.5]">
-            <div className="absolute inset-0 rounded-full border border-gold-500/20" />
-            <div className="absolute inset-2 rounded-full border border-gold-400/15" />
+            <div className="absolute inset-0 rounded-full border border-gold-500/20 animate-spin-slow-load" />
+            <div className="absolute inset-2 rounded-full border border-gold-400/15 animate-spin-slow-load-reverse" />
             <div className="absolute inset-4 rounded-full border border-gold-500/10" />
           </div>
 
@@ -189,14 +157,29 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
         }
         .animate-shimmer { animation: shimmer 1.5s ease-in-out infinite; }
 
-        @keyframes orbit-cw {
-          from { transform: rotate(var(--start-deg)) translateX(160px) rotate(calc(-1 * var(--start-deg))); }
-          to { transform: rotate(calc(var(--start-deg) + 360deg)) translateX(160px) rotate(calc(-1 * (var(--start-deg) + 360deg))); }
+        @keyframes load-float {
+          0%, 100% { transform: translateY(0) scale(1); opacity: 0.3; }
+          50% { transform: translateY(-25px) scale(1.3); opacity: 0.7; }
         }
-        @keyframes orbit-ccw {
-          from { transform: rotate(var(--start-deg)) translateX(130px) rotate(calc(-1 * var(--start-deg))); }
-          to { transform: rotate(calc(var(--start-deg) - 360deg)) translateX(130px) rotate(calc(-1 * (var(--start-deg) - 360deg))); }
+        .animate-load-float { animation: load-float 4s ease-in-out infinite; }
+
+        @keyframes load-drift {
+          0%, 100% { transform: translate(0, 0) scale(1); }
+          50% { transform: translate(40px, -30px) scale(1.2); }
         }
+        .animate-load-drift { animation: load-drift 12s ease-in-out infinite; }
+
+        @keyframes spin-slow-load {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        .animate-spin-slow-load { animation: spin-slow-load 25s linear infinite; }
+
+        @keyframes spin-slow-load-reverse {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(-360deg); }
+        }
+        .animate-spin-slow-load-reverse { animation: spin-slow-load-reverse 20s linear infinite; }
       `}</style>
     </div>
   );

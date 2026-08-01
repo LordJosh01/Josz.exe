@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import LoadingScreen from './components/LoadingScreen';
+import BackgroundAnimation from './components/BackgroundAnimation';
 import Home from './pages/Home';
 import Services from './pages/Services';
 import Portfolio from './pages/Portfolio';
@@ -101,9 +102,10 @@ function App() {
   return (
     <div className="min-h-screen bg-dark text-white overflow-x-hidden">
       {loading && <LoadingScreen onComplete={handleLoadingComplete} />}
+      <BackgroundAnimation />
       <CustomCursor />
       <Navbar currentPage={currentPage} onNavigate={navigate} />
-      <main>{renderPage}</main>
+      <main className="relative z-10">{renderPage}</main>
       <Footer onNavigate={navigate} />
     </div>
   );
