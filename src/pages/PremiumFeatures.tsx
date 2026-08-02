@@ -861,7 +861,7 @@ function PlanMyEvent() {
             <div className="space-y-4 animate-slide-in-right">
               <p className="text-sm text-white/80">What type of event are you planning?</p>
               <div className="grid grid-cols-2 gap-3">
-                {['Wedding', 'Birthday', 'Corporate', 'Anniversary', 'Baby Shower', 'Naming Ceremony'].map((type) => (
+                {['Wedding', 'Birthday', 'Corporate', 'Anniversary', 'Baby Shower', 'Naming Ceremony', 'Burial / Memorial', 'Bridal Shower', 'Traditional Wedding', 'Engagement', 'Conference / Seminar', 'Concert / Party'].map((type) => (
                   <button
                     key={type}
                     onClick={() => setPlan({ ...plan, eventType: type })}
@@ -902,7 +902,7 @@ function PlanMyEvent() {
             <div className="space-y-4 animate-slide-in-right">
               <p className="text-sm text-white/80">What's your preferred venue type?</p>
               <div className="grid grid-cols-2 gap-3">
-                {['Indoor Hall', 'Outdoor Garden', 'Hotel Ballroom', 'Traditional Setting', 'Beach/Lakeside', 'Private Residence'].map((venue) => (
+                {['Indoor Hall', 'Outdoor Garden', 'Hotel Ballroom', 'Traditional Setting', 'Beach/Lakeside', 'Private Residence', 'Church / Mosque Hall', 'Event Center', 'Restaurant / Lounge', 'Open Field with Tent'].map((venue) => (
                   <button
                     key={venue}
                     onClick={() => setPlan({ ...plan, venue })}
@@ -919,7 +919,7 @@ function PlanMyEvent() {
             <div className="space-y-4 animate-slide-in-right">
               <p className="text-sm text-white/80">What style do you prefer?</p>
               <div className="grid grid-cols-2 gap-3">
-                {['Classic Elegant', 'Modern Minimalist', 'Traditional Nigerian', 'Bohemian', 'Luxury Glam', 'Rustic Charm'].map((style) => (
+                {['Classic Elegant', 'Modern Minimalist', 'Traditional Nigerian', 'Bohemian', 'Luxury Glam', 'Rustic Charm', 'Gold & Ivory', 'Ankara Fusion', 'Rose Gold & Blush', 'Royal Purple', 'Tropical Paradise', 'All-White Elegance'].map((style) => (
                   <button
                     key={style}
                     onClick={() => setPlan({ ...plan, style })}
@@ -937,7 +937,7 @@ function PlanMyEvent() {
               <div>
                 <p className="text-sm text-white/80 mb-2">Do you need entertainment?</p>
                 <div className="grid grid-cols-2 gap-3">
-                  {['Live Band', 'DJ', 'Cultural Performers', 'Comedian/MC'].map((ent) => (
+                  {['Live Band', 'DJ', 'Cultural Performers', 'Comedian/MC', 'Photobooth', 'Fireworks / Sparklers', 'Dance Troupe', 'Magician / Hypnotist', 'Standup Comedian', 'Live Saxophonist'].map((ent) => (
                     <button
                       key={ent}
                       onClick={() => setPlan({ ...plan, entertainment: ent })}
@@ -951,7 +951,7 @@ function PlanMyEvent() {
               <div>
                 <p className="text-sm text-white/80 mb-2">Meal service preference?</p>
                 <div className="grid grid-cols-3 gap-3">
-                  {['Buffet', 'Plated', 'Cocktail'].map((meal) => (
+                  {['Buffet', 'Plated', 'Cocktail', 'Small Chops Only', 'Hybrid (Buffet + Plated)', 'Food Stations'].map((meal) => (
                     <button
                       key={meal}
                       onClick={() => setPlan({ ...plan, meals: meal })}
@@ -1411,6 +1411,9 @@ function AIEventPlanner() {
     { value: 'traditional', label: 'Traditional Wedding' },
     { value: 'corporate', label: 'Corporate Event' },
     { value: 'engagement', label: 'Engagement' },
+    { value: 'anniversary', label: 'Anniversary' },
+    { value: 'conference', label: 'Conference / Seminar' },
+    { value: 'concert', label: 'Concert / Party' },
   ];
 
   const generateSpeech = (type: string, names: string, role: string, length: 'short' | 'medium' | 'long'): string => {
@@ -1508,6 +1511,39 @@ function AIEventPlanner() {
         if (cfg.extra) parts.push(`To the families: support them, pray for them, and be there for them. A strong marriage is built on a strong community.`);
         if (cfg.blessing) parts.push(`May your engagement be filled with joy, your wedding be everything you dreamed, and your marriage be even more beautiful than either.`);
         if (cfg.toast) parts.push(`Raise your glasses — to ${names || 'the happy couple'}! Congratulations on your engagement!`);
+        return parts.join('\n\n');
+      },
+      anniversary: () => {
+        let parts: string[] = [];
+        parts.push(`Family and friends, thank you for joining us to celebrate the anniversary of ${names || 'this wonderful couple'}.`);
+        parts.push(`An anniversary is more than a date on a calendar — it is a testament. It says: we chose each other, and we kept choosing each other, through every joy and every challenge that came our way.`);
+        if (cfg.story) parts.push(`${names || 'This couple'} has shown us what commitment looks like — not in grand gestures, but in the quiet, daily acts of love. The patience, the forgiveness, the laughter shared over simple meals, the storms weathered side by side.`);
+        parts.push(`In a world where so much is temporary, your love is a reminder that some things are built to last. Each year together has added a new chapter to a story that keeps getting better.`);
+        if (cfg.extra) parts.push(`To the children and grandchildren: you are the living proof of their love. Every one of you is a branch on a tree they planted together.`);
+        if (cfg.blessing) parts.push(`May God grant you many more years of health, happiness, and togetherness. May your love grow deeper with every anniversary you celebrate.`);
+        if (cfg.toast) parts.push(`Raise your glasses — to ${names || 'this beautiful couple'}! Happy anniversary, and here's to many more!`);
+        return parts.join('\n\n');
+      },
+      conference: () => {
+        let parts: string[] = [];
+        parts.push(`Distinguished guests, colleagues, and partners — good morning and welcome to ${names || "today's conference"}.`);
+        parts.push(`We gather here today because we believe in the power of ideas, the value of collaboration, and the importance of the conversations that happen in rooms like this one. Each of you brings a perspective that matters.`);
+        if (cfg.story) parts.push(`This conference was born from a simple idea — that when we come together, share knowledge, and challenge each other's thinking, we all move forward. Today, we have an incredible lineup of speakers and sessions designed to do exactly that.`);
+        parts.push(`Over the next few hours, I encourage you to not just listen, but to engage. Ask questions. Challenge assumptions. Connect with the person sitting next to you. The most valuable outcomes of this conference will not be the slides — they will be the conversations.`);
+        if (cfg.extra) parts.push(`To our sponsors and partners: thank you for making this possible. Your support is an investment in the future of this industry.`);
+        if (cfg.blessing) parts.push(`May this conference spark new ideas, new partnerships, and new possibilities. May we leave here today better than we arrived.`);
+        if (cfg.toast) parts.push(`Please raise your glasses — to a successful conference, to new connections, and to the ideas that will shape our future. Cheers!`);
+        return parts.join('\n\n');
+      },
+      concert: () => {
+        let parts: string[] = [];
+        parts.push(`Ladies and gentlemen — welcome to ${names || "tonight's show"}! Are you ready?`);
+        parts.push(`Tonight is about music, energy, and the kind of memories that last long after the last song fades. We have an incredible show lined up for you, and we are so glad you are here to be part of it.`);
+        if (cfg.story) parts.push(`${names || 'This artist'} has poured heart and soul into tonight's performance. Every song, every beat, every note — it is all for you. So I want you to feel every moment, sing every word, and make this a night to remember.`);
+        parts.push(`Before we get started, a few quick reminders: keep your phones charged for the moments you will want to remember, but do not forget to put them down and live in the moment too. The best memories are the ones you experience, not the ones you record.`);
+        if (cfg.extra) parts.push(`To the crew, the band, and everyone behind the scenes: tonight would not be possible without you. Let us give them a round of applause.`);
+        if (cfg.blessing) parts.push(`May this night be everything you hoped for and more. May the music move you, the energy lift you, and the memories stay with you forever.`);
+        if (cfg.toast) parts.push(`Raise your glasses — to ${names || "tonight's artist"}, to the music, and to a night we will never forget. Let's go!`);
         return parts.join('\n\n');
       },
     };
@@ -1659,6 +1695,55 @@ function AIEventPlanner() {
 6:30 PM - Dance Floor Opens
 7:30 PM - Closing Remarks
 8:00 PM - Departure`,
+
+      anniversary: `ANNIVERSARY CELEBRATION PROGRAM
+
+4:00 PM - Guest Arrival & Welcome Drinks
+4:30 PM - Red Carpet & Photo Session
+5:00 PM - Opening Prayer & Welcome Address
+5:15 PM - Couple's Grand Entrance
+5:30 PM - Love Story Retelling (Video / Narration)
+6:00 PM - Renewal of Vows (Optional)
+6:15 PM - Toasts from Children & Family
+6:45 PM - Cutting of the Cake
+7:00 PM - Food Service Begins
+7:30 PM - Couple's Dance
+7:45 PM - Open Dance Floor
+9:00 PM - Couple's Thank You
+9:15 PM - Group Photos & Favors
+9:30 PM - Closing Remarks`,
+
+      conference: `CONFERENCE / SEMINAR PROGRAM
+
+8:00 AM - Registration & Welcome Coffee
+9:00 AM - Opening Remarks by MC
+9:15 AM - Keynote Address
+10:00 AM - Panel Discussion 1
+10:45 AM - Tea Break & Networking
+11:15 AM - Breakout Sessions
+12:30 PM - Lunch Break
+1:30 PM - Panel Discussion 2
+2:15 PM - Workshop / Interactive Session
+3:30 PM - Coffee Break
+4:00 PM - Fireside Chat / Q&A
+4:45 PM - Awards / Recognition
+5:00 PM - Closing Remarks & Vote of Thanks
+5:15 PM - Group Photos & Networking
+6:00 PM - Departure`,
+
+      concert: `CONCERT / PARTY PROGRAM
+
+6:00 PM - Gates Open & Guest Arrival
+7:00 PM - Opening Act / DJ Set
+7:45 PM - MC Welcome & Introductions
+8:00 PM - Supporting Performance 1
+8:45 PM - Short Break / Intermission
+9:00 PM - Supporting Performance 2
+9:30 PM - Main Artist Entrance
+10:30 PM - Headline Performance
+11:15 PM - Encore / Special Guest
+11:30 PM - Crowd Interaction & Photos
+12:00 AM - After-Party Begins`,
     };
 
     return programs[type] || programs.wedding;
@@ -1782,6 +1867,51 @@ Closing: Slow-motion couple (8s)
 
 Total Runtime: ~90 seconds
 Music: Romantic Afro-pop`,
+
+      anniversary: `ANNIVERSARY HIGHLIGHT REEL CONCEPT
+
+Opening: Throwback wedding photos (15s)
+Scene 1: Guest arrivals & greetings (10s)
+Scene 2: Couple's grand entrance (12s)
+Scene 3: Love story narration with photos (20s)
+Scene 4: Vow renewal moment (15s)
+Scene 5: Children's tribute (12s)
+Scene 6: Cake cutting & toast (10s)
+Scene 7: Dance floor highlights (15s)
+Closing: Slow-motion couple embrace (8s)
+
+Total Runtime: ~2 minutes
+Music: Classic love songs / nostalgic`,
+
+      conference: `CONFERENCE HIGHLIGHT REEL CONCEPT
+
+Opening: Venue & branding reveal (8s)
+Scene 1: Registration & networking (12s)
+Scene 2: Keynote highlights (15s)
+Scene 3: Panel discussion moments (15s)
+Scene 4: Audience engagement (10s)
+Scene 5: Breakout sessions (12s)
+Scene 6: Awards / recognition (15s)
+Scene 7: Group photo (8s)
+Closing: Brand logo & tagline (5s)
+
+Total Runtime: ~100 seconds
+Music: Professional, upbeat corporate`,
+
+      concert: `CONCERT HIGHLIGHT REEL CONCEPT
+
+Opening: Crowd anticipation & lights (10s)
+Scene 1: Gates opening & energy (12s)
+Scene 2: Opening act performance (15s)
+Scene 3: Crowd reactions & dancing (20s)
+Scene 4: Main artist entrance (12s)
+Scene 5: Peak performance moments (20s)
+Scene 6: Special guest surprise (10s)
+Scene 7: Crowd singing along (15s)
+Closing: Confetti & final bow (8s)
+
+Total Runtime: ~2 minutes
+Music: High-energy Afrobeat / live performance`,
     };
 
     return highlights[type] || highlights.wedding;

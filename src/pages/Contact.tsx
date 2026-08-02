@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { MapPin, Send, CheckCircle, Instagram, Clock, Heart, Sparkles, Calendar, Mail, Crown, Users } from 'lucide-react';
+import { MapPin, Send, CheckCircle, Instagram, Clock } from 'lucide-react';
 import Confetti from '../components/Confetti';
 import FloatingDots from '../components/FloatingDots';
 
@@ -35,49 +35,39 @@ const budgetRanges = [
 
 const reasons = [
   {
-    icon: Heart,
-    title: 'Personalized Approach',
-    desc: 'We listen to your unique vision and craft celebrations that authentically reflect your style, culture, and story.',
+    emoji: '✨',
+    title: 'Professional Excellence',
+    desc: 'We pay attention to every detail, ensuring your event looks elegant, organized, and memorable.',
   },
   {
-    icon: Sparkles,
-    title: 'Attention to Detail',
-    desc: 'From the grand vision to the smallest detail, we ensure nothing is overlooked in creating your perfect event.',
+    emoji: '🎯',
+    title: 'Personalized Planning',
+    desc: 'Every event is unique. We work closely with you to bring your vision to life while staying within your budget.',
   },
   {
-    icon: Calendar,
-    title: 'Seamless Experience',
-    desc: 'We handle all logistics, vendor coordination, and timeline management so you can enjoy stress-free.',
+    emoji: '⏰',
+    title: 'Reliable & On-Time',
+    desc: 'From setup to the final guest experience, we deliver on schedule so you can enjoy your special day without stress.',
   },
   {
-    icon: CheckCircle,
-    title: 'Trusted Vendor Network',
-    desc: 'Access our curated list of reliable photographers, caterers, decorators, DJs, and more across Kwara.',
+    emoji: '💎',
+    title: 'Premium Decorations',
+    desc: 'We use quality décor, modern designs, and creative styling to give your event a luxurious feel.',
   },
   {
-    icon: Clock,
-    title: '24-Hour Response',
-    desc: 'Quick response time on all inquiries. We respect your time and keep you informed every step.',
+    emoji: '🤝',
+    title: 'Friendly & Dedicated Team',
+    desc: 'Our experienced team is committed to providing excellent customer service before, during, and after your event.',
   },
   {
-    icon: Mail,
-    title: 'Transparent Pricing',
-    desc: 'No hidden fees, no surprises. Clear itemized proposals so you know exactly where your money goes.',
+    emoji: '💰',
+    title: 'Affordable Packages',
+    desc: 'We offer flexible pricing without compromising on quality, making beautiful events accessible to everyone.',
   },
   {
-    icon: Crown,
-    title: 'Cultural Expertise',
-    desc: 'Deep knowledge of Yoruba, Igbo, and Hausa traditions. We handle all cultural protocols with respect and authenticity.',
-  },
-  {
-    icon: MapPin,
-    title: 'Local Knowledge',
-    desc: 'Born and based in Ilorin, we know the best venues, vendors, and hidden gems across Kwara State and beyond.',
-  },
-  {
-    icon: Users,
-    title: 'Dedicated Team',
-    desc: 'A committed coordinator assigned to your event from first call to final toast, ensuring continuity and care.',
+    emoji: '📸',
+    title: 'Picture-Perfect Results',
+    desc: 'Every setup is designed to leave a lasting impression and create beautiful memories for you and your guests.',
   },
 ];
 
@@ -158,14 +148,14 @@ export default function Contact() {
             <h3 className="text-xs tracking-[0.3em] uppercase mb-2">
               <span className="text-white">Why </span>
               <span className="text-gold-400">Choose</span>
-              <span className="text-white"> BELSH</span>
+              <span className="text-white"> Events by Belsh?</span>
             </h3>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {reasons.map(({ icon: Icon, title, desc }, i) => (
+            {reasons.map(({ emoji, title, desc }, i) => (
               <div key={title} className={`flex flex-col gap-3 glass-card rounded-xl p-5 scroll-reveal delay-${i + 1}`}>
-                <div className="w-10 h-10 rounded-lg bg-gold-900/30 border border-gold-600/30 flex items-center justify-center shrink-0">
-                  <Icon size={18} className="text-gold-400" />
+                <div className="w-10 h-10 rounded-lg bg-gold-900/30 border border-gold-600/30 flex items-center justify-center shrink-0 text-xl">
+                  {emoji}
                 </div>
                 <div>
                   <h3 className="text-white font-medium mb-1">{title}</h3>

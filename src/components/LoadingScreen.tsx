@@ -91,41 +91,52 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
       <div className="relative z-10 flex flex-col items-center">
         {/* Logo with radiating light beams */}
         <div className="relative mb-6 flex items-center justify-center">
-          {/* Pulsing aura glow */}
+          {/* Outer pulsing aura glow — large, bright */}
           <div
             className="absolute rounded-full blur-2xl animate-aura-pulse"
             style={{
-              width: 140,
-              height: 140,
-              background: 'radial-gradient(circle, rgba(212,160,23,0.35) 0%, rgba(147,51,234,0.15) 50%, transparent 70%)',
+              width: 220,
+              height: 220,
+              background: 'radial-gradient(circle, rgba(212,160,23,0.55) 0%, rgba(212,160,23,0.25) 35%, rgba(147,51,234,0.18) 60%, transparent 75%)',
             }}
           />
 
-          {/* Radiating light beams */}
-          <div className="absolute animate-beam-rotate" style={{ width: 160, height: 160 }}>
-            {[0, 45, 90, 135, 180, 225, 270, 315].map((deg, i) => (
+          {/* Mid-layer gold ring glow */}
+          <div
+            className="absolute rounded-full blur-xl animate-aura-pulse"
+            style={{
+              width: 160,
+              height: 160,
+              background: 'radial-gradient(circle, rgba(242,204,90,0.45) 0%, rgba(212,160,23,0.2) 50%, transparent 70%)',
+              animationDelay: '0.3s',
+            }}
+          />
+
+          {/* Radiating light beams — brighter and more of them */}
+          <div className="absolute animate-beam-rotate" style={{ width: 200, height: 200 }}>
+            {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map((deg, i) => (
               <div
                 key={i}
                 className="absolute left-1/2 top-1/2 origin-left animate-beam-pulse"
                 style={{
-                  width: 70,
-                  height: 1.5,
-                  background: `linear-gradient(90deg, rgba(212,160,23,0.5), transparent)`,
-                  transform: `rotate(${deg}deg) translateY(-0.75px)`,
-                  animationDelay: `${i * 0.15}s`,
+                  width: 90,
+                  height: 2,
+                  background: `linear-gradient(90deg, rgba(242,204,90,0.8), rgba(212,160,23,0.3), transparent)`,
+                  transform: `rotate(${deg}deg) translateY(-1px)`,
+                  animationDelay: `${i * 0.08}s`,
                 }}
               />
             ))}
           </div>
 
           {/* Soft inner glow */}
-          <div className="absolute rounded-full blur-md animate-aura-pulse" style={{ width: 100, height: 100, background: 'rgba(212,160,23,0.15)', animationDelay: '0.5s' }} />
+          <div className="absolute rounded-full blur-md animate-aura-pulse" style={{ width: 120, height: 120, background: 'rgba(242,204,90,0.25)', animationDelay: '0.5s' }} />
 
           {/* Logo */}
           <img
             src="/EVENT_BY_BELSH.jpg"
             alt="Events By BELSH"
-            className="relative h-20 w-20 object-cover rounded-full ring-2 ring-gold-500/50 shadow-lg shadow-gold-500/20 animate-logo-breathe z-10"
+            className="relative h-20 w-20 object-cover rounded-full ring-2 ring-gold-400/70 shadow-[0_0_25px_rgba(212,160,23,0.5)] animate-logo-breathe z-10"
           />
         </div>
 
