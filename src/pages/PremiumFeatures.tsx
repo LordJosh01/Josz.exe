@@ -5,7 +5,7 @@ import {
   MessageCircle, Plus, Trash2, Mail, Phone,
   PartyPopper, UserCheck, GalleryVerticalEnd,
   RefreshCw, Play, Image, Instagram, Upload, X, Star,
-  Wallet, MapPin, Utensils, Palette, Music
+  Wallet, MapPin, Utensils, Palette, Music, Lightbulb
 } from 'lucide-react';
 import Confetti from '../components/Confetti';
 import FloatingDots from '../components/FloatingDots';
@@ -802,6 +802,167 @@ function InvitationGenerator() {
 }
 
 // 3. PLAN MY EVENT WIZARD
+interface PlanResult {
+  summary: string;
+  budget: { low: number; mid: number; high: number };
+  budgetBreakdown: { category: string; pct: number; icon: string }[];
+  timeline: { weeksOut: number; task: string }[];
+  decor: string[];
+  vendors: { category: string; note: string }[];
+  tips: string[];
+}
+
+const formatNairaInline = (n: number) => `N${n.toLocaleString('en-NG', { maximumFractionDigits: 0 })}`;
+
+function buildPlanResult(plan: {
+  eventType: string; guestCount: string; date: string; venue: string; style: string; meals: string; entertainment: string;
+}): PlanResult {
+  const guests = parseInt(plan.guestCount) || 100;
+  const type = plan.eventType || 'Event';
+
+  // Per-guest base cost varies by event type
+  const perGuest: Record<string, [number, number, number]> = {
+    'Wedding': [15000, 25000, 45000],
+    'Traditional Wedding': [10000, 18000, 30000],
+    'Engagement': [8000, 14000, 22000],
+    'Birthday': [8000, 15000, 25000],
+    'Corporate': [12000, 20000, 35000],
+    'Anniversary': [10000, 18000, 30000],
+    'Baby Shower': [6000, 10000, 18000],
+    'Naming Ceremony': [7000, 12000, 20000],
+    'Burial / Memorial': [8000, 15000, 25000],
+    'Bridal Shower': [6000, 11000, 18000],
+    'Conference / Seminar': [15000, 25000, 40000],
+    'Concert / Party': [10000, 20000, 40000],
+  };
+  const base = perGuest[type] || [10000, 18000, 30000];
+  const [low, mid, high] = base.map((b) => Math.round((b * guests) / 1000) * 1000);
+
+  // Budget allocation percentages vary by event type
+  const alloc: Record<string, { category: string; pct: number; icon: string }[]> = {
+    'Wedding': [
+      { category: 'Venue & Catering', pct: 40, icon: '🍽️' },
+      { category: 'Décor & Flowers', pct: 20, icon: '💐' },
+      { category: 'Attire & Beauty', pct: 15, icon: '👗' },
+      { category: 'Photography & Video', pct: 10, icon: '📸' },
+      { category: 'Entertainment & Music', pct: 8, icon: '🎵' },
+      { category: 'Logistics & Misc.', pct: 7, icon: '🚐' },
+    ],
+    'Conference / Seminar': [
+      { category: 'Venue & Equipment', pct: 35, icon: '🏛️' },
+      { category: 'Speakers & Honoraria', pct: 25, icon: '🎤' },
+      { category: 'Catering & Refreshments', pct: 20, icon: '☕' },
+      { category: 'Branding & Materials', pct: 10, icon: '📋' },
+      { category: 'Logistics & Misc.', pct: 10, icon: '🚐' },
+    ],
+    'Concert / Party': [
+      { category: 'Artist & Sound', pct: 40, icon: '🎤' },
+      { category: 'Venue & Stage', pct: 25, icon: '🎪' },
+      { category: 'Lighting & Effects', pct: 15, icon: '💡' },
+      { category: 'Security & Logistics', pct: 12, icon: '🛡️' },
+      { category: 'Branding & Tickets', pct: 8, icon: '🎫' },
+    ],
+  };
+  const defaultAlloc = [
+    { category: 'Venue & Catering', pct: 40, icon: '🍽️' },
+    { category: 'Décor & Styling', pct: 22, icon: '💐' },
+    { category: 'Photography & Video', pct: 12, icon: '📸' },
+    { category: 'Entertainment & Music', pct: 12, icon: '🎵' },
+    { category: 'Logistics & Misc.', pct: 14, icon: '🚐' },
+  ];
+  const budgetBreakdown = alloc[type] || defaultAlloc;
+
+  // Smart décor recommendations based on style + venue
+  const decorByStyle: Record<string, string[]> = {
+    'Gold & Ivory': ['Gold sequin tablecloths with ivory overlays', 'Tall gold candelabras with white roses', 'Gold chiavari chairs with ivory sashes'],
+    'All-White Elegance': ['All-white floral arrangements (roses & lilies)', 'White draping with fairy lights', 'White carpet aisle with petals'],
+    'Royal Purple': ['Purple and silver palette with crystal accents', 'Purple uplighting around the venue', 'Lavender and violet floral centerpieces'],
+    'Rose Gold & Blush': ['Rose gold sequin runners with blush napkins', 'Blush and cream floral arrangements', 'Rose gold votive candles'],
+    'Ankara Fusion': ['Ankara print table runners with solid accents', 'Colorful beadwork centerpieces', 'African print photo backdrop'],
+    'Luxury Glam': ['Crystal chandeliers and string curtains', 'Mirrored table tops with floral runners', 'Gold and black lounge furniture'],
+    'Traditional Nigerian': ['Aso-oke fabric draping in ceremonial colours', 'Cowrie shell and bead accents', 'Traditional calabash centerpieces'],
+    'Bohemian': ['Macramé backdrops with pampas grass', 'Wooden crates with wildflowers', 'Rattan lanterns and fairy lights'],
+    'Rustic Charm': ['Burlap runners with lace overlays', 'Mason jar floral centerpieces', 'Wooden signage and barrel tables'],
+    'Modern Minimalist': ['Single-stem floral centerpieces', 'Geometric terrariums with succulents', 'Clean white linens with black accents'],
+    'Classic Elegant': ['Tall floral centerpieces with cascading greenery', 'Crystal glassware and gold flatware', 'Candelabras with ivory candles'],
+    'Tropical Paradise': ['Palm leaves and bird of paradise flowers', 'Bamboo accents and tiki torches', 'Bright tropical floral centerpieces'],
+  };
+  const baseDecor = decorByStyle[plan.style] || ['Elegant floral centerpieces matching your colour palette', 'Coordinated table linens and chair covers', 'Ambient lighting with fairy lights and uplighting'];
+
+  // Venue-specific additions
+  const venueDecor: Record<string, string> = {
+    'Outdoor Garden': ' Add garden arches and weather-proof draping.',
+    'Hotel Ballroom': ' Add ceiling draping and grand entrance decor.',
+    'Traditional Setting': ' Add traditional canopy and mat decoration.',
+    'Beach/Lakeside': ' Add wind-proof florals and seaside accent pieces.',
+    'Private Residence': ' Add space-optimising decor and entrance styling.',
+    'Open Field with Tent': ' Add tent lining, flooring, and perimeter lighting.',
+  };
+  if (venueDecor[plan.venue]) baseDecor.push(venueDecor[plan.venue].trim());
+
+  // Smart vendor checklist based on event type + options
+  const baseVendors: { category: string; note: string }[] = [
+    { category: 'Venue', note: 'Book early — popular dates go fast in Kwara.' },
+    { category: 'Caterer', note: `Plan for ${guests} guests with ${plan.meals || 'buffet'} service.` },
+    { category: 'Photographer & Videographer', note: 'Book 6–8 weeks ahead; ask for a highlight reel.' },
+    { category: 'Makeup Artist', note: 'Trial session recommended 2 weeks before.' },
+  ];
+
+  if (plan.entertainment === 'DJ') baseVendors.push({ category: 'DJ', note: 'Share your playlist and do-not-play list in advance.' });
+  if (plan.entertainment === 'Live Band') baseVendors.push({ category: 'Live Band', note: 'Confirm set times and sound check schedule.' });
+  if (plan.entertainment === 'Cultural Performers') baseVendors.push({ category: 'Cultural Performers', note: 'Brief them on any traditions or protocols to observe.' });
+  if (plan.entertainment === 'Comedian/MC' || plan.entertainment === 'Standup Comedian') baseVendors.push({ category: 'MC / Comedian', note: 'Share the run-of-show and any sensitive topics to avoid.' });
+  if (plan.entertainment === 'Photobooth') baseVendors.push({ category: 'Photobooth Vendor', note: 'Request props matching your colour scheme.' });
+  if (plan.entertainment === 'Fireworks / Sparklers') baseVendors.push({ category: 'Pyrotechnics', note: 'Check venue permits and safety requirements.' });
+  if (plan.entertainment === 'Dance Troupe') baseVendors.push({ category: 'Dance Troupe', note: 'Coordinate performance slot with the MC.' });
+  if (plan.entertainment === 'Live Saxophonist') baseVendors.push({ category: 'Saxophonist', note: 'Ideal for cocktail hour or the couple\'s entrance.' });
+
+  // Timeline countdown from event date
+  const eventDate = plan.date ? new Date(plan.date) : null;
+  const timeline: { weeksOut: number; task: string }[] = [];
+  const baseTimeline = [
+    { weeksOut: 12, task: 'Book venue, caterer, and photographer — lock in the big three.' },
+    { weeksOut: 10, task: 'Send out save-the-dates and book the MC/DJ.' },
+    { weeksOut: 8, task: 'Order the cake, book makeup & beauty, and finalize the décor concept.' },
+    { weeksOut: 6, task: 'Order invitations, book entertainment, and finalize the menu.' },
+    { weeksOut: 4, task: 'Final headcount to caterer, finalize seating plan, and do a venue walkthrough.' },
+    { weeksOut: 2, task: 'Final dress fitting, confirm all vendors, and print programs.' },
+    { weeksOut: 1, task: 'Final vendor confirmations, pack day-of bags, and confirm setup times.' },
+    { weeksOut: 0, task: 'Event day — arrive early, delegate, and enjoy!' },
+  ];
+  for (const t of baseTimeline) {
+    if (eventDate) {
+      const taskDate = new Date(eventDate);
+      taskDate.setDate(taskDate.getDate() - t.weeksOut * 7);
+      timeline.push({ weeksOut: t.weeksOut, task: `${t.task} (by ${taskDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })})` });
+    } else {
+      timeline.push(t);
+    }
+  }
+
+  // Smart tips based on guest count and venue
+  const tips: string[] = [];
+  if (guests > 300) tips.push(`With ${guests} guests, consider hiring a second photographer and extra ushers to keep things flowing.`);
+  if (guests > 200 && plan.meals === 'Plated') tips.push('For plated service at this scale, assign a dedicated catering captain to coordinate timing.');
+  if (plan.venue === 'Outdoor Garden' || plan.venue === 'Open Field with Tent') tips.push('Have a rain plan ready — reserve a tent or indoor backup space.');
+  if (plan.venue === 'Beach/Lakeside') tips.push('Check tide times and wind conditions; secure all décor against wind.');
+  if (plan.venue === 'Private Residence') tips.push('Arrange parking attendants and consider a shuttle from a nearby lot.');
+  if (plan.eventType === 'Wedding' || plan.eventType === 'Traditional Wedding') tips.push('Schedule the couple\'s portrait session during golden hour (just before sunset) for the best photos.');
+  if (plan.eventType === 'Conference / Seminar') tips.push('Prepare name badges, a registration desk, and a clear signage plan for breakouts.');
+  if (plan.eventType === 'Concert / Party') tips.push('Hire professional security and confirm sound check is done 2 hours before doors open.');
+  if (plan.eventType === 'Burial / Memorial') tips.push('Coordinate with the family on order of tributes and keep the program dignified and on-time.');
+  tips.push('Set up a WhatsApp group with all vendors one week before for real-time coordination.');
+  tips.push('Pack a "day-of emergency kit": pins, tape, scissors, a first-aid kit, and a portable charger.');
+
+  const summary = `Your ${type.toLowerCase()} for ${guests} guests${
+    plan.date ? ` on ${new Date(plan.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}` : ''
+  }${plan.venue ? ` at a ${plan.venue.toLowerCase()}` : ''} with a ${plan.style || 'classic'} style. ${
+    plan.entertainment ? `${plan.entertainment} for entertainment, ` : ''
+  }${plan.meals ? `${plan.meals.toLowerCase()} meal service.` : 'Catering to be finalized.'}`;
+
+  return { summary, budget: { low, mid, high }, budgetBreakdown, timeline, decor: baseDecor, vendors: baseVendors, tips };
+}
+
 function PlanMyEvent() {
   const [step, setStep] = useState(1);
   const totalSteps = 5;
@@ -816,10 +977,12 @@ function PlanMyEvent() {
   });
   const [generated, setGenerated] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState<PlanResult | null>(null);
 
   const generatePlan = () => {
     setLoading(true);
     setTimeout(() => {
+      setResult(buildPlanResult(plan));
       setLoading(false);
       setGenerated(true);
     }, 2000);
@@ -991,21 +1154,115 @@ function PlanMyEvent() {
             </div>
           ) : (
             <>
-              <div className="glass-dark rounded-xl p-4 space-y-4 animate-pop-in">
-                {[
-                  { label: 'Event', value: plan.eventType },
-                  { label: 'Guests', value: plan.guestCount },
-                  { label: 'Date', value: plan.date },
-                  { label: 'Venue', value: plan.venue },
-                  { label: 'Style', value: plan.style },
-                  { label: 'Entertainment', value: plan.entertainment },
-                  { label: 'Meals', value: plan.meals },
-                ].map((item, i) => (
-                  <div key={item.label} className="flex items-center gap-2 animate-slide-in-left" style={{ animationDelay: `${i * 100}ms` }}>
-                    <CheckCircle size={16} className="text-gold-400" />
-                    <span className="text-sm text-white/80">{item.label}: <span className="text-white">{item.value}</span></span>
-                  </div>
-                ))}
+              {/* Summary */}
+              <div className="glass-dark rounded-xl p-4 animate-pop-in">
+                <div className="flex items-center gap-2 mb-3">
+                  <Sparkles size={16} className="text-gold-400" />
+                  <h4 className="text-gold-400 text-sm font-medium">Your Event Summary</h4>
+                </div>
+                <p className="text-white/90 text-sm leading-relaxed">{result?.summary}</p>
+              </div>
+
+              {/* Budget estimate */}
+              <div className="glass-dark rounded-xl p-4 animate-pop-in" style={{ animationDelay: '80ms' }}>
+                <div className="flex items-center gap-2 mb-3">
+                  <Wallet size={16} className="text-gold-400" />
+                  <h4 className="text-gold-400 text-sm font-medium">Estimated Budget</h4>
+                </div>
+                <div className="grid grid-cols-3 gap-3 mb-4">
+                  {[
+                    { label: 'Essential', value: result?.budget.low, color: 'text-green-400', desc: 'Core essentials' },
+                    { label: 'Recommended', value: result?.budget.mid, color: 'text-gold-400', desc: 'Best balance' },
+                    { label: 'Premium', value: result?.budget.high, color: 'text-purple-400', desc: 'Full luxury' },
+                  ].map((tier) => (
+                    <div key={tier.label} className="text-center glass-card rounded-lg p-3">
+                      <p className="text-[10px] text-white/60 mb-1">{tier.desc}</p>
+                      <p className={`text-base font-serif ${tier.color}`}>{formatNairaInline(tier.value!)}</p>
+                      <p className="text-[10px] text-white/50 mt-1">{tier.label}</p>
+                    </div>
+                  ))}
+                </div>
+                <div className="space-y-2">
+                  {result?.budgetBreakdown.map((item) => (
+                    <div key={item.category} className="flex items-center gap-2">
+                      <span className="text-sm">{item.icon}</span>
+                      <span className="text-xs text-white/80 flex-1">{item.category}</span>
+                      <div className="w-20 h-1.5 bg-dark-card rounded-full overflow-hidden">
+                        <div className="h-full bg-gradient-to-r from-gold-500 to-gold-300 rounded-full" style={{ width: `${item.pct}%` }} />
+                      </div>
+                      <span className="text-xs text-gold-400 w-8 text-right">{item.pct}%</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Décor recommendations */}
+              <div className="glass-dark rounded-xl p-4 animate-pop-in" style={{ animationDelay: '160ms' }}>
+                <div className="flex items-center gap-2 mb-3">
+                  <Palette size={16} className="text-gold-400" />
+                  <h4 className="text-gold-400 text-sm font-medium">Décor Recommendations</h4>
+                </div>
+                <ul className="space-y-2">
+                  {result?.decor.map((d, i) => (
+                    <li key={i} className="flex items-start gap-2 text-xs text-white/80 animate-slide-in-left" style={{ animationDelay: `${i * 60}ms` }}>
+                      <CheckCircle size={14} className="text-gold-400 shrink-0 mt-0.5" />
+                      <span>{d}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Vendor checklist */}
+              <div className="glass-dark rounded-xl p-4 animate-pop-in" style={{ animationDelay: '240ms' }}>
+                <div className="flex items-center gap-2 mb-3">
+                  <Users size={16} className="text-gold-400" />
+                  <h4 className="text-gold-400 text-sm font-medium">Vendor Checklist</h4>
+                </div>
+                <div className="space-y-2">
+                  {result?.vendors.map((v, i) => (
+                    <div key={i} className="flex items-start gap-2 animate-slide-in-left" style={{ animationDelay: `${i * 60}ms` }}>
+                      <CheckCircle size={14} className="text-gold-400 shrink-0 mt-0.5" />
+                      <div>
+                        <p className="text-xs text-white font-medium">{v.category}</p>
+                        <p className="text-[11px] text-white/60">{v.note}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Timeline */}
+              <div className="glass-dark rounded-xl p-4 animate-pop-in" style={{ animationDelay: '320ms' }}>
+                <div className="flex items-center gap-2 mb-3">
+                  <Calendar size={16} className="text-gold-400" />
+                  <h4 className="text-gold-400 text-sm font-medium">Planning Timeline</h4>
+                </div>
+                <div className="space-y-3">
+                  {result?.timeline.map((t, i) => (
+                    <div key={i} className="flex items-start gap-3 animate-slide-in-left" style={{ animationDelay: `${i * 50}ms` }}>
+                      <div className="w-7 h-7 rounded-full bg-gold-900/40 border border-gold-500/30 flex items-center justify-center shrink-0">
+                        <span className="text-[10px] text-gold-400 font-medium">{t.weeksOut === 0 ? '✓' : `${t.weeksOut}w`}</span>
+                      </div>
+                      <p className="text-xs text-white/80 pt-1">{t.task}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Smart tips */}
+              <div className="glass-dark rounded-xl p-4 animate-pop-in border border-gold-500/20" style={{ animationDelay: '400ms' }}>
+                <div className="flex items-center gap-2 mb-3">
+                  <Lightbulb size={16} className="text-gold-400" />
+                  <h4 className="text-gold-400 text-sm font-medium">Smart Tips</h4>
+                </div>
+                <ul className="space-y-2">
+                  {result?.tips.map((tip, i) => (
+                    <li key={i} className="flex items-start gap-2 text-xs text-white/80 animate-slide-in-left" style={{ animationDelay: `${i * 50}ms` }}>
+                      <span className="text-gold-400 shrink-0">💡</span>
+                      <span>{tip}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
 
               <button onClick={sharePlan} className="btn-gold w-full text-sm hover:scale-[1.02] transition-all hover:shadow-lg hover:shadow-gold-500/20">
@@ -1013,7 +1270,7 @@ function PlanMyEvent() {
                 Book This Plan on WhatsApp
               </button>
 
-              <button onClick={() => { setStep(1); setGenerated(false); setPlan({ eventType: '', guestCount: '', date: '', venue: '', style: '', meals: '', entertainment: '' }); }} className="text-sm text-white/70 hover:text-gold-300 w-full text-center transition-colors">
+              <button onClick={() => { setStep(1); setGenerated(false); setResult(null); setPlan({ eventType: '', guestCount: '', date: '', venue: '', style: '', meals: '', entertainment: '' }); }} className="text-sm text-white/70 hover:text-gold-300 w-full text-center transition-colors">
                 Start Over
               </button>
             </>
@@ -1424,32 +1681,43 @@ function AIEventPlanner() {
     };
     const cfg = lengthMap[length];
 
+    const r = role.trim();
+    const roleIntro = r
+      ? ` For those who may not know me, I am ${r}, and it is my honour to say a few words today.`
+      : '';
+    const roleCloseline = r
+      ? ` As ${r}, let me add one thing — `
+      : ' Let me add one thing — ';
+    const roleToCouple = r
+      ? ` Speaking as ${r}, I want you both to know — `
+      : ' I want you both to know — ';
+
     const speeches: Record<string, () => string> = {
       wedding: () => {
         let parts: string[] = [];
-        parts.push(`Distinguished guests, family, and friends — good afternoon and welcome.`);
+        parts.push(`Distinguished guests, family, and friends — good afternoon and welcome.${roleIntro}`);
         parts.push(`Today is a sacred and joyous occasion as we celebrate the union of ${names || 'this beautiful couple'}. To see two people choose each other, before God and before all of us, is a reminder that love is the greatest gift we are given in this life.`);
         if (cfg.story) parts.push(`I have watched ${names || 'them'} grow — from the early days of shy glances and long phone calls, to the confident, loving couple standing before us today. What has always struck me is the way they bring out the best in each other, the way their laughter fills every room they enter.`);
         parts.push(`Marriage is not just about the wedding day — it is about the thousands of ordinary days that follow. It is patience when things are difficult. It is kindness when the world is not. It is choosing each other, again and again, long after the cameras have gone home.`);
         if (cfg.extra) parts.push(`To the families: you are not losing a child, you are gaining a new branch on your family tree. May this union bring your two families closer together, and may the doors that open from this day bring blessings to generations yet unborn.`);
-        if (cfg.blessing) parts.push(`May your home be filled with laughter that echoes through the years. May your children carry your names with pride. May God bless this marriage with peace, prosperity, and unshakeable love.`);
+        if (cfg.blessing) parts.push(`${roleToCouple}may your home be filled with laughter that echoes through the years. May your children carry your names with pride. May God bless this marriage with peace, prosperity, and unshakeable love.`);
         if (cfg.toast) parts.push(`So please, raise your glasses with me — to ${names || 'the couple'}! May your love grow deeper with every passing year. Congratulations, and may God bless your union!`);
         return parts.join('\n\n');
       },
       birthday: () => {
         let parts: string[] = [];
-        parts.push(`Family and friends, thank you all for being here today to celebrate ${names || 'our birthday celebrant'}.`);
+        parts.push(`Family and friends, thank you all for being here today to celebrate ${names || 'our birthday celebrant'}.${roleIntro}`);
         parts.push(`Birthdays are more than just candles and cake — they are milestones that remind us to pause and give thanks for the gift of life. And today, we celebrate a life that has touched so many of us in this room.`);
         if (cfg.story) parts.push(`${names || 'This person'} has always been the kind who puts others first — who remembers your birthday even when you forget theirs, who shows up when it matters most. That is the person we are celebrating today.`);
         parts.push(`Another year means another chapter — new dreams to chase, new mountains to climb, and new memories to make with the people who love you most.`);
         if (cfg.extra) parts.push(`To the family: thank you for raising someone who makes the world a little brighter. To the friends: thank you for standing by them through every season.`);
-        if (cfg.blessing) parts.push(`May this new year bring you health that never fails, joy that never runs dry, and doors that open wider than you ever imagined. May God's favour rest upon you.`);
+        if (cfg.blessing) parts.push(`${roleCloseline}may this new year bring you health that never fails, joy that never runs dry, and doors that open wider than you ever imagined. May God's favour rest upon you.`);
         if (cfg.toast) parts.push(`So let us raise our glasses — happy birthday, ${names || 'my dear'}! Here's to many more years of life, love, and laughter!`);
         return parts.join('\n\n');
       },
       burial: () => {
         let parts: string[] = [];
-        parts.push(`Family, friends, and well-wishers — thank you for gathering here today to honour the life of ${names || 'our beloved departed'}.`);
+        parts.push(`Family, friends, and well-wishers — thank you for gathering here today to honour the life of ${names || 'our beloved departed'}.${roleIntro}`);
         parts.push(`Today is not a day of endings, but a day of remembrance. We do not come to say goodbye — we come to say thank you. Thank you for a life lived with purpose, for a heart that gave freely, and for a legacy that will not fade.`);
         if (cfg.story) parts.push(`${names || 'Our loved one'} taught us what it means to be generous — not just with money, but with time, with wisdom, and with love. The lessons they left behind are worth more than gold, and we carry them with us still.`);
         parts.push(`In our culture, we say that a person is not truly gone until they are forgotten. As long as we speak their name, share their stories, and walk the paths they showed us, they live on — in us, and in the generations that follow.`);
@@ -1460,7 +1728,7 @@ function AIEventPlanner() {
       },
       bridal: () => {
         let parts: string[] = [];
-        parts.push(`Ladies, friends, and family — what a beautiful day to celebrate ${names || 'our beautiful bride-to-be'}!`);
+        parts.push(`Ladies, friends, and family — what a beautiful day to celebrate ${names || 'our beautiful bride-to-be'}!${roleIntro}`);
         parts.push(`A bridal shower is a special moment — it is the calm before the beautiful storm of wedding day. It is a moment for the women who have shaped her, the friends who have stood by her, and the family who loves her, to gather and pour into her before she takes this big step.`);
         if (cfg.story) parts.push(`${names || 'Our bride'} has always been the kind of friend who remembers every detail — who throws the best surprises, who brings soup when you are sick. Today, it is our turn to celebrate her.`);
         parts.push(`Marriage is a wonderful adventure, and you are ready for it. You have a good heart, a strong spirit, and a community of women behind you who will always be in your corner.`);
@@ -1471,7 +1739,7 @@ function AIEventPlanner() {
       },
       naming: () => {
         let parts: string[] = [];
-        parts.push(`Family and friends, welcome and thank you for joining us to celebrate the naming of ${names || 'this precious child'}.`);
+        parts.push(`Family and friends, welcome and thank you for joining us to celebrate the naming of ${names || 'this precious child'}.${roleIntro}`);
         parts.push(`In our tradition, a name is more than a label — it is a prophecy, a prayer, and a heritage. The name we give this child today will walk with them for the rest of their life, and we choose it with love, with wisdom, and with hope.`);
         if (cfg.story) parts.push(`Looking at this child, I see the faces of the parents and grandparents reflected in those tiny features. I see the beginning of a new chapter for this family — a branch that will grow strong because its roots are deep.`);
         parts.push(`To the parents: you have been entrusted with a great gift. Raise this child with love that is firm and gentle, with values that are clear and kind. The world they will grow into is changing fast, but the foundation you build at home will never go out of style.`);
@@ -1482,7 +1750,7 @@ function AIEventPlanner() {
       },
       traditional: () => {
         let parts: string[] = [];
-        parts.push(`Elders, family, and guests — thank you for being here today as we celebrate the traditional union of ${names || 'this couple'}.`);
+        parts.push(`Elders, family, and guests — thank you for being here today as we celebrate the traditional union of ${names || 'this couple'}.${roleIntro}`);
         parts.push(`Today is about more than two people — it is about two families coming together. Our ancestors understood that marriage joins not just individuals, but lineages. The items exchanged today carry centuries of meaning, and we honour that.`);
         if (cfg.story) parts.push(`Watching ${names || 'this couple'} go through the traditional rites — the introduction, the proposal, the acceptance — is to witness something sacred. This is the foundation upon which their married life will be built.`);
         parts.push(`To the families: you have done well. You have raised children who respect tradition, who honour their elders, and who understand that some things are bigger than themselves.`);
@@ -1493,7 +1761,7 @@ function AIEventPlanner() {
       },
       corporate: () => {
         let parts: string[] = [];
-        parts.push(`Good evening, distinguished guests, colleagues, and partners — welcome.`);
+        parts.push(`Good evening, distinguished guests, colleagues, and partners — welcome.${roleIntro}`);
         parts.push(`Tonight we gather not just to celebrate, but to recognise the hard work, the late nights, and the shared vision that have brought us to this point. ${names || 'This organization'} is built on people who believe in what we do, and tonight is about them.`);
         if (cfg.story) parts.push(`When we look back at where we started and where we are now, the growth is clear. But behind every milestone, every deal, every success — there are people. People who showed up, who pushed harder, who refused to settle.`);
         parts.push(`The road ahead is full of opportunity, and if we continue to work together with the same spirit that brought us here, there is no limit to what we can achieve.`);
@@ -1504,7 +1772,7 @@ function AIEventPlanner() {
       },
       engagement: () => {
         let parts: string[] = [];
-        parts.push(`Family and friends, welcome! Today we celebrate love and commitment as ${names || 'this couple'} takes the next step together.`);
+        parts.push(`Family and friends, welcome! Today we celebrate love and commitment as ${names || 'this couple'} takes the next step together.${roleIntro}`);
         parts.push(`An engagement is a promise — a promise that says, "I choose you, not just for the good days, but for all the days." It is a beautiful thing to witness two people make that promise before the people they love most.`);
         if (cfg.story) parts.push(`${names || 'This couple'} reminds us that real love is not about perfection — it is about two imperfect people who choose each other, every single day, and who make it work with patience and laughter.`);
         parts.push(`As you prepare for the wedding, remember that the wedding is one day, but the marriage is a lifetime. Take time to enjoy this season — the planning, the dreaming, the anticipation.`);
@@ -1515,7 +1783,7 @@ function AIEventPlanner() {
       },
       anniversary: () => {
         let parts: string[] = [];
-        parts.push(`Family and friends, thank you for joining us to celebrate the anniversary of ${names || 'this wonderful couple'}.`);
+        parts.push(`Family and friends, thank you for joining us to celebrate the anniversary of ${names || 'this wonderful couple'}.${roleIntro}`);
         parts.push(`An anniversary is more than a date on a calendar — it is a testament. It says: we chose each other, and we kept choosing each other, through every joy and every challenge that came our way.`);
         if (cfg.story) parts.push(`${names || 'This couple'} has shown us what commitment looks like — not in grand gestures, but in the quiet, daily acts of love. The patience, the forgiveness, the laughter shared over simple meals, the storms weathered side by side.`);
         parts.push(`In a world where so much is temporary, your love is a reminder that some things are built to last. Each year together has added a new chapter to a story that keeps getting better.`);
@@ -1526,7 +1794,7 @@ function AIEventPlanner() {
       },
       conference: () => {
         let parts: string[] = [];
-        parts.push(`Distinguished guests, colleagues, and partners — good morning and welcome to ${names || "today's conference"}.`);
+        parts.push(`Distinguished guests, colleagues, and partners — good morning and welcome to ${names || "today's conference"}.${roleIntro}`);
         parts.push(`We gather here today because we believe in the power of ideas, the value of collaboration, and the importance of the conversations that happen in rooms like this one. Each of you brings a perspective that matters.`);
         if (cfg.story) parts.push(`This conference was born from a simple idea — that when we come together, share knowledge, and challenge each other's thinking, we all move forward. Today, we have an incredible lineup of speakers and sessions designed to do exactly that.`);
         parts.push(`Over the next few hours, I encourage you to not just listen, but to engage. Ask questions. Challenge assumptions. Connect with the person sitting next to you. The most valuable outcomes of this conference will not be the slides — they will be the conversations.`);
@@ -1537,7 +1805,7 @@ function AIEventPlanner() {
       },
       concert: () => {
         let parts: string[] = [];
-        parts.push(`Ladies and gentlemen — welcome to ${names || "tonight's show"}! Are you ready?`);
+        parts.push(`Ladies and gentlemen — welcome to ${names || "tonight's show"}! Are you ready?${roleIntro}`);
         parts.push(`Tonight is about music, energy, and the kind of memories that last long after the last song fades. We have an incredible show lined up for you, and we are so glad you are here to be part of it.`);
         if (cfg.story) parts.push(`${names || 'This artist'} has poured heart and soul into tonight's performance. Every song, every beat, every note — it is all for you. So I want you to feel every moment, sing every word, and make this a night to remember.`);
         parts.push(`Before we get started, a few quick reminders: keep your phones charged for the moments you will want to remember, but do not forget to put them down and live in the moment too. The best memories are the ones you experience, not the ones you record.`);

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { MapPin, Send, CheckCircle, Instagram, Clock } from 'lucide-react';
+import { MapPin, Send, CheckCircle, Instagram, Clock, Mail } from 'lucide-react';
 import Confetti from '../components/Confetti';
 import FloatingDots from '../components/FloatingDots';
 
