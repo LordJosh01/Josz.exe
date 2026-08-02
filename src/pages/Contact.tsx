@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { MapPin, Send, CheckCircle, Instagram, Clock, Heart, Sparkles, Calendar, Mail } from 'lucide-react';
+import { MapPin, Send, CheckCircle, Instagram, Clock, Heart, Sparkles, Calendar, Mail, Crown, Users } from 'lucide-react';
 import Confetti from '../components/Confetti';
 import FloatingDots from '../components/FloatingDots';
 
@@ -63,6 +63,21 @@ const reasons = [
     icon: Mail,
     title: 'Transparent Pricing',
     desc: 'No hidden fees, no surprises. Clear itemized proposals so you know exactly where your money goes.',
+  },
+  {
+    icon: Crown,
+    title: 'Cultural Expertise',
+    desc: 'Deep knowledge of Yoruba, Igbo, and Hausa traditions. We handle all cultural protocols with respect and authenticity.',
+  },
+  {
+    icon: MapPin,
+    title: 'Local Knowledge',
+    desc: 'Born and based in Ilorin, we know the best venues, vendors, and hidden gems across Kwara State and beyond.',
+  },
+  {
+    icon: Users,
+    title: 'Dedicated Team',
+    desc: 'A committed coordinator assigned to your event from first call to final toast, ensuring continuity and care.',
   },
 ];
 

@@ -57,6 +57,7 @@ const followUpSuggestions: Record<string, string[]> = {
   timeline: ['Wedding day timeline?', 'Birthday party schedule?', 'How early to start planning?', 'Day-of coordination?'],
   traditional: ['Yoruba traditions?', 'Igbo traditions?', 'Hausa traditions?', 'Item checklist?'],
   food: ['Menu suggestions?', 'Cost per guest?', 'Small chops options?', 'Dietary considerations?'],
+  bridal: ['How many guests?', 'Theme ideas?', 'Games and activities?', 'Gift ideas?'],
   default: ['Tell me about venues', 'Help with budgeting', 'Decoration ideas', 'Vendor tips', 'Create a timeline'],
 };
 
@@ -92,6 +93,7 @@ const detectEventType = (text: string): string | null => {
     baby: ['baby shower', 'naming ceremony', 'child dedication', 'christening'],
     traditional: ['traditional wedding', 'engagement ceremony', 'dowry', 'bride price', ' lobola', 'native law'],
     burial: ['burial', 'funeral', 'memorial', 'wake', 'lying in state', 'interment'],
+    bridal: ['bridal shower', 'bridal'],
   };
   for (const [type, keywords] of Object.entries(types)) {
     if (keywords.some(k => text.includes(k))) return type;
@@ -169,6 +171,7 @@ export default function EventAI({ onNavigate }: EventAIProps) {
     if (t.includes('vendor') || t.includes('photographer') || t.includes('dj') || t.includes('band') || t.includes('mc') || t.includes('makeup') || t.includes('florist')) return 'vendor';
     if (t.includes('timeline') || t.includes('schedule') || t.includes('program') || t.includes('itinerary')) return 'timeline';
     if (t.includes('traditional') || t.includes('yoruba') || t.includes('igbo') || t.includes('hausa') || t.includes('dowry') || t.includes('bride price')) return 'traditional';
+    if (t.includes('bridal shower') || t.includes('bridal')) return 'bridal';
     if (t.includes('food') || t.includes('cater') || t.includes('menu') || t.includes('meal') || t.includes('jollof')) return 'food';
     return 'default';
   };
@@ -547,6 +550,66 @@ What type of burial service are you planning? I can help with specific cultural 
 Will this be religious (church/mosque) or strictly traditional?`;
     }
 
+    // Bridal Shower
+    if (lowerInput.includes('bridal shower') || lowerInput.includes('bridal')) {
+      return `Bridal showers are beautiful pre-wedding celebrations! Here's your complete guide:
+
+**Bridal Shower Planning**
+
+**1. Timing**
+- 1-3 months before the wedding
+- Weekend afternoon is most popular
+- 2-4 hours duration
+
+**2. Format Options**
+- **Intimate Tea Party**: 15-30 close friends, elegant sit-down
+- **Fun & Games**: 30-50 guests, activities and entertainment
+- **Spa & Pamper**: Relaxing spa-themed shower
+- **Traditional**: Include cultural elements and blessings
+
+**3. Popular Themes**
+- Rose Gold & Blush — romantic, soft
+- Bohemian Chic — pampas grass, macrame
+- Tropical Paradise — vibrant, fun
+- Classic Elegance — white & gold, timeless
+- Ankara Fusion — traditional prints with modern style
+
+**4. Activities & Games**
+- "Who knows the bride best?" quiz
+- Wedding dress toilet paper challenge
+- Date night jar (guests contribute ideas)
+- Advice cards for the couple
+- Lingerie/gift unwrapping
+- Photo booth with props
+
+**5. Food & Drinks**
+- Small chops & finger foods (perfect for mingling)
+- Chapman, mocktails, fruit-infused water
+- Cupcakes, mini desserts, fruit trays
+- Light meal option: pasta or rice station
+
+**6. Gift Ideas for the Bride**
+- Lingerie set
+- Couples' gift basket
+- Spa voucher
+- Kitchen essentials
+- Personalized keepsakes
+
+**Budget Ranges (Kwara)**
+- Intimate (20 guests): N150,000 - N300,000
+- Standard (40 guests): N300,000 - N600,000
+- Lavish (60+ guests): N600,000 - N1,200,000
+
+**Typical Costs**
+- Venue: N50K - N200K
+- Decor: N50K - N150K
+- Catering: N80K - N250K
+- Photography: N30K - N80K
+- Games & props: N10K - N30K
+
+How many guests are you planning for the bridal shower?`;
+    }
+
     // Trends
     if (lowerInput.includes('trend') || lowerInput.includes('latest') || lowerInput.includes('modern') || lowerInput.includes('2024') || lowerInput.includes('2025') || lowerInput.includes("what's new")) {
       return `Here are the hottest event trends right now:
@@ -707,40 +770,67 @@ Which color scheme or theme resonates with you?`;
     if (lowerInput.includes('food') || lowerInput.includes('cater') || lowerInput.includes('menu') || lowerInput.includes('meal') || lowerInput.includes('rice') || lowerInput.includes('jollof')) {
       return `Food is one of the most memorable parts of any event!
 
-**Popular Menu Options**
-1. **Traditional Nigerian**
-   - Jollof rice, fried rice, coconut rice
-   - Moin moin, efo riro, egusi
-   - Assorted meats: beef, chicken, goat, fish
-   - Plantain (dodo, boli), salad
+**Popular Nigerian Menu Options**
 
-2. **Continental**
-   - Pasta bar (spaghetti, macaroni)
-   - Salad station, grilled proteins
-   - Rice dishes, bread selection
+**1. Traditional Nigerian (Most Popular)**
+- Jollof rice (Nigerian-style, party rice!), fried rice, coconut rice
+- Moin moin, efo riro, egusi soup, ewedu
+- Assorted meats: beef, chicken, goat meat, ponmo, fish
+- Plantain (dodo, boli), coleslaw, salad
+- Amala + ewedu/gbegiri (Yoruba classic)
+- Pounded yam + egusi or efo riro
 
-3. **Hybrid (Best of Both)**
-   - Mix traditional + continental
-   - Options for diverse guests
+**2. Continental**
+- Pasta bar (jollof spaghetti, macaroni)
+- Salad station, grilled proteins
+- Fried chicken, wings, peppered gizzard
+- Bread selection, roasted potatoes
 
-4. **Small Chops & Finger Foods**
-   - Spring rolls, samosa, puff puff
-   - Chicken wings, gizzard, snail
-   - Cocktail sausages, sliders
+**3. Hybrid (Best of Both)**
+- Mix traditional + continental for diverse guests
+- Great for weddings with mixed crowds
+
+**4. Small Chops & Finger Foods (Crowd Favourite!)**
+- Spring rolls, samosa, puff puff
+- Chicken wings, gizzard, peppered snail
+- Cocktail sausages, mini sliders, meat pie
+- Fish roll, scotch eggs, doughnuts
+- Asun (peppered goat meat), gizdodo
+
+**5. Drinks & Beverages**
+- Chapman, zobo, kunu (traditional drinks)
+- Soft drinks: Coke, Fanta, Sprite, Maltina
+- Water (still & sparkling)
+- Fruit juices, cocktail options
+- Premium: Mocktails, smoothies
+
+**6. Desserts**
+- Wedding cake / birthday cake
+- Fruit trays (watermelon, pineapple, pawpaw)
+- Ice cream station (kids love this!)
+- Chin chin, kuli kuli (traditional snacks)
 
 **Planning Tips**
-- Main dishes: 1.2 servings per person
-- Small chops: 3-4 pieces per person
+- Main dishes: 1.2 servings per person (people go back for seconds!)
+- Small chops: 4-5 packs per person
 - Drinks: 2-3 bottles per person
 - Dessert: 1 serving per person
+- Always cook 10% extra — Nigerian parties have unexpected guests!
 
 **Cost Per Guest (Kwara State)**
-- Budget: N1,500 - N2,500/guest
-- Standard: N3,000 - N5,000/guest
-- Premium: N6,000 - N10,000/guest
+- Budget: N1,500 - N2,500/guest (basic rice + meat + drink)
+- Standard: N3,000 - N5,000/guest (rice + 2 proteins + small chops + drinks)
+- Premium: N6,000 - N10,000/guest (full menu + small chops + desserts + premium drinks)
+- Luxury: N10,000+ /guest (multiple stations, premium meats, full bar)
 
 **Estimated Catering for ${guests} guests**
-${guests <= 50 ? 'N150,000 - N400,000' : guests <= 100 ? 'N300,000 - N800,000' : guests <= 200 ? 'N600,000 - N1,500,000' : 'N1,000,000 - N3,000,000'}
+${guests <= 50 ? 'N75,000 - N500,000' : guests <= 100 ? 'N150,000 - N1,000,000' : guests <= 200 ? 'N300,000 - N2,000,000' : 'N500,000 - N3,000,000+'}
+
+**Cultural Food Notes**
+- Yoruba events: Amala, efo riro, iyan are must-haves
+- Igbo events: Egusi, bitterleaf soup, foo-foo, abacha
+- Hausa events: Tuwo shinkafa, miyan kuka, danbun tsakiya
+- Always include a vegetarian option
 
 What type of cuisine are you considering?`;
     }
@@ -1004,52 +1094,64 @@ Would you like me to customize a timeline for your specific event?`;
 
     // Venue
     if (lowerInput.includes('venue') || lowerInput.includes('location') || lowerInput.includes('place') || lowerInput.includes('hall') || lowerInput.includes('event center') || lowerInput.includes('hotel')) {
-      return `Venue selection is critical! Here's comprehensive guidance for Kwara State:
+      return `Venue selection is critical! Here's comprehensive guidance for Kwara State and Nigeria:
 
-**Popular Venue Types in Kwara**
+**Popular Venues in Ilorin & Kwara State**
 
-**1. Hotel Ballrooms**
-- Examples: Kwara Hotel, Sobi Hill, other major hotels
-- Features: AC, parking, all-inclusive packages
+**1. Hotel Ballrooms & Conference Halls**
+- Kwara Hotel (Ilorin) — AC, ample parking, all-inclusive packages
+- Hotel Zenab (Ilorin) — elegant ballroom, in-house catering
+- Siland Suites (Ilorin) — modern event hall, great for weddings
 - Range: N300K - N1.5M
 
 **2. Event Centers**
-- Examples: Banex, Crystore, De-Peace, Multipurpose
-- Features: Large capacity, flexible layout
+- Banex Event Centre — large capacity, flexible layout
+- Crystore Event Hall — popular for weddings and parties
+- De-Peace Event Centre — budget-friendly, good parking
+- Kwara State Multipurpose Centre — government-owned, spacious
 - Range: N200K - N800K
 
-**3. Churches/Mosques Halls**
-- Features: Budget-friendly, familiar environment
-- Range: N100K - N300K
+**3. Churches/Mosque Halls**
+- Most denominations have event halls available to members
+- Budget-friendly, familiar environment
+- Range: N50K - N300K
 
-**4. Restaurants/Private Dining**
-- Features: Intimate, food on-site
-- Range: N150K - N500K
-
-**5. Outdoor Gardens/Fields**
-- Features: Beautiful scenery, weather-dependent
+**4. Restaurants & Private Dining**
+- Grill House (Ilorin) — intimate settings, food on-site
+- Crocodile Restaurant — University area, great for small gatherings
 - Range: N100K - N400K
 
-**Critical Questions to Ask**
+**5. Outdoor Gardens & Open Fields**
+- University of Ilorin Botanical Garden — scenic, greenery
+- Private compounds and family land — free or low cost
+- Weather-dependent (have a canopy/tent backup!)
+- Range: N50K - N300K (plus tent rental)
+
+**Major Venues Outside Kwara (if needed)**
+- Lagos: Eko Hotel, Oriental Hotel, Federal Palace, Balmoral Hall
+- Abuja: Transcorp Hilton, NAF Conference Centre, International Conference Centre
+- Ibadan: Jogor Centre, Kakanfo Inn
+
+**Critical Questions to Ask Any Venue**
 - Maximum capacity (seated vs standing)?
-- What's included? (tables, chairs, linens, sound?)
-- Power backup? (Essential in Nigeria!)
-- Parking capacity?
+- What's included? (tables, chairs, linens, sound, generator?)
+- Power backup / generator? (Essential in Nigeria!)
+- Parking capacity and security?
 - Catering restrictions or in-house catering only?
-- Noise regulations/curfew?
-- AC or fans?
+- Noise regulations / curfew time?
+- AC or fans only?
 - Setup/breakdown time included?
-- Cleaning fee?
+- Cleaning fee or damage deposit?
 
 **Venue Size Quick Guide**
 | Guests | Venue Size |
 |--------|------------|
-| 50 | Small hall |
+| 50 | Small hall / restaurant |
 | 100 | Medium hall |
-| 200 | Large hall/hotel |
-| 300+ | Event center |
+| 200 | Large hall / hotel ballroom |
+| 300+ | Event center / open field with tent |
 
-What type of venue are you considering?`;
+What type of venue are you considering? I can narrow it down!`;
     }
 
     // Flowers/Florist

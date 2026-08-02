@@ -123,7 +123,7 @@ const items = [
     title: 'Baby Shower Garden Party',
     category: 'Private',
     location: 'Ilorin, Kwara',
-    image: 'https://images.pexels.com/photos/31461721/pexels-photo-31461721.jpeg?auto=compress&cs=tinysrgb&w=900',
+    image: 'https://images.pexels.com/photos/15511394/pexels-photo-15511394.jpeg?auto=compress&cs=tinysrgb&w=900',
     desc: 'A dreamy outdoor baby shower in soft sage and ivory, with a custom balloon installation and a grazing board station.',
     tags: ['Baby Shower', 'Outdoor', 'Soft Tones'],
   },
@@ -134,6 +134,16 @@ const items = [
     image: 'https://images.pexels.com/photos/265920/pexels-photo-265920.jpeg?auto=compress&cs=tinysrgb&w=900',
     desc: 'A bespoke private dinner setup for a marriage proposal — rose petals, champagne, and a personalised menu the couple kept as a keepsake.',
     tags: ['Proposal', 'Romantic', 'Custom Menu'],
+  },
+
+  // --- BURIAL ---
+  {
+    title: 'Dignified Memorial Service',
+    category: 'Burial',
+    location: 'Ilorin, Kwara',
+    image: 'https://images.pexels.com/photos/7317675/pexels-photo-7317675.jpeg?auto=compress&cs=tinysrgb&w=900',
+    desc: 'A solemn and beautifully arranged memorial service honouring a life well-lived — elegant floral tributes, dignified decor and seamless coordination for the family.',
+    tags: ['Memorial', 'Dignified', 'Floral Tributes'],
   },
 
   // --- CORPORATE ---

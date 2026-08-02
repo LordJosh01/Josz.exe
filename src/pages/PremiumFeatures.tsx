@@ -4,7 +4,8 @@ import {
   CheckCircle, Bell, Gift, Crown, Wand2,
   MessageCircle, Plus, Trash2, Mail, Phone,
   PartyPopper, UserCheck, GalleryVerticalEnd,
-  RefreshCw, Play, Image, Instagram, Upload, X, Star
+  RefreshCw, Play, Image, Instagram, Upload, X, Star,
+  Wallet, MapPin, Utensils, Palette, Music
 } from 'lucide-react';
 import Confetti from '../components/Confetti';
 import FloatingDots from '../components/FloatingDots';
@@ -237,6 +238,8 @@ function InvitationGenerator() {
     venue: '',
     host: '',
     message: '',
+    dressCode: '',
+    rsvpContact: '',
     theme: 'elegant',
     primaryColor: '#d4a017',
     photo: '',
@@ -247,12 +250,15 @@ function InvitationGenerator() {
   const previewRef = useRef<HTMLDivElement>(null);
 
   const templates = [
-    { id: 'wedding', name: 'Wedding Classic', icon: Heart, preview: 'Elegant wedding invitation with romantic details' },
-    { id: 'birthday', name: 'Birthday Bash', icon: PartyPopper, preview: 'Fun and colorful birthday celebration' },
-    { id: 'corporate', name: 'Corporate Event', icon: Gift, preview: 'Professional and sophisticated business event' },
+    { id: 'wedding', name: 'Wedding', icon: Heart, preview: 'Elegant wedding invitation with romantic details' },
+    { id: 'birthday', name: 'Birthday', icon: PartyPopper, preview: 'Fun and colorful birthday celebration' },
+    { id: 'corporate', name: 'Corporate', icon: Gift, preview: 'Professional and sophisticated business event' },
     { id: 'traditional', name: 'Traditional', icon: Crown, preview: 'Cultural celebration with traditional styling' },
     { id: 'baby', name: 'Baby Shower', icon: Sparkles, preview: 'Soft and sweet baby shower invitation' },
     { id: 'engagement', name: 'Engagement', icon: Star, preview: 'Romantic engagement party invitation' },
+    { id: 'bridal', name: 'Bridal Shower', icon: Heart, preview: 'Intimate bridal shower celebration' },
+    { id: 'naming', name: 'Naming Ceremony', icon: Sparkles, preview: 'Joyful child naming celebration' },
+    { id: 'burial', name: 'Memorial Service', icon: Crown, preview: 'Dignified memorial and celebration of life' },
   ];
 
   const themes = [
@@ -291,13 +297,13 @@ function InvitationGenerator() {
   };
 
   const shareViaWhatsApp = () => {
-    const text = `${invitation.title}%0A%0A${invitation.event}%0ADate: ${invitation.date}%0ATime: ${invitation.time}%0AVenue: ${invitation.venue}%0A%0A${invitation.message}%0A%0A- ${invitation.host}`;
+    const text = `${invitation.title}%0A%0A${invitation.event}%0ADate: ${invitation.date}%0ATime: ${invitation.time}%0AVenue: ${invitation.venue}%0A${invitation.dressCode ? `Dress Code: ${invitation.dressCode}%0A` : ''}${invitation.rsvpContact ? `RSVP: ${invitation.rsvpContact}%0A` : ''}%0A${invitation.message}%0A%0A- ${invitation.host}`;
     window.open(`https://wa.me/?text=${text}`, '_blank');
   };
 
   const shareViaEmail = () => {
     const subject = encodeURIComponent(`You're Invited to ${invitation.event}!`);
-    const body = encodeURIComponent(`${invitation.title}\n\n${invitation.event}\nDate: ${invitation.date}\nTime: ${invitation.time}\nVenue: ${invitation.venue}\n\n${invitation.message}\n\n- ${invitation.host}`);
+    const body = encodeURIComponent(`${invitation.title}\n\n${invitation.event}\nDate: ${invitation.date}\nTime: ${invitation.time}\nVenue: ${invitation.venue}\n${invitation.dressCode ? `Dress Code: ${invitation.dressCode}\n` : ''}${invitation.rsvpContact ? `RSVP: ${invitation.rsvpContact}\n` : ''}\n${invitation.message}\n\n- ${invitation.host}`);
     window.open(`mailto:?subject=${subject}&body=${body}`, '_blank');
   };
 
@@ -355,6 +361,18 @@ function InvitationGenerator() {
             ctx.fillText(`Hosted by ${invitation.host}`, canvas.width / 2, 850);
           }
 
+          if (invitation.dressCode) {
+            ctx.font = '18px sans-serif';
+            ctx.fillStyle = '#bbbbbb';
+            ctx.fillText(`Dress Code: ${invitation.dressCode}`, canvas.width / 2, 890);
+          }
+
+          if (invitation.rsvpContact) {
+            ctx.font = '18px sans-serif';
+            ctx.fillStyle = '#bbbbbb';
+            ctx.fillText(`RSVP: ${invitation.rsvpContact}`, canvas.width / 2, 920);
+          }
+
           // Download
           const link = document.createElement('a');
           link.download = `invitation-${invitation.event || 'event'}.png`;
@@ -390,6 +408,18 @@ function InvitationGenerator() {
         ctx.font = '20px sans-serif';
         ctx.fillStyle = '#d4a017';
         ctx.fillText(`Hosted by ${invitation.host}`, canvas.width / 2, 850);
+      }
+
+      if (invitation.dressCode) {
+        ctx.font = '18px sans-serif';
+        ctx.fillStyle = '#bbbbbb';
+        ctx.fillText(`Dress Code: ${invitation.dressCode}`, canvas.width / 2, 890);
+      }
+
+      if (invitation.rsvpContact) {
+        ctx.font = '18px sans-serif';
+        ctx.fillStyle = '#bbbbbb';
+        ctx.fillText(`RSVP: ${invitation.rsvpContact}`, canvas.width / 2, 920);
       }
 
       // Download
@@ -493,7 +523,7 @@ function InvitationGenerator() {
           </div>
           <input
             type="text"
-            placeholder="Venue"
+            placeholder="Venue (e.g., Government House, Ilorin)"
             value={invitation.venue}
             onChange={(e) => setInvitation({ ...invitation, venue: e.target.value })}
             className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-white placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-all"
@@ -505,6 +535,22 @@ function InvitationGenerator() {
             onChange={(e) => setInvitation({ ...invitation, host: e.target.value })}
             className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-white placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-all"
           />
+          <div className="grid grid-cols-2 gap-4">
+            <input
+              type="text"
+              placeholder="Dress Code (e.g., Gold & Ivory)"
+              value={invitation.dressCode}
+              onChange={(e) => setInvitation({ ...invitation, dressCode: e.target.value })}
+              className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-white placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-all"
+            />
+            <input
+              type="text"
+              placeholder="RSVP Contact (e.g., 0803 123 4567)"
+              value={invitation.rsvpContact}
+              onChange={(e) => setInvitation({ ...invitation, rsvpContact: e.target.value })}
+              className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-3 text-white placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-all"
+            />
+          </div>
           <textarea
             placeholder="Personal Message (Optional)"
             value={invitation.message}
@@ -628,6 +674,12 @@ function InvitationGenerator() {
                   {invitation.host && (
                     <p className="text-gold-400 text-sm mt-4">Hosted by {invitation.host}</p>
                   )}
+                  {invitation.dressCode && (
+                    <p className="text-white/60 text-xs mt-2">Dress Code: {invitation.dressCode}</p>
+                  )}
+                  {invitation.rsvpContact && (
+                    <p className="text-white/60 text-xs mt-1">RSVP: {invitation.rsvpContact}</p>
+                  )}
                 </div>
               )}
 
@@ -643,6 +695,12 @@ function InvitationGenerator() {
                     <p className="text-white/80 text-sm">{invitation.venue}</p>
                     {invitation.host && (
                       <p className="text-gold-400 text-xs mt-4">- {invitation.host}</p>
+                    )}
+                    {invitation.dressCode && (
+                      <p className="text-white/60 text-[10px] mt-1">Dress: {invitation.dressCode}</p>
+                    )}
+                    {invitation.rsvpContact && (
+                      <p className="text-white/60 text-[10px] mt-1">RSVP: {invitation.rsvpContact}</p>
                     )}
                   </div>
                 </div>
@@ -674,6 +732,12 @@ function InvitationGenerator() {
                   </div>
                   {invitation.host && (
                     <p className="text-gold-400 text-xs mt-4">~ {invitation.host}</p>
+                  )}
+                  {invitation.dressCode && (
+                    <p className="text-white/60 text-[10px] mt-1">Dress Code: {invitation.dressCode}</p>
+                  )}
+                  {invitation.rsvpContact && (
+                    <p className="text-white/60 text-[10px] mt-1">RSVP: {invitation.rsvpContact}</p>
                   )}
                 </div>
               )}
@@ -1226,59 +1290,105 @@ function MemoryWall() {
   );
 }
 
-// 6. VIP CLIENT PORTAL with Contact Button
-function VIPPortal({ onNavigate }: { onNavigate: (page: Page) => void }) {
-  const exclusiveOffers = [
-    { title: 'Priority Booking', desc: 'Book your dates before anyone else', icon: Crown },
-    { title: 'Private Consultation', desc: '1-on-1 session with our lead planner', icon: Calendar },
-    { title: 'Exclusive Discounts', desc: 'Special rates on premium packages', icon: Gift },
-    { title: 'VIP Support', desc: '24/7 dedicated support line', icon: Phone },
-  ];
+// 6. EVENT BUDGET CALCULATOR
+function BudgetCalculator() {
+  const [eventCosts, setEventCosts] = useState({
+    venue: 0,
+    catering: 0,
+    decor: 0,
+    photography: 0,
+    music: 0,
+    attire: 0,
+    transport: 0,
+    miscellaneous: 0,
+  });
+  const [guestCount, setGuestCount] = useState(100);
+
+  const total = Object.values(eventCosts).reduce((sum, val) => sum + val, 0);
+  const costPerGuest = guestCount > 0 ? total / guestCount : 0;
+
+  const formatNaira = (n: number) => `N${n.toLocaleString('en-NG', { maximumFractionDigits: 0 })}`;
+
+  const categories = [
+    { key: 'venue', label: 'Venue', icon: MapPin },
+    { key: 'catering', label: 'Catering & Food', icon: Utensils },
+    { key: 'decor', label: 'Decoration', icon: Palette },
+    { key: 'photography', label: 'Photography', icon: Camera },
+    { key: 'music', label: 'Music / DJ / MC', icon: Music },
+    { key: 'attire', label: 'Attire & Beauty', icon: Crown },
+    { key: 'transport', label: 'Transport', icon: Calendar },
+    { key: 'miscellaneous', label: 'Miscellaneous', icon: Gift },
+  ] as const;
 
   return (
     <div className="glass-card gold-border rounded-2xl p-6 relative overflow-hidden animate-fade-in-up" style={{ animationDelay: '350ms' }}>
-      <div className="absolute inset-0 bg-gradient-to-tr from-gold-500/10 to-transparent pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-tr from-green-500/5 to-transparent pointer-events-none" />
       <div className="absolute top-0 right-0 w-32 h-32 bg-gold-500/10 rounded-full blur-3xl" />
 
       <div className="flex items-center gap-3 mb-6 relative z-10">
         <div className="w-10 h-10 rounded-full bg-gold-900/40 flex items-center justify-center animate-icon-bounce">
-          <Crown size={20} className="text-gold-400" />
+          <Wallet size={20} className="text-gold-400" />
         </div>
         <div>
-          <h3 className="font-serif text-xl text-white">VIP Client Portal</h3>
-          <p className="text-white/70 text-sm">Exclusive benefits for premium clients</p>
+          <h3 className="font-serif text-xl text-white">Budget Calculator</h3>
+          <p className="text-white/70 text-sm">Estimate and track your event costs</p>
         </div>
       </div>
 
-      <div className="text-center py-6 relative z-10">
-        <div className="relative inline-block mb-4">
-          <div className="absolute inset-0 bg-gold-500/20 rounded-full blur-xl animate-pulse" />
-          <Crown size={48} className="text-gold-400 relative z-10 animate-float" />
-        </div>
-        <p className="text-white/80 mb-4">Access exclusive tools and benefits</p>
-
-        <button
-          onClick={() => onNavigate('contact')}
-          className="btn-gold text-sm hover:scale-105 transition-all hover:shadow-lg hover:shadow-gold-500/30"
-        >
-          <Sparkles size={14} className="mr-2" />
-          Get VIP Access
-        </button>
-        <p className="text-white0 text-xs mt-3">Contact us to become a VIP client</p>
+      {/* Guest count */}
+      <div className="mb-4 relative z-10">
+        <label className="text-white/70 text-xs mb-2 block">Number of Guests</label>
+        <input
+          type="number"
+          value={guestCount}
+          onChange={(e) => setGuestCount(Math.max(0, parseInt(e.target.value) || 0))}
+          className="w-full bg-dark-card border border-dark-border rounded-lg px-4 py-2.5 text-white text-sm focus:outline-none focus:border-gold-500/50 transition-all"
+        />
       </div>
 
-      <div className="grid grid-cols-2 gap-3 mt-6 relative z-10">
-        {exclusiveOffers.map(({ title, desc, icon: Icon }, i) => (
+      {/* Category inputs */}
+      <div className="grid grid-cols-2 gap-3 mb-4 relative z-10">
+        {categories.map(({ key, label, icon: Icon }, i) => (
           <div
-            key={title}
-            className="glass-dark rounded-lg p-3 hover:border-gold-500/40 transition-all animate-pop-in hover:scale-[1.02] hover:shadow-md"
-            style={{ animationDelay: `${i * 100}ms` }}
+            key={key}
+            className="glass-dark rounded-lg p-3 animate-pop-in hover:border-gold-500/30 transition-all"
+            style={{ animationDelay: `${i * 50}ms` }}
           >
-            <Icon size={20} className="text-gold-400 mb-2" />
-            <p className="text-white text-sm">{title}</p>
-            <p className="text-white/70 text-xs">{desc}</p>
+            <div className="flex items-center gap-2 mb-1.5">
+              <Icon size={14} className="text-gold-400 shrink-0" />
+              <span className="text-white/70 text-[10px] uppercase tracking-wider truncate">{label}</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <span className="text-white/50 text-xs">N</span>
+              <input
+                type="number"
+                placeholder="0"
+                value={eventCosts[key] || ''}
+                onChange={(e) => setEventCosts({ ...eventCosts, [key]: Math.max(0, parseInt(e.target.value) || 0) })}
+                className="w-full bg-transparent text-white text-sm focus:outline-none tabular-nums"
+              />
+            </div>
           </div>
         ))}
+      </div>
+
+      {/* Results */}
+      <div className="glass-dark rounded-lg p-4 relative z-10 animate-pop-in">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-white/70 text-sm">Total Budget</span>
+          <span className="text-gold-400 font-serif text-2xl tabular-nums">{formatNaira(total)}</span>
+        </div>
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-white/70 text-xs">Cost per Guest</span>
+          <span className="text-white text-sm tabular-nums">{formatNaira(Math.round(costPerGuest))}</span>
+        </div>
+        <div className="h-px bg-dark-border my-3" />
+        <p className="text-white/50 text-[10px]">
+          {costPerGuest > 0 && costPerGuest < 2000 && 'Budget-friendly range'}
+          {costPerGuest >= 2000 && costPerGuest < 5000 && 'Standard range'}
+          {costPerGuest >= 5000 && costPerGuest < 10000 && 'Premium range'}
+          {costPerGuest >= 10000 && 'Luxury range'}
+        </p>
       </div>
     </div>
   );
@@ -1289,43 +1399,403 @@ function AIEventPlanner() {
   const [activeTab, setActiveTab] = useState<'speech' | 'program' | 'highlights'>('speech');
   const [generating, setGenerating] = useState(false);
   const [generated, setGenerated] = useState('');
-  const [input, setInput] = useState({ eventType: '', names: '' });
+  const [input, setInput] = useState({ eventType: 'wedding', names: '', speakerRole: '' });
+  const [speechLength, setSpeechLength] = useState<'short' | 'medium' | 'long'>('medium');
+
+  const eventOptions = [
+    { value: 'wedding', label: 'Wedding' },
+    { value: 'birthday', label: 'Birthday Party' },
+    { value: 'burial', label: 'Burial / Memorial' },
+    { value: 'bridal', label: 'Bridal Shower' },
+    { value: 'naming', label: 'Naming Ceremony' },
+    { value: 'traditional', label: 'Traditional Wedding' },
+    { value: 'corporate', label: 'Corporate Event' },
+    { value: 'engagement', label: 'Engagement' },
+  ];
+
+  const generateSpeech = (type: string, names: string, role: string, length: 'short' | 'medium' | 'long'): string => {
+    const lengthMap = {
+      short: { paras: 2, toast: true, story: false, blessing: true },
+      medium: { paras: 4, toast: true, story: true, blessing: true },
+      long: { paras: 6, toast: true, story: true, blessing: true, extra: true },
+    };
+    const cfg = lengthMap[length];
+
+    const speeches: Record<string, () => string> = {
+      wedding: () => {
+        let parts: string[] = [];
+        parts.push(`Distinguished guests, family, and friends — good afternoon and welcome.`);
+        parts.push(`Today is a sacred and joyous occasion as we celebrate the union of ${names || 'this beautiful couple'}. To see two people choose each other, before God and before all of us, is a reminder that love is the greatest gift we are given in this life.`);
+        if (cfg.story) parts.push(`I have watched ${names || 'them'} grow — from the early days of shy glances and long phone calls, to the confident, loving couple standing before us today. What has always struck me is the way they bring out the best in each other, the way their laughter fills every room they enter.`);
+        parts.push(`Marriage is not just about the wedding day — it is about the thousands of ordinary days that follow. It is patience when things are difficult. It is kindness when the world is not. It is choosing each other, again and again, long after the cameras have gone home.`);
+        if (cfg.extra) parts.push(`To the families: you are not losing a child, you are gaining a new branch on your family tree. May this union bring your two families closer together, and may the doors that open from this day bring blessings to generations yet unborn.`);
+        if (cfg.blessing) parts.push(`May your home be filled with laughter that echoes through the years. May your children carry your names with pride. May God bless this marriage with peace, prosperity, and unshakeable love.`);
+        if (cfg.toast) parts.push(`So please, raise your glasses with me — to ${names || 'the couple'}! May your love grow deeper with every passing year. Congratulations, and may God bless your union!`);
+        return parts.join('\n\n');
+      },
+      birthday: () => {
+        let parts: string[] = [];
+        parts.push(`Family and friends, thank you all for being here today to celebrate ${names || 'our birthday celebrant'}.`);
+        parts.push(`Birthdays are more than just candles and cake — they are milestones that remind us to pause and give thanks for the gift of life. And today, we celebrate a life that has touched so many of us in this room.`);
+        if (cfg.story) parts.push(`${names || 'This person'} has always been the kind who puts others first — who remembers your birthday even when you forget theirs, who shows up when it matters most. That is the person we are celebrating today.`);
+        parts.push(`Another year means another chapter — new dreams to chase, new mountains to climb, and new memories to make with the people who love you most.`);
+        if (cfg.extra) parts.push(`To the family: thank you for raising someone who makes the world a little brighter. To the friends: thank you for standing by them through every season.`);
+        if (cfg.blessing) parts.push(`May this new year bring you health that never fails, joy that never runs dry, and doors that open wider than you ever imagined. May God's favour rest upon you.`);
+        if (cfg.toast) parts.push(`So let us raise our glasses — happy birthday, ${names || 'my dear'}! Here's to many more years of life, love, and laughter!`);
+        return parts.join('\n\n');
+      },
+      burial: () => {
+        let parts: string[] = [];
+        parts.push(`Family, friends, and well-wishers — thank you for gathering here today to honour the life of ${names || 'our beloved departed'}.`);
+        parts.push(`Today is not a day of endings, but a day of remembrance. We do not come to say goodbye — we come to say thank you. Thank you for a life lived with purpose, for a heart that gave freely, and for a legacy that will not fade.`);
+        if (cfg.story) parts.push(`${names || 'Our loved one'} taught us what it means to be generous — not just with money, but with time, with wisdom, and with love. The lessons they left behind are worth more than gold, and we carry them with us still.`);
+        parts.push(`In our culture, we say that a person is not truly gone until they are forgotten. As long as we speak their name, share their stories, and walk the paths they showed us, they live on — in us, and in the generations that follow.`);
+        if (cfg.extra) parts.push(`To the family: we know that no words can fill the space they have left behind. But we want you to know that you do not grieve alone. This community, these friends, this family — we are here, and we will continue to be here.`);
+        if (cfg.blessing) parts.push(`May God grant the family the strength to bear this loss, and may the soul of our beloved find eternal rest. May light perpetual shine upon them.`);
+        if (cfg.toast) parts.push(`Please join me — to ${names || 'our beloved'}. A life well lived, a legacy well left. May you rest in perfect peace.`);
+        return parts.join('\n\n');
+      },
+      bridal: () => {
+        let parts: string[] = [];
+        parts.push(`Ladies, friends, and family — what a beautiful day to celebrate ${names || 'our beautiful bride-to-be'}!`);
+        parts.push(`A bridal shower is a special moment — it is the calm before the beautiful storm of wedding day. It is a moment for the women who have shaped her, the friends who have stood by her, and the family who loves her, to gather and pour into her before she takes this big step.`);
+        if (cfg.story) parts.push(`${names || 'Our bride'} has always been the kind of friend who remembers every detail — who throws the best surprises, who brings soup when you are sick. Today, it is our turn to celebrate her.`);
+        parts.push(`Marriage is a wonderful adventure, and you are ready for it. You have a good heart, a strong spirit, and a community of women behind you who will always be in your corner.`);
+        if (cfg.extra) parts.push(`To the bridesmaids and friends: keep showing up for her. The wedding day comes once, but friendship is the foundation that holds a marriage up for decades.`);
+        if (cfg.blessing) parts.push(`May your marriage be filled with the same joy you bring to everyone around you. May your home be warm, your arguments be few, and your love grow deeper with every passing year.`);
+        if (cfg.toast) parts.push(`Raise your glasses — to ${names || 'our beautiful bride'}! Cheers to love, to friendship, and to the beautiful journey ahead!`);
+        return parts.join('\n\n');
+      },
+      naming: () => {
+        let parts: string[] = [];
+        parts.push(`Family and friends, welcome and thank you for joining us to celebrate the naming of ${names || 'this precious child'}.`);
+        parts.push(`In our tradition, a name is more than a label — it is a prophecy, a prayer, and a heritage. The name we give this child today will walk with them for the rest of their life, and we choose it with love, with wisdom, and with hope.`);
+        if (cfg.story) parts.push(`Looking at this child, I see the faces of the parents and grandparents reflected in those tiny features. I see the beginning of a new chapter for this family — a branch that will grow strong because its roots are deep.`);
+        parts.push(`To the parents: you have been entrusted with a great gift. Raise this child with love that is firm and gentle, with values that are clear and kind. The world they will grow into is changing fast, but the foundation you build at home will never go out of style.`);
+        if (cfg.extra) parts.push(`To the grandparents: your wisdom is needed now more than ever. Share your stories, teach your traditions, and let this child know where they come from.`);
+        if (cfg.blessing) parts.push(`May this child grow in wisdom, in health, and in favour with God and with people. May their name be spoken with pride for generations to come.`);
+        if (cfg.toast) parts.push(`Please raise your glasses — to ${names || 'our newest family member'}! May your life be long, bright, and full of blessings!`);
+        return parts.join('\n\n');
+      },
+      traditional: () => {
+        let parts: string[] = [];
+        parts.push(`Elders, family, and guests — thank you for being here today as we celebrate the traditional union of ${names || 'this couple'}.`);
+        parts.push(`Today is about more than two people — it is about two families coming together. Our ancestors understood that marriage joins not just individuals, but lineages. The items exchanged today carry centuries of meaning, and we honour that.`);
+        if (cfg.story) parts.push(`Watching ${names || 'this couple'} go through the traditional rites — the introduction, the proposal, the acceptance — is to witness something sacred. This is the foundation upon which their married life will be built.`);
+        parts.push(`To the families: you have done well. You have raised children who respect tradition, who honour their elders, and who understand that some things are bigger than themselves.`);
+        if (cfg.extra) parts.push(`To the couple: as you step into marriage, remember the values that brought you here — respect, patience, and the wisdom of those who came before you.`);
+        if (cfg.blessing) parts.push(`May your union be blessed with children who carry your names proudly. May your two families grow closer with each passing year. May God bless this marriage abundantly.`);
+        if (cfg.toast) parts.push(`Raise your glasses — to ${names || 'the couple'} and to the joining of two families! I se! Congratulations!`);
+        return parts.join('\n\n');
+      },
+      corporate: () => {
+        let parts: string[] = [];
+        parts.push(`Good evening, distinguished guests, colleagues, and partners — welcome.`);
+        parts.push(`Tonight we gather not just to celebrate, but to recognise the hard work, the late nights, and the shared vision that have brought us to this point. ${names || 'This organization'} is built on people who believe in what we do, and tonight is about them.`);
+        if (cfg.story) parts.push(`When we look back at where we started and where we are now, the growth is clear. But behind every milestone, every deal, every success — there are people. People who showed up, who pushed harder, who refused to settle.`);
+        parts.push(`The road ahead is full of opportunity, and if we continue to work together with the same spirit that brought us here, there is no limit to what we can achieve.`);
+        if (cfg.extra) parts.push(`To our partners and clients: thank you for your trust. We do not take it for granted, and we will continue to earn it every single day.`);
+        if (cfg.blessing) parts.push(`May this organization continue to grow, to innovate, and to make a difference. May the year ahead be our best yet.`);
+        if (cfg.toast) parts.push(`Please raise your glasses — to ${names || 'our team'}, to our future, and to the journey ahead. Cheers!`);
+        return parts.join('\n\n');
+      },
+      engagement: () => {
+        let parts: string[] = [];
+        parts.push(`Family and friends, welcome! Today we celebrate love and commitment as ${names || 'this couple'} takes the next step together.`);
+        parts.push(`An engagement is a promise — a promise that says, "I choose you, not just for the good days, but for all the days." It is a beautiful thing to witness two people make that promise before the people they love most.`);
+        if (cfg.story) parts.push(`${names || 'This couple'} reminds us that real love is not about perfection — it is about two imperfect people who choose each other, every single day, and who make it work with patience and laughter.`);
+        parts.push(`As you prepare for the wedding, remember that the wedding is one day, but the marriage is a lifetime. Take time to enjoy this season — the planning, the dreaming, the anticipation.`);
+        if (cfg.extra) parts.push(`To the families: support them, pray for them, and be there for them. A strong marriage is built on a strong community.`);
+        if (cfg.blessing) parts.push(`May your engagement be filled with joy, your wedding be everything you dreamed, and your marriage be even more beautiful than either.`);
+        if (cfg.toast) parts.push(`Raise your glasses — to ${names || 'the happy couple'}! Congratulations on your engagement!`);
+        return parts.join('\n\n');
+      },
+    };
+
+    return (speeches[type] || speeches.wedding)();
+  };
+
+  const generateProgram = (type: string): string => {
+    const programs: Record<string, string> = {
+      wedding: `WEDDING DAY PROGRAM
+
+12:00 PM - Guest Arrival & Ushering
+12:30 PM - Procession & Seating of Parents
+1:00 PM - Opening Prayer & Welcome Address
+1:15 PM - Introduction of the Couple
+1:30 PM - Sermon / Marriage Counsel
+2:00 PM - Exchange of Vows & Rings
+2:15 PM - Pronouncement & Kiss
+2:30 PM - Couple's Exit & Photo Session
+3:00 PM - Grand Entrance to Reception
+3:15 PM - Cutting of the Cake
+3:30 PM - Toasts & Speeches
+4:00 PM - First Dance
+4:15 PM - Food Service Begins
+5:00 PM - Groom & Bride's Family Dance
+5:30 PM - Open Dance Floor
+6:30 PM - Couple's Thank You & Favour Distribution
+7:00 PM - Closing Remarks & Prayer
+7:15 PM - Departure of Guests`,
+
+      birthday: `BIRTHDAY CELEBRATION PROGRAM
+
+4:00 PM - Guest Arrival & Registration
+4:30 PM - Red Carpet & Photo Session
+5:00 PM - Opening Prayer & Welcome Address
+5:15 PM - Introduction of the Celebrant
+5:30 PM - celebrant's Grand Entrance
+5:45 PM - First Dance (Celebrant)
+6:00 PM - Cutting of the Cake
+6:15 PM - Toasts & Tributes from Family/Friends
+6:45 PM - Food Service Begins
+7:00 PM - Games & Entertainment
+7:45 PM - Surprise Performance / Video Messages
+8:00 PM - Open Dance Floor
+9:00 PM - celebrant's Thank You Speech
+9:15 PM - Group Photos & Favour Distribution
+9:30 PM - Closing Remarks
+10:00 PM - After-Party Begins`,
+
+      burial: `MEMORIAL SERVICE PROGRAM
+
+8:00 AM - Lying-in-State / Viewing
+9:00 AM - Procession & Seating
+9:30 AM - Opening Hymn & Prayer
+9:45 AM - Welcome Address by Family
+10:00 AM - Tributes from Family Members
+10:30 AM - Tributes from Friends & Colleagues
+11:00 AM - Sermon / Homily
+11:30 AM - Eulogy
+12:00 PM - Final Viewing
+12:30 PM - Closing Hymn & Prayers
+12:45 PM - Casket Exit & Procession to Graveside
+1:00 PM - Interment / Burial Rites
+1:30 PM - Prayers at Graveside
+2:00 PM - Refreshments for Guests
+4:00 PM - Family Thanksgiving (Optional)`,
+
+      bridal: `BRIDAL SHOWER PROGRAM
+
+2:00 PM - Guests Arrival & Welcome Drinks
+2:30 PM - Icebreaker Games
+3:00 PM - Bride's Grand Entrance
+3:15 PM - Opening Prayer & Welcome
+3:30 PM - Games Round 1 (Who Knows the Bride?)
+4:00 PM - Food & Drinks Service
+4:30 PM - Advice Session (Guests share marriage advice)
+5:00 PM - Games Round 2 (Wedding Dress Challenge)
+5:30 PM - Gift Unwrapping
+6:00 PM - Heartfelt Messages & Toasts
+6:15 PM - Cake Cutting
+6:30 PM - Photo Session
+7:00 PM - Open Mingling & Music
+8:00 PM - Closing & Thank You`,
+
+      naming: `NAMING CEREMONY PROGRAM
+
+10:00 AM - Guest Arrival & Seating
+10:30 AM - Opening Prayer
+10:45 AM - Welcome Address by Parents
+11:00 AM - Introduction of the Child
+11:15 AM - Symbolic Items Presentation (Honey, Salt, Water, etc.)
+11:30 AM - Naming of the Child by Parents
+11:45 AM - Blessings from Grandparents / Elders
+12:00 PM - Prayers for the Child
+12:15 PM - Family & Guest Tributes
+12:30 PM - Food & Drinks Service
+1:00 PM - Photo Session
+1:30 PM - Gift Presentation
+2:00 PM - Closing Prayer & Thanksgiving
+2:15 PM - Departure of Guests`,
+
+      traditional: `TRADITIONAL WEDDING PROGRAM
+
+10:00 AM - Guests Arrival & Seating
+10:30 AM - Groom's Family Arrival (Knocking on the Door)
+11:00 AM - Introduction of Both Families
+11:30 AM - Bride's Family Welcome Address
+12:00 PM - Presentation of Proposal Letter
+12:15 PM - Acceptance & Bride Price Discussion
+12:30 PM - Presentation of Traditional Items
+1:00 PM - Bride's Grand Entrance
+1:15 PM - Acceptance by Bride
+1:30 PM - Blessing of the Union by Elders
+2:00 PM - Food & Drinks Service
+3:00 PM - Cultural Dances & Entertainment
+4:00 PM - Couple's Dance & Photo Session
+4:30 PM - Gift Exchange
+5:00 PM - Closing Remarks & Prayers
+5:30 PM - Departure of Guests`,
+
+      corporate: `CORPORATE EVENT PROGRAM
+
+5:00 PM - Guest Registration & Networking
+5:30 PM - Welcome Drinks & Hors d'oeuvres
+6:00 PM - Opening Remarks by MC
+6:15 PM - National Anthem / Opening Prayer
+6:30 PM - Chairman's Welcome Address
+6:45 PM - Keynote Presentation
+7:15 PM - Awards / Recognition Segment
+8:00 PM - Dinner Service
+8:45 PM - Entertainment / Cultural Performance
+9:15 PM - Vote of Thanks
+9:30 PM - Closing Remarks
+9:45 PM - Group Photos & Networking
+10:00 PM - Departure`,
+
+      engagement: `ENGAGEMENT CEREMONY PROGRAM
+
+2:00 PM - Guest Arrival & Seating
+2:30 PM - Introduction of Families
+3:00 PM - Groom's Family Presentation
+3:15 PM - Proposal & Acceptance
+3:30 PM - Ring Exchange & Blessing
+3:45 PM - Couple's First Public Appearance
+4:00 PM - Photo Session
+4:30 PM - Toasts & Congratulations
+5:00 PM - Food & Drinks Service
+5:30 PM - Entertainment & Music
+6:30 PM - Dance Floor Opens
+7:30 PM - Closing Remarks
+8:00 PM - Departure`,
+    };
+
+    return programs[type] || programs.wedding;
+  };
+
+  const generateHighlights = (type: string): string => {
+    const highlights: Record<string, string> = {
+      wedding: `WEDDING HIGHLIGHT REEL CONCEPT
+
+Opening: Slow-motion bride preparation (10s)
+Scene 1: Groom's anticipation (8s)
+Scene 2: Guest arrivals & excitement (15s)
+Scene 3: Traditional / church ceremony (20s)
+Scene 4: Vows & ring exchange (15s)
+Scene 5: The kiss & cheering crowd (8s)
+Scene 6: Grand reception entrance (10s)
+Scene 7: Cake cutting & toasts (12s)
+Scene 8: First dance (15s)
+Scene 9: Emotional family moments (10s)
+Scene 10: Dance floor energy (15s)
+Closing: Slow-motion couple exit (8s)
+
+Total Runtime: ~2 minutes
+Music: Romantic Afro-pop or traditional fusion`,
+
+      birthday: `BIRTHDAY HIGHLIGHT REEL CONCEPT
+
+Opening: Countdown & venue reveal (5s)
+Scene 1: Guest arrivals & red carpet (15s)
+Scene 2: Celebrant's grand entrance (10s)
+Scene 3: Surprise reactions (10s)
+Scene 4: Cake cutting moment (12s)
+Scene 5: Emotional tributes (15s)
+Scene 6: Dance floor highlights (20s)
+Scene 7: Group photos & laughter (10s)
+Closing: Slow-motion celebration (8s)
+
+Total Runtime: ~1.5 minutes
+Music: Upbeat Afrobeat / celebratory`,
+
+      burial: `MEMORIAL TRIBUTE VIDEO CONCEPT
+
+Opening: Soft instrumental, photo montage of life (20s)
+Scene 1: Family tributes (15s)
+Scene 2: Friends & colleagues tributes (15s)
+Scene 3: Service highlights (20s)
+Scene 4: Final procession (15s)
+Scene 5: Graveside prayers (10s)
+Closing: "In Loving Memory" title card (10s)
+
+Total Runtime: ~1.5 minutes
+Music: Solemn, respectful instrumental / hymn`,
+
+      bridal: `BRIDAL SHOWER HIGHLIGHT REEL CONCEPT
+
+Opening: Decor & setup reveal (8s)
+Scene 1: Guests arriving & greeting (10s)
+Scene 2: Bride's surprise entrance (12s)
+Scene 3: Games & laughter (20s)
+Scene 4: Gift unwrapping reactions (15s)
+Scene 5: Advice session moments (10s)
+Scene 6: Toasts & emotional speeches (15s)
+Closing: Group photo & well wishes (8s)
+
+Total Runtime: ~1.5 minutes
+Music: Light, fun, feel-good`,
+
+      naming: `NAMING CEREMONY HIGHLIGHT REEL CONCEPT
+
+Opening: Baby & decor reveal (10s)
+Scene 1: Guest arrivals (8s)
+Scene 2: Traditional item presentation (15s)
+Scene 3: Naming moment (12s)
+Scene 4: Elder's blessings (15s)
+Scene 5: Family joy & reactions (10s)
+Scene 6: Photo session (8s)
+Closing: Blessing for the child (10s)
+
+Total Runtime: ~90 seconds
+Music: Soft, joyful, cultural`,
+
+      traditional: `TRADITIONAL WEDDING HIGHLIGHT REEL CONCEPT
+
+Opening: Both families arriving (10s)
+Scene 1: Knocking on the door (12s)
+Scene 2: Traditional items display (15s)
+Scene 3: Bride's grand entrance (10s)
+Scene 4: Acceptance & blessings (15s)
+Scene 5: Cultural dances (20s)
+Scene 6: Couple's dance (10s)
+Scene 7: Joy & celebration (10s)
+Closing: Family unity shot (8s)
+
+Total Runtime: ~110 seconds
+Music: Traditional drums & cultural fusion`,
+
+      corporate: `CORPORATE EVENT HIGHLIGHT REEL CONCEPT
+
+Opening: Venue & branding reveal (8s)
+Scene 1: Guest networking (12s)
+Scene 2: Keynote / presentations (15s)
+Scene 3: Awards & recognition (20s)
+Scene 4: Applause & reactions (10s)
+Scene 5: Entertainment performance (15s)
+Scene 6: Group photos (8s)
+Closing: Brand logo & tagline (5s)
+
+Total Runtime: ~90 seconds
+Music: Professional, upbeat corporate`,
+
+      engagement: `ENGAGEMENT HIGHLIGHT REEL CONCEPT
+
+Opening: Venue & decor (8s)
+Scene 1: Family introductions (10s)
+Scene 2: Proposal moment (15s)
+Scene 3: Ring exchange (12s)
+Scene 4: Couple's first appearance (10s)
+Scene 5: Joy & congratulations (15s)
+Scene 6: Dance & celebration (15s)
+Closing: Slow-motion couple (8s)
+
+Total Runtime: ~90 seconds
+Music: Romantic Afro-pop`,
+    };
+
+    return highlights[type] || highlights.wedding;
+  };
 
   const generate = () => {
     setGenerating(true);
     setTimeout(() => {
       if (activeTab === 'speech') {
-        setGenerated(`Dear family and friends,
-
-Welcome to this beautiful ${input.eventType} celebration!
-
-${input.names ? `To ${input.names}, may your journey together be filled with love, joy, and countless blessings.` : 'May this day bring you endless happiness and cherished memories.'}
-
-Today marks the beginning of a new chapter. As we gather here, let us celebrate love, unity, and the bonds that bring us together.
-
-I raise my glass to love, laughter, and a lifetime of happiness. Cheers!`);
+        setGenerated(generateSpeech(input.eventType, input.names, input.speakerRole, speechLength));
       } else if (activeTab === 'program') {
-        setGenerated(`EVENT PROGRAM
-
-12:00 PM - Guest Arrival & Registration
-12:30 PM - Opening Ceremony & Welcome Address
-1:00 PM - Cultural Performance
-1:30 PM - Main Event Ceremony
-2:30 PM - Photo Session
-3:00 PM - Cake Cutting & Toasts
-3:30 PM - Entertainment & Dance
-5:00 PM - Closing Remarks & Departure`);
+        setGenerated(generateProgram(input.eventType));
       } else {
-        setGenerated(`EVENT HIGHLIGHT REEL CONCEPT
-
-Opening: Aerial shot of venue (5s)
-Scene 1: Guest arrivals (15s)
-Scene 2: Main ceremony (20s)
-Scene 3: Emotional moments (10s)
-Scene 4: Dance floor energy (15s)
-Closing: Slow-motion celebration (5s)
-
-Total Runtime: ~70 seconds`);
+        setGenerated(generateHighlights(input.eventType));
       }
       setGenerating(false);
     }, 2000);
@@ -1360,21 +1830,50 @@ Total Runtime: ~70 seconds`);
 
       {/* Input */}
       <div className="space-y-3 mb-4 relative z-10">
-        <input
-          type="text"
-          placeholder="Event Type (e.g., Wedding, Birthday)"
+        <select
           value={input.eventType}
           onChange={(e) => setInput({ ...input, eventType: e.target.value })}
-          className="w-full bg-dark-card border border-dark-border rounded-lg px-3 py-2 text-white placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-all"
-        />
+          className="w-full bg-dark-card border border-dark-border rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-gold-500/50 transition-all"
+        >
+          {eventOptions.map(opt => (
+            <option key={opt.value} value={opt.value} className="bg-dark-card">{opt.label}</option>
+          ))}
+        </select>
+
         {activeTab === 'speech' && (
-          <input
-            type="text"
-            placeholder="Names (e.g., Tunde & Funke)"
-            value={input.names}
-            onChange={(e) => setInput({ ...input, names: e.target.value })}
-            className="w-full bg-dark-card border border-dark-border rounded-lg px-3 py-2 text-white placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-all animate-slide-in-down"
-          />
+          <>
+            <input
+              type="text"
+              placeholder="Names (e.g., Tunde & Funke, or the celebrant's name)"
+              value={input.names}
+              onChange={(e) => setInput({ ...input, names: e.target.value })}
+              className="w-full bg-dark-card border border-dark-border rounded-lg px-3 py-2 text-white placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-all animate-slide-in-down"
+            />
+            <input
+              type="text"
+              placeholder="Your role (e.g., Best man, Father of the bride, Friend)"
+              value={input.speakerRole}
+              onChange={(e) => setInput({ ...input, speakerRole: e.target.value })}
+              className="w-full bg-dark-card border border-dark-border rounded-lg px-3 py-2 text-white placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-all"
+            />
+            <div>
+              <p className="text-white/70 text-xs mb-2">Speech Length</p>
+              <div className="flex gap-2">
+                {(['short', 'medium', 'long'] as const).map(len => (
+                  <button
+                    key={len}
+                    onClick={() => setSpeechLength(len)}
+                    className={`flex-1 py-1.5 rounded-lg text-xs capitalize transition-all ${speechLength === len ? 'bg-gold-500/20 border border-gold-500/40 text-gold-400' : 'bg-dark-card border border-dark-border text-white/70 hover:border-gold-500/30'}`}
+                  >
+                    {len}
+                    <span className="block text-[9px] text-white/50 mt-0.5">
+                      {len === 'short' ? '~1 min' : len === 'medium' ? '~3 min' : '~5 min'}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </>
         )}
       </div>
 
@@ -1431,7 +1930,7 @@ export default function PremiumFeatures({ onNavigate }: PremiumFeaturesProps) {
     { id: 'planner', label: 'Plan Event', icon: Wand2 },
     { id: 'rsvp', label: 'RSVP', icon: UserCheck },
     { id: 'memory', label: 'Memories', icon: GalleryVerticalEnd },
-    { id: 'vip', label: 'VIP', icon: Crown },
+    { id: 'budget', label: 'Budget', icon: Wallet },
     { id: 'ai', label: 'AI Tools', icon: Sparkles },
   ];
 
@@ -1502,9 +2001,8 @@ export default function PremiumFeatures({ onNavigate }: PremiumFeaturesProps) {
             {activeSection === 'rsvp' && <RSVPManager />}
             {activeSection === 'rsvp' && <MemoryWall />}
             {activeSection === 'memory' && <MemoryWall />}
-            {activeSection === 'memory' && <VIPPortal onNavigate={navigate} />}
-            {activeSection === 'vip' && <VIPPortal onNavigate={navigate} />}
-            {activeSection === 'vip' && <AIEventPlanner />}
+            {activeSection === 'budget' && <BudgetCalculator />}
+            {activeSection === 'budget' && <AIEventPlanner />}
             {activeSection === 'ai' && <AIEventPlanner />}
             {activeSection === 'ai' && <CountdownTimer />}
           </div>
