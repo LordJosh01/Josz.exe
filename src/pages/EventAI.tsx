@@ -234,37 +234,39 @@ export default function EventAI({ onNavigate }: EventAIProps) {
     const location = extractLocation(text);
     const style = extractStyle(text);
 
-    setEventContext(prev => ({
-      eventType: eventType || prev.eventType,
-      guestCount: guestCount || prev.guestCount,
+    const newContext = {
+      eventType: eventType || eventContext.eventType,
+      guestCount: guestCount || eventContext.guestCount,
       budget: budget,
-      date: date || prev.date,
-      location: location || prev.location,
-      style: style || prev.style,
-      lastTopic: detectedTopic !== 'default' ? detectedTopic : prev.lastTopic,
-      conversationHistory: [...prev.conversationHistory, text].slice(-8),
-    }));
+      date: date || eventContext.date,
+      location: location || eventContext.location,
+      style: style || eventContext.style,
+      lastTopic: detectedTopic !== 'default' ? detectedTopic : eventContext.lastTopic,
+      conversationHistory: [...eventContext.conversationHistory, text].slice(-8),
+    };
 
+    setEventContext(newContext);
     setFollowUps(followUpSuggestions[detectedTopic] || followUpSuggestions.default);
+    return newContext;
   };
 
   // Build context summary for personalized responses
-  const buildContextSummary = (): string => {
+  const buildContextSummary = (ctx: EventContext): string => {
     const parts: string[] = [];
-    if (eventContext.eventType) parts.push(eventContext.eventType);
-    if (eventContext.guestCount) parts.push(`${eventContext.guestCount} guests`);
-    if (eventContext.date) parts.push(`around ${eventContext.date}`);
-    if (eventContext.location) parts.push(`in ${eventContext.location}`);
-    if (eventContext.style) parts.push(`${eventContext.style} style`);
-    if (eventContext.budget) parts.push(`budget mentioned`);
+    if (ctx.eventType) parts.push(ctx.eventType);
+    if (ctx.guestCount) parts.push(`${ctx.guestCount} guests`);
+    if (ctx.date) parts.push(`around ${ctx.date}`);
+    if (ctx.location) parts.push(`in ${ctx.location}`);
+    if (ctx.style) parts.push(`${ctx.style} style`);
+    if (ctx.budget) parts.push(`budget mentioned`);
     return parts.length > 0 ? parts.join(', ') : '';
   };
 
   const generateAIResponse = (userInput: string): string => {
     const lowerInput = userInput.toLowerCase();
-    updateContext(userInput);
-    const guests = eventContext.guestCount || 100;
-    const contextSummary = buildContextSummary();
+    const ctx = updateContext(userInput);
+    const guests = ctx.guestCount || 100;
+    const contextSummary = buildContextSummary(ctx);
 
     // Non-event question detection - AI only answers event-related questions
     const eventKeywords = [
@@ -687,21 +689,14 @@ What's your entertainment vision?`;
     // Budget with context awareness
     if (lowerInput.includes('budget') || lowerInput.includes('cost') || lowerInput.includes('price') || lowerInput.includes('how much') || lowerInput.includes('afford') || lowerInput.includes('expensive')) {
       if (eventContext.eventType === 'wedding' || lowerInput.includes('wedding')) {
-        return `Here's a detailed wedding budget breakdown for Kwara State:
+        const g = ctx.guestCount || guests;
+        const tier = g <= 80 ? { label: 'Intimate', low: 800000, high: 1500000, venue: 150000, catering: 400000, decor: 150000, photo: 150000, outfits: 200000, other: 250000 } : g <= 200 ? { label: 'Standard', low: 2000000, high: 5000000, venue: 500000, catering: 1200000, decor: 600000, photo: 400000, outfits: 500000, other: 800000 } : { label: 'Grand', low: 6000000, high: 15000000, venue: 1500000, catering: 4000000, decor: 2000000, photo: 800000, outfits: 1000000, other: 2000000 };
+        const fmt = (n: number) => `N${n.toLocaleString('en-NG')}`;
+        return `Here's a detailed wedding budget breakdown${eventContext.guestCount ? ` for your ${g} guests` : ''}:
 
-**Wedding Budget Tiers**
-
-**Intimate (50-80 guests): N800K - N1.5M**
-- Venue: N150K | Catering: N400K | Decor: N150K
-- Photo/Video: N150K | Outfits: N200K | Others: N250K
-
-**Standard (100-200 guests): N2M - N5M**
-- Venue: N500K | Catering: N1.2M | Decor: N600K
-- Photo/Video: N400K | Entertainment: N300K | Outfits: N500K
-
-**Grand (300+ guests): N6M - N15M+**
-- Venue: N1.5M | Catering: N4M | Decor: N2M
-- Photo/Video: N800K | Entertainment: N500K | Outfits: N1M
+**${tier.label} Wedding (${g} guests): ${fmt(tier.low)} - ${fmt(tier.high)}**
+- Venue: ${fmt(tier.venue)} | Catering: ${fmt(tier.catering)} | Decor: ${fmt(tier.decor)}
+- Photo/Video: ${fmt(tier.photo)} | Outfits: ${fmt(tier.outfits)} | Others: ${fmt(tier.other)}
 
 **Budget-Saving Pro Tips:**
 1. Allocate 5-10% contingency for unexpected costs
@@ -735,7 +730,8 @@ What's your approximate budget? I can suggest allocation strategies!`;
 
     // Decor/Theme
     if (lowerInput.includes('decor') || lowerInput.includes('decoration') || lowerInput.includes('theme') || lowerInput.includes('color') || lowerInput.includes('design') || lowerInput.includes('style')) {
-      return `Excellent! Decoration sets the mood for your entire event.
+      const eventLabel = ctx.eventType ? ctx.eventType : 'event';
+      return `Excellent! Decoration sets the mood for your entire ${eventLabel}.${ctx.style ? ` Since you mentioned a ${ctx.style} style, I'll tailor these suggestions.` : ''}
 
 **Popular Color Schemes in Kwara**
 - **Gold & White**: Classic, elegant, timeless
@@ -768,7 +764,7 @@ Which color scheme or theme resonates with you?`;
 
     // Food/Catering
     if (lowerInput.includes('food') || lowerInput.includes('cater') || lowerInput.includes('menu') || lowerInput.includes('meal') || lowerInput.includes('rice') || lowerInput.includes('jollof')) {
-      return `Food is one of the most memorable parts of any event!
+      return `Food is one of the most memorable parts of any event!${ctx.eventType ? ` For a ${ctx.eventType}, your guests will expect something special.` : ''}
 
 **Popular Nigerian Menu Options**
 
@@ -1094,7 +1090,8 @@ Would you like me to customize a timeline for your specific event?`;
 
     // Venue
     if (lowerInput.includes('venue') || lowerInput.includes('location') || lowerInput.includes('place') || lowerInput.includes('hall') || lowerInput.includes('event center') || lowerInput.includes('hotel')) {
-      return `Venue selection is critical! Here's comprehensive guidance for Kwara State and Nigeria:
+      const venueContext = ctx.guestCount ? ` With ${ctx.guestCount} guests, you'll need a venue that seats everyone comfortably.` : '';
+      return `Venue selection is critical!${venueContext} Here's comprehensive guidance for Kwara State and Nigeria:
 
 **Popular Venues in Ilorin & Kwara State**
 
@@ -1411,6 +1408,10 @@ Tell me your specific challenge - I'll help you find solutions!`;
       ? `Since we're discussing ${contextSummary}, `
       : '';
 
+    const historyRef = ctx.conversationHistory.length > 1
+      ? `\n**Building on our conversation so far**, I can see you're interested in: ${ctx.conversationHistory.slice(-3).map(h => h.substring(0, 40)).join(' → ')}.\n`
+      : '';
+
     return `That's an interesting question! ${contextPrefix}let me help you think through this.
 
 **Based on your question, here are considerations:**
@@ -1420,7 +1421,7 @@ Tell me your specific challenge - I'll help you find solutions!`;
 3. **Location**: Kwara State (Ilorin) has many venue options
 4. **Time**: Book early for best vendors
 
-${contextSummary ? `**What I know about your event so far:**\n${contextSummary}\n` : '**To give you the best personalized advice, please tell me:**\n- What type of event are you planning?\n- How many guests are you expecting?\n- Do you have a date in mind?\n- What\'s your approximate budget?\n'}
+${contextSummary ? `**What I know about your event so far:**\n${contextSummary}\n${historyRef}` : '**To give you the best personalized advice, please tell me:**\n- What type of event are you planning?\n- How many guests are you expecting?\n- Do you have a date in mind?\n- What\'s your approximate budget?\n'}
 I'll provide a detailed, customized plan once I know these details!
 
 You can also ask me about:
@@ -1562,7 +1563,7 @@ You can also ask me about:
                 <h3 className="text-white text-xs font-medium mb-3">Try Asking</h3>
                 <div className="space-y-2">
                   {suggestedQuestions.map((q) => (
-                    <button key={q} onClick={() => setInput(q)} className="w-full text-[11px] text-white/80 hover:text-gold-400 transition-colors text-left py-1 border-b border-dark-border/50 last:border-0">
+                    <button key={q} onClick={() => { setInput(q); setTimeout(() => sendMessage(), 50); }} className="w-full text-[11px] text-white/80 hover:text-gold-400 transition-colors text-left py-1 border-b border-dark-border/50 last:border-0">
                       {q}
                     </button>
                   ))}
@@ -1644,7 +1645,7 @@ You can also ask me about:
                       {followUps.slice(0, 4).map((q) => (
                         <button
                           key={q}
-                          onClick={() => handleSendMessage(q)}
+                          onClick={() => { setInput(q); setTimeout(() => sendMessage(), 50); }}
                           className="text-[11px] px-3 py-1.5 rounded-full bg-purple-800/30 border border-purple-700/30 text-white/80 hover:text-gold-400 hover:border-gold-500/40 transition-all hover:scale-105"
                         >
                           {q}

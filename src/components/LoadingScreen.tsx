@@ -95,9 +95,9 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
           <div
             className="absolute rounded-full blur-2xl animate-aura-pulse"
             style={{
-              width: 220,
-              height: 220,
-              background: 'radial-gradient(circle, rgba(212,160,23,0.55) 0%, rgba(212,160,23,0.25) 35%, rgba(147,51,234,0.18) 60%, transparent 75%)',
+              width: 280,
+              height: 280,
+              background: 'radial-gradient(circle, rgba(242,204,90,0.7) 0%, rgba(212,160,23,0.4) 35%, rgba(147,51,234,0.25) 60%, transparent 75%)',
             }}
           />
 
@@ -105,44 +105,44 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
           <div
             className="absolute rounded-full blur-xl animate-aura-pulse"
             style={{
-              width: 160,
-              height: 160,
-              background: 'radial-gradient(circle, rgba(242,204,90,0.45) 0%, rgba(212,160,23,0.2) 50%, transparent 70%)',
+              width: 200,
+              height: 200,
+              background: 'radial-gradient(circle, rgba(242,204,90,0.6) 0%, rgba(212,160,23,0.3) 50%, transparent 70%)',
               animationDelay: '0.3s',
             }}
           />
 
           {/* Radiating light beams — brighter and more of them */}
-          <div className="absolute animate-beam-rotate" style={{ width: 200, height: 200 }}>
-            {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map((deg, i) => (
+          <div className="absolute animate-beam-rotate" style={{ width: 260, height: 260 }}>
+            {[0, 22.5, 45, 67.5, 90, 112.5, 135, 157.5, 180, 202.5, 225, 247.5, 270, 292.5, 315, 337.5].map((deg, i) => (
               <div
                 key={i}
                 className="absolute left-1/2 top-1/2 origin-left animate-beam-pulse"
                 style={{
-                  width: 90,
-                  height: 2,
-                  background: `linear-gradient(90deg, rgba(242,204,90,0.8), rgba(212,160,23,0.3), transparent)`,
-                  transform: `rotate(${deg}deg) translateY(-1px)`,
-                  animationDelay: `${i * 0.08}s`,
+                  width: 120,
+                  height: 3,
+                  background: `linear-gradient(90deg, rgba(255,215,100,0.95), rgba(242,204,90,0.5), transparent)`,
+                  transform: `rotate(${deg}deg) translateY(-1.5px)`,
+                  animationDelay: `${i * 0.06}s`,
                 }}
               />
             ))}
           </div>
 
           {/* Soft inner glow */}
-          <div className="absolute rounded-full blur-md animate-aura-pulse" style={{ width: 120, height: 120, background: 'rgba(242,204,90,0.25)', animationDelay: '0.5s' }} />
+          <div className="absolute rounded-full blur-md animate-aura-pulse" style={{ width: 140, height: 140, background: 'rgba(255,215,100,0.35)', animationDelay: '0.5s' }} />
 
           {/* Logo */}
           <img
             src="/EVENT_BY_BELSH.jpg"
             alt="Events By BELSH"
-            className="relative h-20 w-20 object-cover rounded-full ring-2 ring-gold-400/70 shadow-[0_0_25px_rgba(212,160,23,0.5)] animate-logo-breathe z-10"
+            className="relative h-20 w-20 object-cover rounded-full ring-2 ring-gold-300/80 shadow-[0_0_40px_rgba(242,204,90,0.8),0_0_80px_rgba(212,160,23,0.4)] animate-logo-breathe z-10"
           />
         </div>
 
         {/* Brand */}
         <h1 className="font-serif text-2xl text-gold-400 tracking-[0.2em] mb-1 drop-shadow-lg">BELSH EVENTS</h1>
-        <p className="text-purple-400/70 text-[10px] tracking-[0.35em] uppercase mb-10">Planning &amp; Design</p>
+        <p className="text-white/90 text-[10px] tracking-[0.35em] uppercase mb-10">Planning &amp; Design</p>
 
         {/* Professional progress bar */}
         <div className="relative w-56">
@@ -168,13 +168,13 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
 
           {/* Percentage */}
           <div className="flex justify-between mt-2">
-            <span className="text-purple-500/50 text-[9px] uppercase tracking-wider">Loading</span>
+            <span className="text-white/80 text-[9px] uppercase tracking-wider">Loading</span>
             <span className="text-gold-400/80 text-[10px] font-medium tabular-nums">{Math.round(progress)}%</span>
           </div>
         </div>
 
         {/* Status text */}
-        <p className="text-purple-500/50 text-[9px] mt-4 tracking-[0.15em] uppercase">
+        <p className="text-white text-[9px] mt-4 tracking-[0.15em] uppercase drop-shadow-[0_0_6px_rgba(255,255,255,0.4)]">
           {progress < 25 ? 'Initializing...' : progress < 50 ? 'Loading assets...' : progress < 75 ? 'Preparing...' : progress < 100 ? 'Almost ready...' : 'Welcome!'}
         </p>
       </div>
