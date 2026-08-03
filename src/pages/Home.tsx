@@ -154,7 +154,7 @@ export default function Home({ onNavigate }: HomeProps) {
 
           {/* CTAs */}
           <div className="opacity-0 animate-fade-in-up-4 flex flex-col xs:flex-row gap-4 justify-center">
-            <button onClick={() => navigate('contact')} className="btn-gold text-xs sm:text-sm">
+            <button onClick={() => navigate('contact')} className="btn-book-now text-xs sm:text-sm">
               Start Planning
               <ChevronRight size={18} />
             </button>
@@ -368,7 +368,7 @@ export default function Home({ onNavigate }: HomeProps) {
             We would love to hear about your vision. Reach out for a free 30-minute consultation — no pressure, just a conversation.
           </p>
           <div className="flex flex-col xs:flex-row gap-4 justify-center">
-            <button onClick={() => navigate('contact')} className="btn-gold text-xs sm:text-sm">
+            <button onClick={() => navigate('contact')} className="btn-book-now text-xs sm:text-sm">
               Book a Free Consultation
               <ChevronRight size={18} />
             </button>

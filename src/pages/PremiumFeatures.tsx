@@ -4,7 +4,7 @@ import {
   CheckCircle, Bell, Gift, Crown, Wand2,
   MessageCircle, Plus, Trash2, Mail, Phone,
   PartyPopper, UserCheck, GalleryVerticalEnd,
-  RefreshCw, Play, Image, Instagram, Upload, X, Star,
+  RefreshCw, Play, Image, Upload, X, Star,
   Wallet, MapPin, Utensils, Palette, Music, Lightbulb
 } from 'lucide-react';
 import Confetti from '../components/Confetti';
@@ -319,73 +319,20 @@ function InvitationGenerator() {
     canvas.height = 1000;
 
     // Draw background
-    const bgColor = themes.find(t => t.id === invitation.theme)?.colors[1] || '#150829';
-    ctx.fillStyle = bgColor;
+    const theme = themes.find(t => t.id === invitation.theme);
+    const accent = invitation.primaryColor || theme?.colors[0] || '#d4a017';
+    const bgColor = theme?.colors[1] || '#150829';
+
+    // Draw background gradient
+    const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+    grad.addColorStop(0, bgColor);
+    grad.addColorStop(1, accent + '22');
+    ctx.fillStyle = grad;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Draw background image if exists
-    if (invitation.photo) {
-      const img = new window.Image();
-      img.crossOrigin = 'anonymous';
-      img.src = invitation.photo;
-      return new Promise<void>((resolve) => {
-        img.onload = () => {
-          ctx.globalAlpha = 0.3;
-          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-          ctx.globalAlpha = 1;
-
-          // Draw text
-          ctx.textAlign = 'center';
-          ctx.fillStyle = '#d4a017';
-          ctx.font = '24px Georgia, serif';
-          ctx.fillText(invitation.title.toUpperCase(), canvas.width / 2, 300);
-
-          ctx.fillStyle = '#ffffff';
-          ctx.font = 'bold 48px Georgia, serif';
-          ctx.fillText(invitation.event || 'Your Event', canvas.width / 2, 400);
-
-          ctx.font = '24px sans-serif';
-          ctx.fillText(invitation.date, canvas.width / 2, 500);
-          ctx.fillText(invitation.time, canvas.width / 2, 550);
-          ctx.fillText(invitation.venue, canvas.width / 2, 600);
-
-          if (invitation.message) {
-            ctx.font = 'italic 18px Georgia, serif';
-            ctx.fillStyle = '#cccccc';
-            wrapText(ctx, `"${invitation.message}"`, canvas.width / 2, 700, canvas.width - 100, 25);
-          }
-
-          if (invitation.host) {
-            ctx.font = '20px sans-serif';
-            ctx.fillStyle = '#d4a017';
-            ctx.fillText(`Hosted by ${invitation.host}`, canvas.width / 2, 850);
-          }
-
-          if (invitation.dressCode) {
-            ctx.font = '18px sans-serif';
-            ctx.fillStyle = '#bbbbbb';
-            ctx.fillText(`Dress Code: ${invitation.dressCode}`, canvas.width / 2, 890);
-          }
-
-          if (invitation.rsvpContact) {
-            ctx.font = '18px sans-serif';
-            ctx.fillStyle = '#bbbbbb';
-            ctx.fillText(`RSVP: ${invitation.rsvpContact}`, canvas.width / 2, 920);
-          }
-
-          // Download
-          const link = document.createElement('a');
-          link.download = `invitation-${invitation.event || 'event'}.png`;
-          link.href = canvas.toDataURL('image/png');
-          link.click();
-          resolve();
-        };
-        img.onerror = () => resolve();
-      });
-    } else {
-      // Draw text without background image
+    const drawInvitationText = () => {
       ctx.textAlign = 'center';
-      ctx.fillStyle = '#d4a017';
+      ctx.fillStyle = accent;
       ctx.font = '24px Georgia, serif';
       ctx.fillText(invitation.title.toUpperCase(), canvas.width / 2, 300);
 
@@ -394,6 +341,7 @@ function InvitationGenerator() {
       ctx.fillText(invitation.event || 'Your Event', canvas.width / 2, 400);
 
       ctx.font = '24px sans-serif';
+      ctx.fillStyle = '#e0e0e0';
       ctx.fillText(invitation.date, canvas.width / 2, 500);
       ctx.fillText(invitation.time, canvas.width / 2, 550);
       ctx.fillText(invitation.venue, canvas.width / 2, 600);
@@ -406,7 +354,7 @@ function InvitationGenerator() {
 
       if (invitation.host) {
         ctx.font = '20px sans-serif';
-        ctx.fillStyle = '#d4a017';
+        ctx.fillStyle = accent;
         ctx.fillText(`Hosted by ${invitation.host}`, canvas.width / 2, 850);
       }
 
@@ -427,6 +375,25 @@ function InvitationGenerator() {
       link.download = `invitation-${invitation.event || 'event'}.png`;
       link.href = canvas.toDataURL('image/png');
       link.click();
+    };
+
+    // Draw background image if exists
+    if (invitation.photo) {
+      const img = new window.Image();
+      img.crossOrigin = 'anonymous';
+      img.src = invitation.photo;
+      return new Promise<void>((resolve) => {
+        img.onload = () => {
+          ctx.globalAlpha = 0.3;
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          ctx.globalAlpha = 1;
+          drawInvitationText();
+          resolve();
+        };
+        img.onerror = () => { drawInvitationText(); resolve(); };
+      });
+    } else {
+      drawInvitationText();
     }
   };
 
@@ -599,9 +566,18 @@ function InvitationGenerator() {
                 </button>
               ))}
             </div>
+            {/* Custom color picker */}
+            <div className="mt-3 flex items-center gap-3">
+              <p className="text-[10px] text-white/70">Or pick custom:</p>
+              <input
+                type="color"
+                value={invitation.primaryColor}
+                onChange={(e) => setInvitation({ ...invitation, primaryColor: e.target.value, theme: 'custom' })}
+                className="w-8 h-8 rounded cursor-pointer bg-transparent border border-dark-border"
+              />
+              <span className="text-[10px] text-white/50 font-mono">{invitation.primaryColor}</span>
+            </div>
           </div>
-
-          {/* Background */}
           <div>
             <p className="text-xs text-white/70 mb-2">Background Photo</p>
             <button
@@ -650,18 +626,21 @@ function InvitationGenerator() {
           {/* Preview */}
           <div
             ref={previewRef}
-            className="relative aspect-[3/4] rounded-xl overflow-hidden shadow-2xl hover:shadow-gold-500/20 transition-shadow duration-500"
+            className="relative aspect-[3/4] rounded-xl overflow-hidden shadow-2xl transition-shadow duration-500"
             style={{ backgroundColor: activeTheme?.colors[1] || '#150829' }}
           >
             {activeBackground && (
               <img src={activeBackground} alt="" className="absolute inset-0 w-full h-full object-cover opacity-30" />
             )}
 
+            {/* Accent color overlay from theme */}
+            <div className="absolute inset-0 pointer-events-none" style={{ background: `linear-gradient(135deg, transparent 0%, ${invitation.primaryColor}10 50%, transparent 100%)` }} />
+
             {/* Style-based layouts */}
-            <div className="absolute inset-0 p-6">
+            <div className="absolute inset-0 p-6" style={{ color: invitation.primaryColor }}>
               {invitation.style === 'classic' && (
                 <div className="h-full flex flex-col items-center justify-center text-center">
-                  <p className="text-gold-400 text-sm tracking-widest uppercase mb-2">{invitation.title}</p>
+                  <p className="text-sm tracking-widest uppercase mb-2" style={{ color: invitation.primaryColor }}>{invitation.title}</p>
                   <h2 className="font-serif text-2xl text-white mb-4">{invitation.event || 'Your Event'}</h2>
                   <div className="space-y-2">
                     <p className="text-white/80 text-sm">{invitation.date}</p>
@@ -672,7 +651,7 @@ function InvitationGenerator() {
                     <p className="text-white/60 text-xs mt-4 italic">"{invitation.message}"</p>
                   )}
                   {invitation.host && (
-                    <p className="text-gold-400 text-sm mt-4">Hosted by {invitation.host}</p>
+                    <p className="text-sm mt-4" style={{ color: invitation.primaryColor }}>Hosted by {invitation.host}</p>
                   )}
                   {invitation.dressCode && (
                     <p className="text-white/60 text-xs mt-2">Dress Code: {invitation.dressCode}</p>
@@ -686,7 +665,7 @@ function InvitationGenerator() {
               {invitation.style === 'modern' && (
                 <div className="h-full flex">
                   <div className="flex-1 flex flex-col justify-center text-left">
-                    <p className="text-gold-400 text-xs tracking-widest uppercase mb-2">{invitation.title}</p>
+                    <p className="text-xs tracking-widest uppercase mb-2" style={{ color: invitation.primaryColor }}>{invitation.title}</p>
                     <h2 className="font-serif text-3xl text-white">{invitation.event || 'Your Event'}</h2>
                   </div>
                   <div className="flex-1 flex flex-col justify-center items-end text-right">
@@ -694,7 +673,7 @@ function InvitationGenerator() {
                     <p className="text-white/80 text-sm mb-1">{invitation.time}</p>
                     <p className="text-white/80 text-sm">{invitation.venue}</p>
                     {invitation.host && (
-                      <p className="text-gold-400 text-xs mt-4">- {invitation.host}</p>
+                      <p className="text-xs mt-4" style={{ color: invitation.primaryColor }}>- {invitation.host}</p>
                     )}
                     {invitation.dressCode && (
                       <p className="text-white/60 text-[10px] mt-1">Dress: {invitation.dressCode}</p>
@@ -709,7 +688,7 @@ function InvitationGenerator() {
               {invitation.style === 'minimal' && (
                 <div className="h-full flex flex-col items-center justify-center text-center">
                   <h2 className="font-serif text-3xl text-white mb-6">{invitation.event || 'Your Event'}</h2>
-                  <div className="w-16 h-px bg-gold-500/50 mb-6" />
+                  <div className="w-16 h-px mb-6" style={{ background: `${invitation.primaryColor}80` }} />
                   <div className="text-white/80 text-sm space-y-1">
                     <p>{invitation.date} | {invitation.time}</p>
                     <p>{invitation.venue}</p>
@@ -718,12 +697,12 @@ function InvitationGenerator() {
               )}
 
               {invitation.style === 'floral' && (
-                <div className="h-full flex flex-col items-center justify-center text-center border-2 border-gold-500/30 m-4 rounded-xl p-4">
-                  <div className="absolute top-2 left-2 text-gold-400/50 text-2xl">❀</div>
-                  <div className="absolute top-2 right-2 text-gold-400/50 text-2xl">❀</div>
-                  <div className="absolute bottom-2 left-2 text-gold-400/50 text-2xl">❀</div>
-                  <div className="absolute bottom-2 right-2 text-gold-400/50 text-2xl">❀</div>
-                  <p className="text-gold-400 text-xs tracking-widest uppercase mb-2">{invitation.title}</p>
+                <div className="h-full flex flex-col items-center justify-center text-center border-2 m-4 rounded-xl p-4" style={{ borderColor: `${invitation.primaryColor}50` }}>
+                  <div className="absolute top-2 left-2 text-2xl" style={{ color: `${invitation.primaryColor}80` }}>❀</div>
+                  <div className="absolute top-2 right-2 text-2xl" style={{ color: `${invitation.primaryColor}80` }}>❀</div>
+                  <div className="absolute bottom-2 left-2 text-2xl" style={{ color: `${invitation.primaryColor}80` }}>❀</div>
+                  <div className="absolute bottom-2 right-2 text-2xl" style={{ color: `${invitation.primaryColor}80` }}>❀</div>
+                  <p className="text-xs tracking-widest uppercase mb-2" style={{ color: invitation.primaryColor }}>{invitation.title}</p>
                   <h2 className="font-serif text-2xl text-white mb-4">{invitation.event || 'Your Event'}</h2>
                   <div className="space-y-2">
                     <p className="text-white/80 text-sm">{invitation.date}</p>
@@ -731,7 +710,7 @@ function InvitationGenerator() {
                     <p className="text-white/80 text-sm">{invitation.venue}</p>
                   </div>
                   {invitation.host && (
-                    <p className="text-gold-400 text-xs mt-4">~ {invitation.host}</p>
+                    <p className="text-xs mt-4" style={{ color: invitation.primaryColor }}>~ {invitation.host}</p>
                   )}
                   {invitation.dressCode && (
                     <p className="text-white/60 text-[10px] mt-1">Dress Code: {invitation.dressCode}</p>
@@ -745,7 +724,7 @@ function InvitationGenerator() {
               {invitation.style === 'bold' && (
                 <div className="h-full flex flex-col items-center justify-center text-center">
                   <h2 className="font-serif text-5xl text-white mb-6 leading-tight">{invitation.event || 'Your Event'}</h2>
-                  <p className="text-gold-400 text-lg tracking-widest uppercase">{invitation.date}</p>
+                  <p className="text-lg tracking-widest uppercase" style={{ color: invitation.primaryColor }}>{invitation.date}</p>
                   <p className="text-white/60 text-sm mt-2">{invitation.venue}</p>
                 </div>
               )}
@@ -2416,7 +2395,20 @@ export default function PremiumFeatures({ onNavigate }: PremiumFeaturesProps) {
             rel="noopener noreferrer"
             className="inline-flex items-center gap-3 px-6 py-3 rounded-lg bg-gradient-to-r from-purple-700/50 to-gold-700/50 border border-gold-500/30 hover:border-gold-500/60 transition-all hover:scale-105 hover:shadow-lg hover:shadow-gold-500/20"
           >
-            <Instagram size={20} className="text-gold-400" />
+            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="2" y="2" width="20" height="20" rx="5" fill="url(#ig-grad-pf)" />
+              <rect x="2" y="2" width="20" height="20" rx="5" fill="none" stroke="white" strokeWidth="1.5" />
+              <circle cx="12" cy="12" r="4.5" fill="none" stroke="white" strokeWidth="1.5" />
+              <circle cx="17.5" cy="6.5" r="1.3" fill="white" />
+              <defs>
+                <linearGradient id="ig-grad-pf" x1="2" y1="22" x2="22" y2="2" gradientUnits="userSpaceOnUse">
+                  <stop stopColor="#feda75" />
+                  <stop offset="0.3" stopColor="#fa7e1e" />
+                  <stop offset="0.6" stopColor="#d62976" />
+                  <stop offset="1" stopColor="#962fbf" />
+                </linearGradient>
+              </defs>
+            </svg>
             <div className="text-left">
               <p className="text-gold-400 text-sm font-medium">@rtw_by_belsh</p>
               <p className="text-white/70 text-xs">Follow us or contact on Instagram</p>

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { MapPin, Send, CheckCircle, Instagram, Clock, Mail } from 'lucide-react';
+import { MapPin, Send, CheckCircle, Clock, Mail } from 'lucide-react';
 import Confetti from '../components/Confetti';
 import FloatingDots from '../components/FloatingDots';
 import { supabase } from '../lib/supabase';
@@ -111,7 +111,7 @@ export default function Contact() {
             </div>
           </div>
           <p className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-4 opacity-0 animate-fade-in-up">Let us Connect</p>
-          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-white mb-4 opacity-0 animate-fade-in-up-2">Contact Us</h1>
+          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-white mb-4 opacity-0 animate-fade-in-up-2">Contact <span className="glow-text">Us</span></h1>
           <div className="section-divider" />
           <p className="text-white/80 text-lg max-w-xl mx-auto mt-4 opacity-0 animate-fade-in-up-3">
             Ready to bring your celebration to life? Tell us about your vision — we will reply within 24 hours.
@@ -217,7 +217,20 @@ export default function Contact() {
                 className="flex items-start gap-4 glass-card gold-border rounded-xl p-5 group hover:-translate-y-0.5 transition-all duration-300"
               >
                 <div className="w-10 h-10 rounded-lg bg-gold-900/40 border border-gold-600/30 flex items-center justify-center shrink-0 group-hover:border-gold-400/60 transition-colors">
-                  <Instagram size={18} className="text-gold-400" />
+                  <svg className="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="2" y="2" width="20" height="20" rx="5" fill="url(#ig-grad)" />
+                    <rect x="2" y="2" width="20" height="20" rx="5" fill="none" stroke="white" strokeWidth="1.5" />
+                    <circle cx="12" cy="12" r="4.5" fill="none" stroke="white" strokeWidth="1.5" />
+                    <circle cx="17.5" cy="6.5" r="1.3" fill="white" />
+                    <defs>
+                      <linearGradient id="ig-grad" x1="2" y1="22" x2="22" y2="2" gradientUnits="userSpaceOnUse">
+                        <stop stopColor="#feda75" />
+                        <stop offset="0.3" stopColor="#fa7e1e" />
+                        <stop offset="0.6" stopColor="#d62976" />
+                        <stop offset="1" stopColor="#962fbf" />
+                      </linearGradient>
+                    </defs>
+                  </svg>
                 </div>
                 <div>
                   <p className="text-white/70 text-xs uppercase tracking-widest mb-1">Instagram</p>

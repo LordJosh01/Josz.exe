@@ -124,6 +124,76 @@
     box-shadow: 0 0 16px rgba(212, 160, 23, 0.08);
   }
 
+  /* ---- Glowing text effect ---- */
+  .glow-text {
+    color: #f2cc5a;
+    text-shadow:
+      0 0 8px rgba(212, 160, 23, 0.5),
+      0 0 16px rgba(212, 160, 23, 0.3),
+      0 0 24px rgba(212, 160, 23, 0.15);
+    animation: text-glow-pulse 2.5s ease-in-out infinite;
+  }
+
+  @keyframes text-glow-pulse {
+    0%, 100% {
+      text-shadow:
+        0 0 8px rgba(212, 160, 23, 0.5),
+        0 0 16px rgba(212, 160, 23, 0.3),
+        0 0 24px rgba(212, 160, 23, 0.15);
+    }
+    50% {
+      text-shadow:
+        0 0 14px rgba(212, 160, 23, 0.7),
+        0 0 28px rgba(212, 160, 23, 0.45),
+        0 0 42px rgba(212, 160, 23, 0.25);
+    }
+  }
+
+  /* ---- Book Now enhanced button ---- */
+  .btn-book-now {
+    @apply inline-flex items-center justify-center gap-2 px-8 py-4 font-medium text-sm tracking-wider uppercase;
+    background: linear-gradient(135deg, #c48b00 0%, #f2cc5a 35%, #fff8d6 50%, #f2cc5a 65%, #d4a017 100%);
+    background-size: 250% auto;
+    color: #0a0118;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 0 rgba(212, 160, 23, 0);
+    animation: btn-glow-pulse 2s ease-in-out infinite;
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+  }
+
+  @keyframes btn-glow-pulse {
+    0%, 100% {
+      box-shadow: 0 0 15px rgba(212, 160, 23, 0.3), 0 4px 20px rgba(0,0,0,0.3);
+    }
+    50% {
+      box-shadow: 0 0 30px rgba(212, 160, 23, 0.6), 0 4px 25px rgba(0,0,0,0.4);
+    }
+  }
+
+  .btn-book-now::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -75%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.45), transparent);
+    transform: skewX(-20deg);
+    animation: shine-sweep 3s ease-in-out infinite;
+  }
+
+  @keyframes shine-sweep {
+    0%, 100% { left: -75%; }
+    40%, 60% { left: 125%; }
+  }
+
+  .btn-book-now:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 0 40px rgba(212, 160, 23, 0.7), 0 8px 30px rgba(0,0,0,0.4);
+  }
+
   .section-divider {
     @apply w-16 h-px bg-gold-500 mx-auto my-6;
   }

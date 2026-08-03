@@ -215,7 +215,7 @@ export default function Services({ onNavigate }: ServicesProps) {
             </div>
           </div>
           <p className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-4 opacity-0 animate-fade-in-up">What We Offer</p>
-          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-white mb-4 opacity-0 animate-fade-in-up-2">Our Services</h1>
+          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-white mb-4 opacity-0 animate-fade-in-up-2"><span className="glow-text">Our Services</span></h1>
           <div className="section-divider" />
           <p className="text-white/80 text-lg max-w-xl mx-auto mt-4">
             Every celebration is unique. We offer bespoke planning packages tailored to your occasion, budget and vision — from intimate gatherings to grand celebrations.
@@ -285,7 +285,7 @@ export default function Services({ onNavigate }: ServicesProps) {
             <div className="section-divider" />
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {additionalServices.map(({ icon: Icon, title, desc }, i) => (
+            {additionalServices.slice(0, 6).map(({ icon: Icon, title, desc }, i) => (
               <div key={title} className={`glass-card gold-border rounded-xl p-6 hover:-translate-y-2 transition-all duration-500 scroll-reveal delay-${i + 1}`}>
                 <div className="w-10 h-10 rounded-lg bg-gold-900/40 border border-gold-600/30 flex items-center justify-center mb-4">
                   <Icon size={18} className="text-gold-400" />
@@ -294,6 +294,16 @@ export default function Services({ onNavigate }: ServicesProps) {
                 <p className="text-white/70 text-sm leading-relaxed">{desc}</p>
               </div>
             ))}
+          </div>
+          {/* Centered last item (Burial & Memorial) */}
+          <div className="flex justify-center mt-6 scroll-reveal delay-7">
+            <div className="glass-card gold-border rounded-xl p-6 hover:-translate-y-2 transition-all duration-500 w-full max-w-md text-center">
+              <div className="w-10 h-10 rounded-lg bg-gold-900/40 border border-gold-600/30 flex items-center justify-center mb-4 mx-auto">
+                {(() => { const Icon = additionalServices[6].icon; return <Icon size={18} className="text-gold-400" />; })()}
+              </div>
+              <h3 className="font-serif text-lg text-white mb-2">{additionalServices[6].title}</h3>
+              <p className="text-white/70 text-sm leading-relaxed">{additionalServices[6].desc}</p>
+            </div>
           </div>
         </div>
       </section>
@@ -376,7 +386,7 @@ export default function Services({ onNavigate }: ServicesProps) {
           <h2 className="font-serif text-3xl md:text-4xl text-white mb-4">Not sure which package is right?</h2>
           <p className="text-white/80 mb-10">A free consultation call is the best place to start. We will help you find the perfect fit for your celebration.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button onClick={() => navigate('contact')} className="btn-gold">
+            <button onClick={() => navigate('contact')} className="btn-book-now">
               Book a Free Consultation
               <ChevronRight size={16} />
             </button>
