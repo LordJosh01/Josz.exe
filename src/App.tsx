@@ -105,7 +105,7 @@ function App() {
       <BackgroundAnimation />
       <CustomCursor />
       <Navbar currentPage={currentPage} onNavigate={navigate} />
-      <main className="relative z-10">{renderPage}</main>
+      <main className="relative z-10" key={currentPage}>{renderPage}</main>
       <Footer onNavigate={navigate} />
     </div>
   );

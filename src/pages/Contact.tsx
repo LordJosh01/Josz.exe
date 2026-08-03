@@ -8,6 +8,7 @@ const emptyForm = { name: '', email: '', phone: '', eventType: '', date: '', gue
 
 const GMAIL_URL = 'https://mail.google.com/mail/?view=cm&fs=1&to=thebelshworld@gmail.com&su=Event%20Enquiry%20-%20Events%20By%20BELSH';
 const WHATSAPP_URL = 'https://wa.me/2348035672491?text=Hi%20BELSH!%20I%27d%20like%20to%20inquire%20about%20planning%20my%20event.';
+const WHATSAPP_URL_2 = 'https://wa.me/2348076471674?text=Hi%20BELSH!%20I%27d%20like%20to%20inquire%20about%20planning%20my%20event.';
 const INSTAGRAM_URL = 'https://www.instagram.com/events_by_belsh';
 
 const eventTypes = [
@@ -174,7 +175,7 @@ export default function Contact() {
                 rel="noopener noreferrer"
                 className="flex items-start gap-4 glass-card gold-border rounded-xl p-5 group hover:-translate-y-0.5 transition-all duration-300"
               >
-                <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center shrink-0 group-hover:shadow-lg transition-shadow">
+                <div className="w-10 h-10 rounded-lg bg-gold-900/40 border border-gold-600/30 flex items-center justify-center shrink-0 group-hover:border-gold-400/60 transition-colors">
                   <svg className="w-6 h-6" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
                     <path fill="#4caf50" d="M45,16.2l-5,2.75l-5,4.75L35,40h7c1.657,0,3-1.343,3-3V16.2z"/>
                     <path fill="#1e88e5" d="M3,16.2l3.614,1.71L13,23.7V40H6c-1.657,0-3-1.343-3-3V16.2z"/>
@@ -205,6 +206,7 @@ export default function Contact() {
                 <div>
                   <p className="text-white/70 text-xs uppercase tracking-widest mb-1">WhatsApp</p>
                   <p className="text-white text-sm">+234 803 567 2491</p>
+                  <p className="text-white text-sm">+234 807 647 1674</p>
                   <p className="text-white/50 text-xs mt-1">Click to chat</p>
                 </div>
               </a>

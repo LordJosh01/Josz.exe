@@ -194,6 +194,23 @@
     box-shadow: 0 0 40px rgba(212, 160, 23, 0.7), 0 8px 30px rgba(0,0,0,0.4);
   }
 
+  /* ---- FAQ accordion animations ---- */
+  @keyframes faq-icon-in {
+    0% { transform: rotate(-90deg) scale(0.5); opacity: 0; }
+    100% { transform: rotate(0deg) scale(1); opacity: 1; }
+  }
+  @keyframes faq-icon-out {
+    0% { transform: rotate(90deg) scale(0.5); opacity: 0; }
+    100% { transform: rotate(0deg) scale(1); opacity: 1; }
+  }
+  @keyframes faq-content-open {
+    0% { transform: translateY(-8px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+  }
+  .animate-faq-icon-in { animation: faq-icon-in 0.3s ease-out; }
+  .animate-faq-icon-out { animation: faq-icon-out 0.3s ease-out; }
+  .animate-faq-content-open { animation: faq-content-open 0.4s ease-out; }
+
   .section-divider {
     @apply w-16 h-px bg-gold-500 mx-auto my-6;
   }

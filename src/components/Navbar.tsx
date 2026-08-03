@@ -86,7 +86,7 @@ export default function Navbar({ currentPage, onNavigate }: NavbarProps) {
             ))}
             <button
               onClick={() => navigate('contact')}
-              className={`btn-gold text-xs px-5 py-2.5 ml-2 ${mounted ? 'opacity-100' : 'opacity-0'}`}
+              className={`btn-book-now text-xs px-5 py-2.5 ml-2 ${mounted ? 'opacity-100' : 'opacity-0'}`}
               style={{ animationDelay: '500ms' }}
             >
               Book Now

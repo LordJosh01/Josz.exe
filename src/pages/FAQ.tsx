@@ -181,17 +181,20 @@ function AccordionItem({ q, a }: { q: string; a: string }) {
         <span className={`font-medium text-sm md:text-base transition-colors duration-300 ${open ? 'text-gold-300' : 'text-white'}`}>
           {q}
         </span>
-        <span className={`shrink-0 w-7 h-7 rounded-full flex items-center justify-center border transition-all duration-300 ${open ? 'border-gold-400/60 bg-gold-900/30' : 'border-dark-muted'}`}>
+        <span className={`shrink-0 w-7 h-7 rounded-full flex items-center justify-center border transition-all duration-300 ${open ? 'border-gold-400/60 bg-gold-900/30 rotate-180' : 'border-dark-muted'}`}>
           {open
-            ? <Minus size={14} className="text-gold-400" />
-            : <Plus size={14} className="text-white/70" />}
+            ? <Minus size={14} className="text-gold-400 animate-faq-icon-out" />
+            : <Plus size={14} className="text-white/70 animate-faq-icon-in" />}
         </span>
       </button>
-      {open && (
-        <div className="px-6 pb-6">
+      <div
+        className="overflow-hidden transition-all duration-500 ease-out"
+        style={{ maxHeight: open ? '400px' : '0px', opacity: open ? 1 : 0 }}
+      >
+        <div className={`px-6 pb-6 transition-all duration-500 ${open ? 'animate-faq-content-open' : ''}`}>
           <p className="text-white/80 text-sm leading-relaxed">{a}</p>
         </div>
-      )}
+      </div>
     </div>
   );
 }

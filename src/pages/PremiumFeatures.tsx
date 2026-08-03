@@ -794,7 +794,7 @@ interface PlanResult {
 const formatNairaInline = (n: number) => `N${n.toLocaleString('en-NG', { maximumFractionDigits: 0 })}`;
 
 function buildPlanResult(plan: {
-  eventType: string; guestCount: string; date: string; venue: string; style: string; meals: string; entertainment: string;
+  eventType: string; guestCount: string; date: string; venue: string; style: string; meals: string; entertainment: string[];
 }): PlanResult {
   const guests = parseInt(plan.guestCount) || 100;
   const type = plan.eventType || 'Event';
@@ -887,14 +887,16 @@ function buildPlanResult(plan: {
     { category: 'Makeup Artist', note: 'Trial session recommended 2 weeks before.' },
   ];
 
-  if (plan.entertainment === 'DJ') baseVendors.push({ category: 'DJ', note: 'Share your playlist and do-not-play list in advance.' });
-  if (plan.entertainment === 'Live Band') baseVendors.push({ category: 'Live Band', note: 'Confirm set times and sound check schedule.' });
-  if (plan.entertainment === 'Cultural Performers') baseVendors.push({ category: 'Cultural Performers', note: 'Brief them on any traditions or protocols to observe.' });
-  if (plan.entertainment === 'Comedian/MC' || plan.entertainment === 'Standup Comedian') baseVendors.push({ category: 'MC / Comedian', note: 'Share the run-of-show and any sensitive topics to avoid.' });
-  if (plan.entertainment === 'Photobooth') baseVendors.push({ category: 'Photobooth Vendor', note: 'Request props matching your colour scheme.' });
-  if (plan.entertainment === 'Fireworks / Sparklers') baseVendors.push({ category: 'Pyrotechnics', note: 'Check venue permits and safety requirements.' });
-  if (plan.entertainment === 'Dance Troupe') baseVendors.push({ category: 'Dance Troupe', note: 'Coordinate performance slot with the MC.' });
-  if (plan.entertainment === 'Live Saxophonist') baseVendors.push({ category: 'Saxophonist', note: 'Ideal for cocktail hour or the couple\'s entrance.' });
+  const ent = plan.entertainment || [];
+  if (ent.includes('DJ')) baseVendors.push({ category: 'DJ', note: 'Share your playlist and do-not-play list in advance.' });
+  if (ent.includes('Live Band')) baseVendors.push({ category: 'Live Band', note: 'Confirm set times and sound check schedule.' });
+  if (ent.includes('Cultural Performers')) baseVendors.push({ category: 'Cultural Performers', note: 'Brief them on any traditions or protocols to observe.' });
+  if (ent.includes('Comedian/MC') || ent.includes('Standup Comedian')) baseVendors.push({ category: 'MC / Comedian', note: 'Share the run-of-show and any sensitive topics to avoid.' });
+  if (ent.includes('Photobooth')) baseVendors.push({ category: 'Photobooth Vendor', note: 'Request props matching your colour scheme.' });
+  if (ent.includes('Fireworks / Sparklers')) baseVendors.push({ category: 'Pyrotechnics', note: 'Check venue permits and safety requirements.' });
+  if (ent.includes('Dance Troupe')) baseVendors.push({ category: 'Dance Troupe', note: 'Coordinate performance slot with the MC.' });
+  if (ent.includes('Live Saxophonist')) baseVendors.push({ category: 'Saxophonist', note: 'Ideal for cocktail hour or the couple\'s entrance.' });
+  if (ent.includes('Magician / Hypnotist')) baseVendors.push({ category: 'Magician / Hypnotist', note: 'Confirm stage space and audience participation scope.' });
 
   // Timeline countdown from event date
   const eventDate = plan.date ? new Date(plan.date) : null;
@@ -936,7 +938,7 @@ function buildPlanResult(plan: {
   const summary = `Your ${type.toLowerCase()} for ${guests} guests${
     plan.date ? ` on ${new Date(plan.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}` : ''
   }${plan.venue ? ` at a ${plan.venue.toLowerCase()}` : ''} with a ${plan.style || 'classic'} style. ${
-    plan.entertainment ? `${plan.entertainment} for entertainment, ` : ''
+    plan.entertainment.length > 0 ? `${plan.entertainment.join(', ')} for entertainment, ` : ''
   }${plan.meals ? `${plan.meals.toLowerCase()} meal service.` : 'Catering to be finalized.'}`;
 
   return { summary, budget: { low, mid, high }, budgetBreakdown, timeline, decor: baseDecor, vendors: baseVendors, tips };
@@ -952,7 +954,7 @@ function PlanMyEvent() {
     venue: '',
     style: '',
     meals: '',
-    entertainment: '',
+    entertainment: [],
   });
   const [generated, setGenerated] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -968,7 +970,7 @@ function PlanMyEvent() {
   };
 
   const sharePlan = () => {
-    const msg = `Hi BELSH Events! I'd like to plan a ${plan.eventType} for ${plan.guestCount} guests on ${plan.date}. My preferred style is ${plan.style}. Venue: ${plan.venue}, Entertainment: ${plan.entertainment}, Meals: ${plan.meals}. Can we discuss further?`;
+    const msg = `Hi BELSH Events! I'd like to plan a ${plan.eventType} for ${plan.guestCount} guests on ${plan.date}. My preferred style is ${plan.style}. Venue: ${plan.venue}, Entertainment: ${plan.entertainment.join(', ') || 'None'}, Meals: ${plan.meals}. Can we discuss further?`;
     window.open(`https://wa.me/2348035672491?text=${encodeURIComponent(msg)}`, '_blank');
   };
 
@@ -1077,13 +1079,13 @@ function PlanMyEvent() {
           {step === 5 && (
             <div className="space-y-4 animate-slide-in-right">
               <div>
-                <p className="text-sm text-white/80 mb-2">Do you need entertainment?</p>
+                <p className="text-sm text-white/80 mb-2">Select all the entertainment you need (you can choose multiple):</p>
                 <div className="grid grid-cols-2 gap-3">
                   {['Live Band', 'DJ', 'Cultural Performers', 'Comedian/MC', 'Photobooth', 'Fireworks / Sparklers', 'Dance Troupe', 'Magician / Hypnotist', 'Standup Comedian', 'Live Saxophonist'].map((ent) => (
                     <button
                       key={ent}
-                      onClick={() => setPlan({ ...plan, entertainment: ent })}
-                      className={`py-3 px-4 rounded-lg text-sm transition-all hover:scale-[1.02] ${plan.entertainment === ent ? 'bg-gold-500/20 border border-gold-500 text-gold-400 shadow-lg shadow-gold-500/10' : 'bg-dark-card border border-dark-border text-white/80 hover:border-gold-500/40'}`}
+                      onClick={() => setPlan({ ...plan, entertainment: plan.entertainment.includes(ent) ? plan.entertainment.filter(e => e !== ent) : [...plan.entertainment, ent] })}
+                      className={`py-3 px-4 rounded-lg text-sm transition-all hover:scale-[1.02] ${plan.entertainment.includes(ent) ? 'bg-gold-500/20 border border-gold-500 text-gold-400 shadow-lg shadow-gold-500/10' : 'bg-dark-card border border-dark-border text-white/80 hover:border-gold-500/40'}`}
                     >
                       {ent}
                     </button>
@@ -1249,7 +1251,7 @@ function PlanMyEvent() {
                 Book This Plan on WhatsApp
               </button>
 
-              <button onClick={() => { setStep(1); setGenerated(false); setResult(null); setPlan({ eventType: '', guestCount: '', date: '', venue: '', style: '', meals: '', entertainment: '' }); }} className="text-sm text-white/70 hover:text-gold-300 w-full text-center transition-colors">
+              <button onClick={() => { setStep(1); setGenerated(false); setResult(null); setPlan({ eventType: '', guestCount: '', date: '', venue: '', style: '', meals: '', entertainment: [] }); }} className="text-sm text-white/70 hover:text-gold-300 w-full text-center transition-colors">
                 Start Over
               </button>
             </>
@@ -1264,6 +1266,7 @@ function PlanMyEvent() {
 function RSVPManager() {
   const [guests, setGuests] = useState<RsvpGuest[]>([]);
   const [newGuest, setNewGuest] = useState({ name: '', phone: '' });
+  const [rsvpError, setRsvpError] = useState('');
   const [stats, setStats] = useState({ attending: 0, declined: 0, pending: 0 });
 
   useEffect(() => {
@@ -1281,6 +1284,17 @@ function RSVPManager() {
   }, [guests]);
 
   const addGuest = async () => {
+    const nameRegex = /^[A-Za-z\s]+$/;
+    if (!nameRegex.test(newGuest.name.trim())) {
+      setRsvpError('Name can only contain letters and spaces.');
+      return;
+    }
+    const digits = newGuest.phone.replace(/\D/g, '');
+    if (digits.length < 10 || digits.length > 15) {
+      setRsvpError('Please enter a valid phone number (10-15 digits).');
+      return;
+    }
+    setRsvpError('');
     if (newGuest.name && newGuest.phone) {
       const { data } = await supabase.from('rsvp_guests').insert({ name: newGuest.name, phone: newGuest.phone, status: 'pending', meal: '' }).select();
       if (data) setGuests([...guests, data[0] as RsvpGuest]);
@@ -1334,19 +1348,22 @@ function RSVPManager() {
       <div className="grid grid-cols-2 gap-3 mb-4 relative z-10">
         <input
           type="text"
-          placeholder="Guest Name"
+          placeholder="Guest Name (letters only)"
           value={newGuest.name}
-          onChange={(e) => setNewGuest({ ...newGuest, name: e.target.value })}
+          onChange={(e) => { setNewGuest({ ...newGuest, name: e.target.value }); setRsvpError(''); }}
           className="bg-dark-card border border-dark-border rounded-lg px-3 py-2 text-white placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-all"
         />
         <input
           type="tel"
           placeholder="Phone (e.g., +234...)"
           value={newGuest.phone}
-          onChange={(e) => setNewGuest({ ...newGuest, phone: e.target.value })}
+          onChange={(e) => { setNewGuest({ ...newGuest, phone: e.target.value }); setRsvpError(''); }}
           className="bg-dark-card border border-dark-border rounded-lg px-3 py-2 text-white placeholder-purple-500 text-sm focus:outline-none focus:border-gold-500/50 transition-all"
         />
       </div>
+      {rsvpError && (
+        <p className="text-red-400 text-xs mb-3 relative z-10">{rsvpError}</p>
+      )}
       <button onClick={addGuest} className="btn-gold w-full text-sm mb-6 relative z-10 hover:scale-[1.02] transition-transform">
         <Plus size={14} />
         Add Guest

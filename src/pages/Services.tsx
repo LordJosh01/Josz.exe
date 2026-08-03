@@ -215,7 +215,7 @@ export default function Services({ onNavigate }: ServicesProps) {
             </div>
           </div>
           <p className="text-gold-400 text-xs tracking-[0.3em] uppercase mb-4 opacity-0 animate-fade-in-up">What We Offer</p>
-          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-white mb-4 opacity-0 animate-fade-in-up-2"><span className="glow-text">Our Services</span></h1>
+          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-white mb-4 opacity-0 animate-fade-in-up-2">Our <span className="glow-text">Services</span></h1>
           <div className="section-divider" />
           <p className="text-white/80 text-lg max-w-xl mx-auto mt-4">
             Every celebration is unique. We offer bespoke planning packages tailored to your occasion, budget and vision — from intimate gatherings to grand celebrations.
