@@ -6,7 +6,7 @@ import { supabase } from '../lib/supabase';
 
 const emptyForm = { name: '', email: '', phone: '', eventType: '', date: '', guestCount: '', budget: '', message: '' };
 
-const GMAIL_URL = 'https://mail.google.com/mail/?view=cm&fs=1&to=aolagbaye@gmail.com&su=Event%20Enquiry%20-%20Events%20By%20BELSH';
+const GMAIL_URL = 'https://mail.google.com/mail/?view=cm&fs=1&to=thebelshworld@gmail.com&su=Event%20Enquiry%20-%20Events%20By%20BELSH';
 const WHATSAPP_URL = 'https://wa.me/2348035672491?text=Hi%20BELSH!%20I%27d%20like%20to%20inquire%20about%20planning%20my%20event.';
 const INSTAGRAM_URL = 'https://www.instagram.com/events_by_belsh';
 
@@ -32,44 +32,6 @@ const budgetRanges = [
   { value: '1m-3m', label: 'N1,000,000 - N3,000,000' },
   { value: '3m-plus', label: 'N3,000,000+' },
   { value: 'flexible', label: 'Flexible / Not Sure Yet' },
-];
-
-const reasons = [
-  {
-    emoji: '✨',
-    title: 'Professional Excellence',
-    desc: 'We pay attention to every detail, ensuring your event looks elegant, organized, and memorable.',
-  },
-  {
-    emoji: '🎯',
-    title: 'Personalized Planning',
-    desc: 'Every event is unique. We work closely with you to bring your vision to life while staying within your budget.',
-  },
-  {
-    emoji: '⏰',
-    title: 'Reliable & On-Time',
-    desc: 'From setup to the final guest experience, we deliver on schedule so you can enjoy your special day without stress.',
-  },
-  {
-    emoji: '💎',
-    title: 'Premium Decorations',
-    desc: 'We use quality décor, modern designs, and creative styling to give your event a luxurious feel.',
-  },
-  {
-    emoji: '🤝',
-    title: 'Friendly & Dedicated Team',
-    desc: 'Our experienced team is committed to providing excellent customer service before, during, and after your event.',
-  },
-  {
-    emoji: '💰',
-    title: 'Affordable Packages',
-    desc: 'We offer flexible pricing without compromising on quality, making beautiful events accessible to everyone.',
-  },
-  {
-    emoji: '📸',
-    title: 'Picture-Perfect Results',
-    desc: 'Every setup is designed to leave a lasting impression and create beautiful memories for you and your guests.',
-  },
 ];
 
 function useReveal() {
@@ -157,33 +119,6 @@ export default function Contact() {
         </div>
       </section>
 
-      {/* Reasons */}
-      <section className="py-16 bg-purple-800/30 border-y border-dark-border relative overflow-hidden">
-        <FloatingDots color="gold" count={20} size="sm" />
-        <div className="max-w-5xl mx-auto px-6 relative z-10">
-          <div className="text-center mb-10">
-            <h3 className="text-xs tracking-[0.3em] uppercase mb-2">
-              <span className="text-white">Why </span>
-              <span className="text-gold-400">Choose</span>
-              <span className="text-white"> Events by Belsh?</span>
-            </h3>
-          </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {reasons.map(({ emoji, title, desc }, i) => (
-              <div key={title} className={`flex flex-col gap-3 glass-card rounded-xl p-5 scroll-reveal delay-${i + 1}`}>
-                <div className="w-10 h-10 rounded-lg bg-gold-900/30 border border-gold-600/30 flex items-center justify-center shrink-0 text-xl">
-                  {emoji}
-                </div>
-                <div>
-                  <h3 className="text-white font-medium mb-1">{title}</h3>
-                  <p className="text-white/70 text-sm leading-relaxed">{desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* What to Expect - centered */}
       <section className="py-16 relative overflow-hidden">
         <FloatingDots color="purple" count={18} size="sm" />
@@ -239,14 +174,18 @@ export default function Contact() {
                 rel="noopener noreferrer"
                 className="flex items-start gap-4 glass-card gold-border rounded-xl p-5 group hover:-translate-y-0.5 transition-all duration-300"
               >
-                <div className="w-10 h-10 rounded-lg bg-gold-900/40 border border-gold-600/30 flex items-center justify-center shrink-0 group-hover:border-gold-400/60 transition-colors">
-                  <svg className="w-5 h-5 text-gold-400" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.72L12 16.64l-6.545-4.92v9.282H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-.904.732-1.636 1.636-1.636h3.819L12 8.91l6.545-5.09h3.819c.904 0 1.636.732 1.636 1.636zM12 14.18l6.545-5.09V4.82H5.455v4.27z"/>
+                <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center shrink-0 group-hover:shadow-lg transition-shadow">
+                  <svg className="w-6 h-6" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="#4caf50" d="M45,16.2l-5,2.75l-5,4.75L35,40h7c1.657,0,3-1.343,3-3V16.2z"/>
+                    <path fill="#1e88e5" d="M3,16.2l3.614,1.71L13,23.7V40H6c-1.657,0-3-1.343-3-3V16.2z"/>
+                    <polygon fill="#e53935" points="35,11.2 24,19.45 13,11.2 12,17 13,23.7 24,31.95 35,23.7 36,17"/>
+                    <path fill="#c62828" d="M3,12.298V16.2l10,7.5V11.2L9.876,8.859C9.132,8.301 8.228,8 7.298,8h0C4.924,8,3,9.924,3,12.298z"/>
+                    <path fill="#fbc02d" d="M45,12.298V16.2l-10,7.5V11.2l3.124-2.341C38.868,8.301 39.772,8 40.702,8h0 C43.076,8,45,9.924,45,12.298z"/>
                   </svg>
                 </div>
                 <div>
                   <p className="text-white/70 text-xs uppercase tracking-widest mb-1">Email (Gmail)</p>
-                  <p className="text-white text-sm">aolagbaye@gmail.com</p>
+                  <p className="text-white text-sm">thebelshworld@gmail.com</p>
                   <p className="text-white/50 text-xs mt-1">Click to compose</p>
                 </div>
               </a>
@@ -345,8 +284,12 @@ export default function Contact() {
                       rel="noopener noreferrer"
                       className="btn-outline-gold flex items-center justify-center gap-2 py-4"
                     >
-                      <svg className="w-5 h-5 text-gold-400" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.72L12 16.64l-6.545-4.92v9.282H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-.904.732-1.636 1.636-1.636h3.819L12 8.91l6.545-5.09h3.819c.904 0 1.636.732 1.636 1.636zM12 14.18l6.545-5.09V4.82H5.455v4.27z"/>
+                      <svg className="w-5 h-5" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                        <path fill="#4caf50" d="M45,16.2l-5,2.75l-5,4.75L35,40h7c1.657,0,3-1.343,3-3V16.2z"/>
+                        <path fill="#1e88e5" d="M3,16.2l3.614,1.71L13,23.7V40H6c-1.657,0-3-1.343-3-3V16.2z"/>
+                        <polygon fill="#e53935" points="35,11.2 24,19.45 13,11.2 12,17 13,23.7 24,31.95 35,23.7 36,17"/>
+                        <path fill="#c62828" d="M3,12.298V16.2l10,7.5V11.2L9.876,8.859C9.132,8.301 8.228,8 7.298,8h0C4.924,8,3,9.924,3,12.298z"/>
+                        <path fill="#fbc02d" d="M45,12.298V16.2l-10,7.5V11.2l3.124-2.341C38.868,8.301 39.772,8 40.702,8h0 C43.076,8,45,9.924,45,12.298z"/>
                       </svg>
                       Gmail
                     </a>
