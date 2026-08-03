@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import Confetti from '../components/Confetti';
 import FloatingDots from '../components/FloatingDots';
+import { supabase, type Memory, type RsvpGuest, type CountdownEvent } from '../lib/supabase';
 
 type Page = 'home' | 'services' | 'portfolio' | 'about' | 'faq' | 'contact' | 'premium' | 'eventai';
 
@@ -27,14 +28,15 @@ function CountdownTimer() {
   const [isComplete, setIsComplete] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
   const [notificationPermission, setNotificationPermission] = useState<NotificationPermission>('default');
-  const [savedEvents, setSavedEvents] = useState<{ name: string; date: string }[]>([]);
+  const [savedEvents, setSavedEvents] = useState<CountdownEvent[]>([]);
 
   useEffect(() => {
     if ('Notification' in window) {
       setNotificationPermission(Notification.permission);
     }
-    const saved = localStorage.getItem('belsh_events');
-    if (saved) setSavedEvents(JSON.parse(saved));
+    supabase.from('countdown_events').select('*').order('event_date', { ascending: true }).then(({ data }) => {
+      if (data) setSavedEvents(data as CountdownEvent[]);
+    });
   }, []);
 
   const requestNotificationPermission = async () => {
@@ -102,18 +104,16 @@ function CountdownTimer() {
     return () => clearInterval(interval);
   }, [eventDate, eventName, notificationPermission]);
 
-  const saveEvent = () => {
+  const saveEvent = async () => {
     if (eventName && eventDate) {
-      const newEvents = [...savedEvents, { name: eventName, date: eventDate }];
-      setSavedEvents(newEvents);
-      localStorage.setItem('belsh_events', JSON.stringify(newEvents));
+      const { data } = await supabase.from('countdown_events').insert({ name: eventName, event_date: new Date(eventDate).toISOString() }).select();
+      if (data) setSavedEvents([...savedEvents, data[0] as CountdownEvent]);
     }
   };
 
-  const removeEvent = (index: number) => {
-    const newEvents = savedEvents.filter((_, i) => i !== index);
-    setSavedEvents(newEvents);
-    localStorage.setItem('belsh_events', JSON.stringify(newEvents));
+  const removeEvent = (id: string) => {
+    supabase.from('countdown_events').delete().eq('id', id);
+    setSavedEvents(savedEvents.filter(e => e.id !== id));
   };
 
   const timeUnits = countdown
@@ -203,17 +203,17 @@ function CountdownTimer() {
         <div className="mt-6 pt-6 border-t border-dark-border relative z-10">
           <p className="text-white/70 text-xs uppercase tracking-widest mb-3">My Events</p>
           <div className="space-y-2">
-            {savedEvents.map((event, i) => (
-              <div key={i} className="flex items-center justify-between glass-dark rounded-lg p-3 hover:border-gold-500/30 transition-all group">
+            {savedEvents.map((event) => (
+              <div key={event.id} className="flex items-center justify-between glass-dark rounded-lg p-3 hover:border-gold-500/30 transition-all group">
                 <div>
                   <p className="text-white text-sm">{event.name}</p>
-                  <p className="text-white/70 text-xs">{new Date(event.date).toLocaleDateString()}</p>
+                  <p className="text-white/70 text-xs">{new Date(event.event_date).toLocaleDateString()}</p>
                 </div>
                 <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <button onClick={() => { setEventName(event.name); setEventDate(event.date); }} className="text-white/70 hover:text-gold-400">
+                  <button onClick={() => { setEventName(event.name); setEventDate(new Date(event.event_date).toISOString().slice(0, 16)); }} className="text-white/70 hover:text-gold-400">
                     <Play size={14} />
                   </button>
-                  <button onClick={() => removeEvent(i)} className="text-white/70 hover:text-red-400">
+                  <button onClick={() => removeEvent(event.id)} className="text-white/70 hover:text-red-400">
                     <Trash2 size={14} />
                   </button>
                 </div>
@@ -1283,9 +1283,15 @@ function PlanMyEvent() {
 
 // 4. RSVP MANAGEMENT
 function RSVPManager() {
-  const [guests, setGuests] = useState<{ name: string; phone: string; status: 'pending' | 'attending' | 'declined'; meal: string }[]>([]);
+  const [guests, setGuests] = useState<RsvpGuest[]>([]);
   const [newGuest, setNewGuest] = useState({ name: '', phone: '' });
   const [stats, setStats] = useState({ attending: 0, declined: 0, pending: 0 });
+
+  useEffect(() => {
+    supabase.from('rsvp_guests').select('*').order('created_at', { ascending: false }).then(({ data }) => {
+      if (data) setGuests(data as RsvpGuest[]);
+    });
+  }, []);
 
   useEffect(() => {
     setStats({
@@ -1295,21 +1301,22 @@ function RSVPManager() {
     });
   }, [guests]);
 
-  const addGuest = () => {
+  const addGuest = async () => {
     if (newGuest.name && newGuest.phone) {
-      setGuests([...guests, { ...newGuest, status: 'pending', meal: '' }]);
+      const { data } = await supabase.from('rsvp_guests').insert({ name: newGuest.name, phone: newGuest.phone, status: 'pending', meal: '' }).select();
+      if (data) setGuests([...guests, data[0] as RsvpGuest]);
       setNewGuest({ name: '', phone: '' });
     }
   };
 
-  const removeGuest = (index: number) => {
-    setGuests(guests.filter((_, i) => i !== index));
+  const removeGuest = (id: string) => {
+    supabase.from('rsvp_guests').delete().eq('id', id);
+    setGuests(guests.filter(g => g.id !== id));
   };
 
-  const updateStatus = (index: number, status: 'attending' | 'declined' | 'pending') => {
-    const updated = [...guests];
-    updated[index].status = status;
-    setGuests(updated);
+  const updateStatus = (id: string, status: 'attending' | 'declined' | 'pending') => {
+    supabase.from('rsvp_guests').update({ status }).eq('id', id);
+    setGuests(guests.map(g => g.id === id ? { ...g, status } : g));
   };
 
   const sendReminder = (phone: string, name: string) => {
@@ -1368,8 +1375,8 @@ function RSVPManager() {
 
       {/* Guest List */}
       <div className="space-y-2 max-h-64 overflow-y-auto relative z-10">
-        {guests.map((guest, i) => (
-          <div key={i} className="flex items-center justify-between glass-dark rounded-lg p-3 hover:border-gold-500/30 transition-all group animate-slide-in-right" style={{ animationDelay: `${i * 50}ms` }}>
+        {guests.map((guest) => (
+          <div key={guest.id} className="flex items-center justify-between glass-dark rounded-lg p-3 hover:border-gold-500/30 transition-all group animate-slide-in-right">
             <div className="flex items-center gap-3">
               <div className={`w-2 h-2 rounded-full animate-pulse ${guest.status === 'attending' ? 'bg-green-400' : guest.status === 'declined' ? 'bg-red-400' : 'bg-yellow-400'}`} />
               <div>
@@ -1380,7 +1387,7 @@ function RSVPManager() {
             <div className="flex items-center gap-2">
               <select
                 value={guest.status}
-                onChange={(e) => updateStatus(i, e.target.value as any)}
+                onChange={(e) => updateStatus(guest.id, e.target.value as any)}
                 className="bg-dark-card border border-dark-border rounded px-2 py-1 text-xs text-white focus:outline-none"
               >
                 <option value="pending">Pending</option>
@@ -1390,7 +1397,7 @@ function RSVPManager() {
               <button onClick={() => sendReminder(guest.phone, guest.name)} className="text-white/70 hover:text-gold-400 transition-colors">
                 <MessageCircle size={14} />
               </button>
-              <button onClick={() => removeGuest(i)} className="text-white/70 hover:text-red-400 transition-colors opacity-0 group-hover:opacity-100">
+              <button onClick={() => removeGuest(guest.id)} className="text-white/70 hover:text-red-400 transition-colors opacity-0 group-hover:opacity-100">
                 <Trash2 size={14} />
               </button>
             </div>
@@ -1403,23 +1410,16 @@ function RSVPManager() {
 
 // 5. EVENT MEMORY WALL (Public, with photo upload and delete)
 function MemoryWall() {
-  const [memories, setMemories] = useState<{ id: string; name: string; message: string; photo: string; date: string }[]>([]);
+  const [memories, setMemories] = useState<Memory[]>([]);
   const [newMemory, setNewMemory] = useState({ name: '', message: '' });
   const [newPhoto, setNewPhoto] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Load memories from localStorage on mount
   useEffect(() => {
-    const saved = localStorage.getItem('belsh_memories');
-    if (saved) {
-      setMemories(JSON.parse(saved));
-    }
+    supabase.from('memories').select('*').order('created_at', { ascending: false }).then(({ data }) => {
+      if (data) setMemories(data as Memory[]);
+    });
   }, []);
-
-  // Save to localStorage whenever memories change
-  useEffect(() => {
-    localStorage.setItem('belsh_memories', JSON.stringify(memories));
-  }, [memories]);
 
   const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -1432,22 +1432,21 @@ function MemoryWall() {
     }
   };
 
-  const addMemory = () => {
+  const addMemory = async () => {
     if (newMemory.name && newMemory.message) {
-      const memory = {
-        id: Date.now().toString(),
+      const { data } = await supabase.from('memories').insert({
         name: newMemory.name,
         message: newMemory.message,
         photo: newPhoto,
-        date: new Date().toLocaleDateString(),
-      };
-      setMemories([memory, ...memories]);
+      }).select();
+      if (data) setMemories([data[0] as Memory, ...memories]);
       setNewMemory({ name: '', message: '' });
       setNewPhoto('');
     }
   };
 
   const removeMemory = (id: string) => {
+    supabase.from('memories').delete().eq('id', id);
     setMemories(memories.filter(m => m.id !== id));
   };
 
@@ -1528,7 +1527,7 @@ function MemoryWall() {
             <p className="text-white text-sm mb-1">{memory.name}</p>
             <p className="text-white/70 text-xs line-clamp-2">{memory.message}</p>
             <div className="flex items-center justify-between mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
-              <p className="text-white0 text-[10px]">{memory.date}</p>
+              <p className="text-white/40 text-[10px]">{new Date(memory.created_at).toLocaleDateString()}</p>
               <button onClick={() => removeMemory(memory.id)} className="text-red-400 hover:text-red-300 transition-colors">
                 <Trash2 size={12} />
               </button>

@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { MapPin, Send, CheckCircle, Instagram, Clock, Mail } from 'lucide-react';
 import Confetti from '../components/Confetti';
 import FloatingDots from '../components/FloatingDots';
+import { supabase } from '../lib/supabase';
 
 const emptyForm = { name: '', email: '', phone: '', eventType: '', date: '', guestCount: '', budget: '', message: '' };
 
@@ -111,11 +112,27 @@ export default function Contact() {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
+  const [error, setError] = useState<string | null>(null);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 800));
+    setError(null);
+    const { error: insertError } = await supabase.from('enquiries').insert({
+      name: form.name,
+      email: form.email,
+      phone: form.phone,
+      event_type: form.eventType,
+      event_date: form.date || null,
+      guest_count: form.guestCount,
+      budget_range: form.budget,
+      message: form.message,
+    });
     setLoading(false);
+    if (insertError) {
+      setError('Something went wrong. Please try again or reach us on WhatsApp.');
+      return;
+    }
     setSubmitted(true);
   };
 
@@ -347,6 +364,12 @@ export default function Contact() {
                     <h3 className="font-serif text-2xl text-white mb-2">Tell Us About Your Event</h3>
                     <p className="text-white/70 text-sm">Fill in the details below and we will get back to you shortly.</p>
                   </div>
+
+                  {error && (
+                    <div className="bg-red-500/15 border border-red-500/40 rounded-lg px-4 py-3">
+                      <p className="text-red-300 text-sm">{error}</p>
+                    </div>
+                  )}
 
                   <div className="grid md:grid-cols-2 gap-4">
                     <div>
