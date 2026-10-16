@@ -11,6 +11,7 @@ import FAQ from './pages/FAQ';
 import Contact from './pages/Contact';
 import PremiumFeatures from './pages/PremiumFeatures';
 import EventAI from './pages/EventAI';
+import CountdownBanner from './components/CountdownBanner';
 
 type Page = 'home' | 'services' | 'portfolio' | 'about' | 'faq' | 'contact' | 'premium' | 'eventai';
 
@@ -105,6 +106,7 @@ function App() {
       <BackgroundAnimation />
       <CustomCursor />
       <Navbar currentPage={currentPage} onNavigate={navigate} />
+      <CountdownBanner />
       <main className="relative z-10" key={currentPage}>{renderPage}</main>
       <Footer onNavigate={navigate} />
     </div>

@@ -21,9 +21,24 @@ const WHATSAPP_URL = 'https://wa.me/2348035672491?text=Hi%20BELSH!%20I%27d%20lik
 const INSTAGRAM_URL = 'https://www.instagram.com/rtw_by_belsh';
 
 // 1. COUNTDOWN TIMER WITH NOTIFICATIONS
+function getStoredCountdown(): { name: string; target: number } | null {
+  const stored = localStorage.getItem('belsh-active-countdown');
+  if (!stored) return null;
+
+  try {
+    const parsed = JSON.parse(stored) as Partial<{ name: string; target: number }>;
+    if (typeof parsed.name === 'string' && typeof parsed.target === 'number') return parsed as { name: string; target: number };
+  } catch {
+    localStorage.removeItem('belsh-active-countdown');
+  }
+
+  return null;
+}
+
 function CountdownTimer() {
-  const [eventDate, setEventDate] = useState('');
-  const [eventName, setEventName] = useState('');
+  const [storedCountdown] = useState(() => getStoredCountdown());
+  const [eventDate, setEventDate] = useState(() => storedCountdown ? new Date(storedCountdown.target).toISOString().slice(0, 16) : '');
+  const [eventName, setEventName] = useState(() => storedCountdown?.name ?? '');
   const [countdown, setCountdown] = useState<{ days: number; hours: number; minutes: number; seconds: number } | null>(null);
   const [isComplete, setIsComplete] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
@@ -70,7 +85,6 @@ function CountdownTimer() {
         setCountdown({ days: 0, hours: 0, minutes: 0, seconds: 0 });
         setIsComplete(true);
         setShowConfetti(true);
-        sendNotification('🎉 Your Event Has Arrived!', `${eventName} is happening now!`);
         setTimeout(() => setShowConfetti(false), 6000);
         clearInterval(interval);
         return;
@@ -106,6 +120,13 @@ function CountdownTimer() {
 
   const saveEvent = async () => {
     if (eventName && eventDate) {
+      if ('Notification' in window && Notification.permission === 'default') {
+        const permission = await Notification.requestPermission();
+        setNotificationPermission(permission);
+      }
+      const target = new Date(eventDate).getTime();
+      localStorage.setItem('belsh-active-countdown', JSON.stringify({ name: eventName, target }));
+      window.dispatchEvent(new Event('belsh-countdown-updated'));
       const { data } = await supabase.from('countdown_events').insert({ name: eventName, event_date: new Date(eventDate).toISOString() }).select();
       if (data) setSavedEvents([...savedEvents, data[0] as CountdownEvent]);
     }
@@ -193,7 +214,13 @@ function CountdownTimer() {
             </div>
           )}
 
-          <button onClick={() => { setCountdown(null); setEventDate(''); }} className="text-sm text-white/70 hover:text-gold-300 transition-colors w-full text-center">
+          <button onClick={() => {
+            localStorage.removeItem('belsh-active-countdown');
+            window.dispatchEvent(new Event('belsh-countdown-updated'));
+            setCountdown(null);
+            setEventDate('');
+            setEventName('');
+          }} className="text-sm text-white/70 hover:text-gold-300 transition-colors w-full text-center">
             Reset Countdown
           </button>
         </div>

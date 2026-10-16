@@ -66,6 +66,29 @@ const whyUs = [
   'Full contingency planning included',
 ];
 
+const homeEventImages = [
+  {
+    url: 'https://images.pexels.com/photos/34310532/pexels-photo-34310532.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
+    alt: 'Woman in traditional Nigerian wedding attire',
+    label: 'Traditional celebrations',
+  },
+  {
+    url: 'https://images.pexels.com/photos/29997401/pexels-photo-29997401.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
+    alt: 'Women in traditional Nigerian attire at a wedding',
+    label: 'Cultural moments',
+  },
+  {
+    url: 'https://images.pexels.com/photos/28988081/pexels-photo-28988081.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
+    alt: 'Elegant birthday celebration table setting',
+    label: 'Milestone gatherings',
+  },
+  {
+    url: 'https://images.pexels.com/photos/35017880/pexels-photo-35017880.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
+    alt: 'Elegant event table with floral centerpieces',
+    label: 'Beautifully hosted',
+  },
+];
+
 function useReveal() {
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -88,6 +111,14 @@ function useReveal() {
 
 export default function Home({ onNavigate }: HomeProps) {
   const [showConfetti, setShowConfetti] = useState(false);
+  const [activeEventImage, setActiveEventImage] = useState(0);
+
+  useEffect(() => {
+    const imageTimer = window.setInterval(() => {
+      setActiveEventImage((current) => (current + 1) % homeEventImages.length);
+    }, 5200);
+    return () => window.clearInterval(imageTimer);
+  }, []);
 
   useEffect(() => {
     setShowConfetti(true);
@@ -356,7 +387,24 @@ export default function Home({ onNavigate }: HomeProps) {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(212,160,23,0.1)_0%,transparent_65%)]" />
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold-500/50 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold-500/30 to-transparent" />
+        <div className="absolute left-1/2 top-1/2 hidden h-[420px] w-[min(92vw,760px)] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[2rem] border border-white/10 opacity-25 md:block">
+          <img
+            key={homeEventImages[activeEventImage].url}
+            src={homeEventImages[activeEventImage].url}
+            alt={homeEventImages[activeEventImage].alt}
+            className={`home-event-image-${activeEventImage % 3} h-full w-full object-cover`}
+          />
+        </div>
         <div className="relative max-w-3xl mx-auto px-6 text-center scroll-reveal">
+          <div className="mb-8 overflow-hidden rounded-2xl border border-gold-500/30 bg-dark/30 p-2 shadow-2xl shadow-black/30 md:hidden">
+            <img
+              key={homeEventImages[activeEventImage].url}
+              src={homeEventImages[activeEventImage].url}
+              alt={homeEventImages[activeEventImage].alt}
+              className={`home-event-image-${activeEventImage % 3} h-52 w-full rounded-xl object-cover`}
+            />
+            <p className="py-2 text-[10px] uppercase tracking-[0.2em] text-gold-300">{homeEventImages[activeEventImage].label} · Nigeria</p>
+          </div>
           <div className="w-16 h-16 rounded-full bg-gold-500/10 border border-gold-500/30 flex items-center justify-center mx-auto mb-8">
             <Sparkles size={26} className="text-gold-400" />
           </div>
